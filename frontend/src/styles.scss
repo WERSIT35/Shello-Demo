@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --font-family-sans-serif: "Poppins", sans-serif;
+  --font-family-heading: "Oswald", sans-serif;
+
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+
+  --background-color: #121212;
+  --text-color-primary: #f8f9fa;
+  --text-color-secondary: #adb5bd;
+  --border-color: #343a40;
+}
+
+body {
+  font-family: var(--font-family-sans-serif);
+  background-color: var(--background-color);
+  color: var(--text-color-primary);
+  margin: 0;
+  padding-top: 80px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}

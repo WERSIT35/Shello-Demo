@@ -1,0 +1,14 @@
+.footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 4rem;
+    color: var(--text-color-secondary);
+    border-top: 1px solid var(--border-color);
+
+    .footer-links {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+}

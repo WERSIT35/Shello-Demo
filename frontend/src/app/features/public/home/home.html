@@ -1,0 +1,25 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <h1 class="hero-title">განიცადე Shello</h1>
+  <p class="hero-subtitle">მინიმალისტური დიზაინისა და გამძლე დაცვის სრულყოფილი ნაზავი, შთაგონებული ბუნების ელეგანტურობით.</p>
+  <div>
+    <a routerLink="/cases" class="btn btn-primary">კოლექციის ნახვა</a>
+    <a routerLink="/our-story" class="btn btn-secondary">ჩვენი ისტორია</a>
+  </div>
+</section>
+
+<!-- Collection Section -->
+<section class="collection">
+  <h2>ჩვენი კოლექცია</h2>
+  <div class="collection-grid">
+    <!-- Loop through products -->
+    <div *ngFor="let case of cases" class="collection-card">
+      <img [src]="case.image" alt="{{ case.name }}" class="product-image">
+      <div class="card-content">
+        <h3 class="product-name">{{ case.name }}</h3>
+        <p class="product-material">{{ case.material }}</p>
+        <p class="product-price">₾{{ case.price }}</p>
+      </div>
+    </div>
+  </div>
+</section>

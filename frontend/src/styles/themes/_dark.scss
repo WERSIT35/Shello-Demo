@@ -1,0 +1,37 @@
+// -----------------------------------------------------------------------------
+// Dark Theme
+// -----------------------------------------------------------------------------
+
+// This theme can be activated by adding a `dark-theme` class to the `body` element.
+
+.dark-theme {
+  // Dark mode color palette inspired by Apple's design.
+  // It uses dark greys, not pure black, for a softer, more premium feel.
+  --background-color: #121212;
+  --surface-color: #1E1E1E;
+  --background-color-secondary: #1E1E1E;
+  --text-color-primary: #E0E0E0;
+  --text-color-secondary: #A0A0A0;
+  --primary-color: #0A84FF;
+  --border-color: #333333;
+
+  // Apply the variables
+  background-color: var(--background-color);
+  color: var(--text-color-primary);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--text-color-primary);
+  }
+
+  a {
+    color: var(--primary-color);
+  }
+
+  // You can add more specific dark theme styles for components here
+  // e.g., .card, .header, etc.
+}

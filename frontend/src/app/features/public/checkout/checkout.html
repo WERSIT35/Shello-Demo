@@ -1,0 +1,21 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+  <form [formGroup]="checkoutForm" (ngSubmit)="placeOrder()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name">
+      <div *ngIf="checkoutForm.controls.name.invalid && checkoutForm.controls.name.touched" class="error">
+        Name is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email">
+      <div *ngIf="checkoutForm.controls.email.invalid && checkoutForm.controls.email.touched" class="error">
+        <span *ngIf="checkoutForm.controls.email.errors?.['required']">Email is required.</span>
+        <span *ngIf="checkoutForm.controls.email.errors?.['email']">Invalid email format.</span>
+      </div>
+    </div>
+    <button type="submit" [disabled]="checkoutForm.invalid">Place Order</button>
+  </form>
+</div>

@@ -1,0 +1,47 @@
+.cases-section {
+  padding: 4rem 2rem;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .case-card {
+    background-color: var(--background-color-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+
+    .case-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .case-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+
+    .case-material {
+      color: var(--text-color-secondary);
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .case-price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+  }
+}

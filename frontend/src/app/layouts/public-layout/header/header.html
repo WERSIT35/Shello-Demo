@@ -1,0 +1,45 @@
+<header>
+  <div class="logo">
+    <a routerLink="/">Shello</a>
+  </div>
+  <nav>
+    <ul>
+      <li><a routerLink="/products" routerLinkActive="active" title="Products"><span class="material-icons">style</span></a></li>
+      <li><a routerLink="/cases" routerLinkActive="active" title="Cases"><span class="material-icons">smartphone</span></a></li>
+      <li><a routerLink="/contact" routerLinkActive="active" title="Contact"><span class="material-icons">mail</span></a></li>
+    </ul>
+  </nav>
+  <div class="header-actions">
+    <div class="cart">
+      <button (click)="toggleCart()" #cartButton>
+        <span class="material-icons">shopping_bag</span>
+        <span class="cart-badge">{{ cartItemCount$ | async }}</span>
+      </button>
+      <div class="cart-popup" [class.show]="isCartVisible" #cartPopup>
+        <div class="cart-header">
+          <h3><span class="material-icons">shopping_cart</span> Your Cart</h3>
+        </div>
+        <div class="cart-items">
+          <div *ngFor="let item of (cartItems$ | async)" class="cart-item">
+            <img [src]="item.product.imageUrl" alt="{{ item.product.name }}">
+            <div class="item-details">
+              <p>{{ item.product.name }}</p>
+              <p>{{ item.product.price | currency }} x {{ item.quantity }}</p>
+            </div>
+          </div>
+          <div *ngIf="(cartItems$ | async)?.length === 0" class="empty-cart">
+            <span class="material-icons">remove_shopping_cart</span>
+            <p>Your cart is empty.</p>
+          </div>
+        </div>
+        <div class="cart-footer">
+          <p>Total: {{ total$ | async | currency }}</p>
+          <button routerLink="/checkout">
+            <span class="material-icons">payment</span>
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
