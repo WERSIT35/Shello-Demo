@@ -1,0 +1,55 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "title",
+      "price",
+      "stock",
+      "isActive",
+      "createdAt",
+      "updatedAt"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "title": {
+        "bsonType": "string",
+        "description": "Product title"
+      },
+      "description": {
+        "bsonType": [
+          "string",
+          "null"
+        ],
+        "description": "Product description"
+      },
+      "price": {
+        "bsonType": "double",
+        "description": "Price in store currency"
+      },
+      "stock": {
+        "bsonType": "int",
+        "description": "Available stock count"
+      },
+      "images": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "string"
+        },
+        "description": "Array of image URLs or identifiers"
+      },
+      "isActive": {
+        "bsonType": "bool",
+        "description": "Product active flag"
+      },
+      "createdAt": {
+        "bsonType": "date"
+      },
+      "updatedAt": {
+        "bsonType": "date"
+      }
+    },
+    "additionalProperties": false
+  }
+}

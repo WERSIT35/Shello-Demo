@@ -1,0 +1,104 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "userId",
+      "items",
+      "totalPrice",
+      "shippingAddress",
+      "status",
+      "createdAt",
+      "updatedAt"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "userId": {
+        "bsonType": "objectId",
+        "description": "Reference to users collection"
+      },
+      "items": {
+        "bsonType": "array",
+        "minItems": 1,
+        "items": {
+          "bsonType": "object",
+          "required": [
+            "productId",
+            "quantity",
+            "priceAtPurchase"
+          ],
+          "properties": {
+            "productId": {
+              "bsonType": "objectId",
+              "description": "Reference to products collection"
+            },
+            "quantity": {
+              "bsonType": "int",
+              "description": "Quantity ordered"
+            },
+            "priceAtPurchase": {
+              "bsonType": "double",
+              "description": "Product price at time of purchase"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": "Array of ordered items"
+      },
+      "totalPrice": {
+        "bsonType": "double",
+        "description": "Order total (computed server-side)"
+      },
+      "shippingAddress": {
+        "bsonType": "object",
+        "required": [
+          "fullName",
+          "phone",
+          "addressLine",
+          "city",
+          "postalCode",
+          "country"
+        ],
+        "properties": {
+          "fullName": {
+            "bsonType": "string"
+          },
+          "phone": {
+            "bsonType": "string"
+          },
+          "addressLine": {
+            "bsonType": "string"
+          },
+          "city": {
+            "bsonType": "string"
+          },
+          "postalCode": {
+            "bsonType": "string"
+          },
+          "country": {
+            "bsonType": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "status": {
+        "enum": [
+          "pending",
+          "paid",
+          "shipped",
+          "delivered",
+          "cancelled"
+        ],
+        "description": "Order lifecycle status"
+      },
+      "createdAt": {
+        "bsonType": "date"
+      },
+      "updatedAt": {
+        "bsonType": "date"
+      }
+    },
+    "additionalProperties": false
+  }
+}

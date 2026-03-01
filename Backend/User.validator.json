@@ -1,0 +1,44 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "name",
+      "email",
+      "password",
+      "role",
+      "createdAt",
+      "updatedAt"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "name": {
+        "bsonType": "string",
+        "description": "User full name"
+      },
+      "email": {
+        "bsonType": "string",
+        "description": "User email (must be unique)"
+      },
+      "password": {
+        "bsonType": "string",
+        "description": "Hashed password"
+      },
+      "role": {
+        "enum": [
+          "user",
+          "admin"
+        ],
+        "description": "Account role"
+      },
+      "createdAt": {
+        "bsonType": "date"
+      },
+      "updatedAt": {
+        "bsonType": "date"
+      }
+    },
+    "additionalProperties": false
+  }
+}
