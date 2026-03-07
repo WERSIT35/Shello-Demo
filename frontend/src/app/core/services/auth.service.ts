@@ -130,6 +130,9 @@ export class AuthService {
 
     return new Observable<AuthUser>((observer) => {
       let handled = false;
+      let refreshAttempts = 0;
+      const maxRefreshAttempts = 5;
+      const refreshDelayMs = 400;
       const isAbsoluteApiBase = API_BASE_URL.startsWith('http');
       const expectedOrigin = isAbsoluteApiBase
         ? new URL(API_BASE_URL).origin
@@ -172,23 +175,43 @@ export class AuthService {
         observer.complete();
       };
 
+      const tryRefresh = () => {
+        if (handled) {
+          return;
+        }
+
+        this.refreshSession().subscribe((success) => {
+          if (handled) {
+            return;
+          }
+
+          if (success && this.currentUser) {
+            handled = true;
+            observer.next(this.currentUser);
+            observer.complete();
+            return;
+          }
+
+          refreshAttempts += 1;
+          if (refreshAttempts >= maxRefreshAttempts) {
+            handled = true;
+            observer.error(new Error('Login cancelled.'));
+            return;
+          }
+
+          window.setTimeout(tryRefresh, refreshDelayMs);
+        });
+      };
+
       const poll = window.setInterval(() => {
         if (handled) {
           return;
         }
 
         if (popup.closed) {
-          handled = true;
-          cleanup();
-          this.refreshSession().subscribe((success) => {
-            if (success && this.currentUser) {
-              observer.next(this.currentUser);
-              observer.complete();
-              return;
-            }
-
-            observer.error(new Error('Login cancelled.'));
-          });
+          window.clearInterval(poll);
+          window.removeEventListener('message', handleMessage);
+          tryRefresh();
         }
       }, 400);
 
