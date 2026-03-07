@@ -1,0 +1,51 @@
+<section class="cart">
+  <div class="cart-items">
+    <h1>Your cart</h1>
+    <p class="state-text" *ngIf="(items$ | async)?.length === 0">
+      Your cart is empty.
+    </p>
+    <div class="cart-item" *ngFor="let item of items$ | async">
+      <div class="item-info">
+        <div class="item-thumb">
+          <img *ngIf="item.image" [src]="item.image" alt="" />
+        </div>
+        <div>
+          <p class="item-title">{{ item.title }}</p>
+          <p class="item-sub">{{ item.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</p>
+        </div>
+      </div>
+      <div class="item-actions">
+        <input
+          type="number"
+          min="1"
+          [value]="item.quantity"
+          (change)="updateQuantity(item, $event)"
+        />
+        <span class="item-total">{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+        <button class="btn ghost" type="button" (click)="removeItem(item)">Remove</button>
+      </div>
+    </div>
+  </div>
+  <aside class="cart-summary">
+    <h2>Summary</h2>
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span>{{ subtotal$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+    </div>
+    <div class="summary-row">
+      <span>Shipping</span>
+      <span>
+        {{
+          (items$ | async)?.length
+            ? (shippingFee | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE')
+            : (0 | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE')
+        }}
+      </span>
+    </div>
+    <div class="summary-row total">
+      <span>Total</span>
+      <span>{{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+    </div>
+    <a class="btn primary" routerLink="/checkout">Checkout</a>
+  </aside>
+</section>

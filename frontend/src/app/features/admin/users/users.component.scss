@@ -1,0 +1,141 @@
+.admin-section h1 {
+  font-family: var(--font-display);
+}
+
+.create-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.8rem 0 1.4rem;
+}
+
+.create-header-bar h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.create-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 10, 16, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.modal-card {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  padding: 1.4rem;
+  width: min(680px, 92vw);
+  z-index: 1;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.table {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.row {
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 2.2fr 1fr 1fr 1fr 2fr;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+}
+
+.row.header {
+  background: transparent;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #4cd27a;
+  box-shadow: 0 0 10px rgba(76, 210, 122, 0.4);
+}
+
+.status-dot.offline {
+  background: #7b8794;
+  box-shadow: none;
+}
+
+.status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+}
+
+.btn.danger {
+  border-color: rgba(255, 120, 120, 0.4);
+  color: #ff9f9f;
+}
+
+.state-text {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+}
+
+.state-text.error {
+  color: #ff8e8e;
+}

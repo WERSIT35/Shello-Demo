@@ -68,6 +68,7 @@ POST /api/v1/auth/register
 - Body:
   {
     "name": "string",
+    "lastName": "string",
     "email": "string",
     "password": "string"
   }
@@ -76,7 +77,9 @@ POST /api/v1/auth/register
     "user": {
       "_id": "string",
       "name": "string",
+      "lastName": "string",
       "email": "string",
+      "pinCode": "string",
       "role": "user",
       "createdAt": "string",
       "updatedAt": "string"
@@ -101,7 +104,9 @@ POST /api/v1/auth/login
     "user": {
       "_id": "string",
       "name": "string",
+      "lastName": "string",
       "email": "string",
+      "pinCode": "string",
       "role": "user"
     }
   }
@@ -152,7 +157,9 @@ GET /api/v1/users/me
   {
     "_id": "string",
     "name": "string",
+    "lastName": "string",
     "email": "string",
+    "pinCode": "string",
     "role": "user",
     "createdAt": "string",
     "updatedAt": "string"

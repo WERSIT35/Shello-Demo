@@ -96,6 +96,7 @@ Recommended lifetimes:
 
 Add fields to user documents (example):
 - password: string (bcrypt hash)
+- pinCode: string (unique 6-digit, generated at registration)
 - role: "user" | "admin"
 - tokenVersion: Number (default 0) — optional
 - lastPasswordChangeAt: Date — optional
@@ -121,7 +122,7 @@ Notes:
 # Endpoints
 
 - POST /auth/register
-  - Body: { name, email, password }
+  - Body: { name, lastName, email, password }
   - Creates user (role defaults to user). Do not return tokens unless intentionally logging in on register.
 - POST /auth/login
   - Body: { email, password }
@@ -148,8 +149,9 @@ Notes:
 Registration
 1. Validate input (email format, password strength).
 2. Hash password with bcrypt (cost >= 12).
-3. Create user document with role: "user".
-4. Respond success (optionally auto-login).
+3. Generate unique 6-digit pin code.
+4. Create user document with role: "user".
+5. Respond success (optionally auto-login).
 
 Login
 1. Validate input.

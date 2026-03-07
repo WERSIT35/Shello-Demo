@@ -43,6 +43,10 @@
         "bsonType": "bool",
         "description": "Product active flag"
       },
+      "metadata": {
+        "bsonType": ["object", "null"],
+        "description": "Optional product metadata"
+      },
       "createdAt": {
         "bsonType": "date"
       },

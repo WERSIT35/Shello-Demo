@@ -1,0 +1,67 @@
+<section class="hero">
+  <div class="hero-ambient"></div>
+  <div class="hero-image" [style.backgroundImage]="heroImageStyle" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <span class="pill">Shello Studio</span>
+    <h1>{{ hero.title }}</h1>
+    <p>{{ hero.subtitle }}</p>
+    <div class="cta-row">
+      <a class="btn primary" [attr.href]="hero.primaryCtaLink">{{ hero.primaryCtaText }}</a>
+      <a class="btn ghost" [attr.href]="hero.secondaryCtaLink">{{ hero.secondaryCtaText }}</a>
+    </div>
+    <p class="scroll-hint">Scroll to preview the latest drops.</p>
+    <div class="chip-row">
+      <span class="chip" *ngFor="let tag of hero.highlights">{{ tag }}</span>
+    </div>
+  </div>
+  <div class="hero-panel">
+    <div class="panel-card" *ngFor="let product of panelProducts">
+      <div class="panel-dot"></div>
+      <div>
+        <p class="panel-title">{{ product.title }}</p>
+        <p class="panel-sub">{{ getPanelSub(product) }}</p>
+      </div>
+      <span class="panel-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="suggested">
+  <div class="suggested-header">
+    <div>
+      <h2>Suggested cases</h2>
+      <p>Scroll through the latest finishes and tap to view details.</p>
+    </div>
+    <div class="slider-controls">
+      <button class="btn ghost" type="button" (click)="scrollCases('left')" aria-label="Scroll left">
+        ←
+      </button>
+      <button class="btn ghost" type="button" (click)="scrollCases('right')" aria-label="Scroll right">
+        →
+      </button>
+    </div>
+  </div>
+  <p class="state-text" *ngIf="isLoading">Loading cases...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <div class="slider" #caseSlider *ngIf="!isLoading && !errorMessage">
+    <article class="card" *ngFor="let product of suggestedProducts">
+      <a class="card-image" [routerLink]="['/products', product.id]">
+        <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+      </a>
+      <div class="card-top">
+        <span>{{ product.title }}</span>
+        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      </div>
+      <div class="card-meta" *ngIf="getMeta(product).length">
+        <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+      </div>
+      <div class="card-actions">
+        <a class="card-link" [routerLink]="['/products', product.id]">View details</a>
+        <button class="btn ghost" type="button" (click)="addToCart(product)">Add</button>
+      </div>
+    </article>
+  </div>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0">
+    No suggested cases yet.
+  </p>
+</section>

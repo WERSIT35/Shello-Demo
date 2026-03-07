@@ -1,0 +1,38 @@
+<section class="admin-section">
+  <h1>Orders</h1>
+  <p class="state-text" *ngIf="isLoading">Loading orders...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <div class="table">
+    <div class="row header">
+      <span>Order</span>
+      <span>User</span>
+      <span>Total</span>
+      <span>Status</span>
+      <span>Action</span>
+    </div>
+    <div class="row" *ngFor="let order of orders">
+      <span>{{ order.id }}</span>
+      <span>{{ order.userId }}</span>
+      <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      <select [(ngModel)]="statusSelections[order.id]">
+        <option *ngFor="let option of statusOptions" [ngValue]="option">
+          {{ option }}
+        </option>
+      </select>
+      <button
+        class="btn ghost icon-btn"
+        type="button"
+        (click)="updateStatus(order)"
+        aria-label="Update status"
+        title="Update status"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0">
+    No orders found.
+  </p>
+</section>

@@ -1,0 +1,106 @@
+<section class="admin-section">
+  <div class="header-row">
+    <div>
+      <h1>Content</h1>
+      <p class="hint">Manage hero messaging and suggested cases without touching code.</p>
+    </div>
+    <button class="btn primary" type="button" (click)="saveContent()" [disabled]="isSaving">
+      {{ isSaving ? 'Saving...' : 'Save changes' }}
+    </button>
+  </div>
+
+  <p class="state-text" *ngIf="isLoading">Loading content...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <p class="state-text success" *ngIf="!isLoading && saveMessage">{{ saveMessage }}</p>
+
+  <div class="content-grid" *ngIf="!isLoading && !errorMessage">
+    <div class="panel">
+      <h2>Hero</h2>
+      <div class="field">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="heroDraft.title" />
+      </div>
+      <div class="field">
+        <label>Subtitle</label>
+        <textarea rows="3" [(ngModel)]="heroDraft.subtitle"></textarea>
+      </div>
+      <div class="field">
+        <label>Primary CTA</label>
+        <input type="text" placeholder="Text" [(ngModel)]="heroDraft.primaryCtaText" />
+        <input type="text" placeholder="Link" [(ngModel)]="heroDraft.primaryCtaLink" />
+      </div>
+      <div class="field">
+        <label>Secondary CTA</label>
+        <input type="text" placeholder="Text" [(ngModel)]="heroDraft.secondaryCtaText" />
+        <input type="text" placeholder="Link" [(ngModel)]="heroDraft.secondaryCtaLink" />
+      </div>
+      <div class="field">
+        <label>Highlights (one per line)</label>
+        <textarea rows="4" [(ngModel)]="highlightsText"></textarea>
+      </div>
+      <div class="field">
+        <label>Categories</label>
+        <div class="category-row">
+          <input type="text" placeholder="Add category" [(ngModel)]="newCategory" />
+          <button class="btn ghost" type="button" (click)="addCategory()">Add</button>
+        </div>
+        <div class="category-list" *ngIf="categoriesDraft.length">
+          <button
+            class="category-chip"
+            type="button"
+            *ngFor="let category of categoriesDraft"
+            (click)="removeCategory(category)"
+            title="Remove"
+          >
+            {{ category }}
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Hero image</label>
+        <div class="hero-preview" *ngIf="heroDraft.imageUrl">
+          <img [src]="heroDraft.imageUrl" alt="" />
+        </div>
+        <label class="file-label">
+          <input type="file" accept="image/*" (change)="onHeroImageSelected($event)" />
+          <span>Upload image</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Suggested cases</h2>
+          <p class="hint">Pick up to {{ maxSuggested }} products to show on the homepage.</p>
+        </div>
+        <span class="pill">Selected {{ selectedSuggestedIds.size }}/{{ maxSuggested }}</span>
+      </div>
+      <div class="products-grid">
+        <button
+          class="select-card"
+          type="button"
+          *ngFor="let product of products"
+          [class.active]="isSelected(product.id)"
+          (click)="toggleSuggested(product.id)"
+        >
+          <article class="card">
+            <div class="card-image">
+              <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+            </div>
+            <div class="card-top">
+              <span>{{ product.title }}</span>
+              <span class="card-price">
+                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+              </span>
+            </div>
+            <div class="card-meta" *ngIf="getMeta(product).length">
+              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+            </div>
+          </article>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -113,7 +113,9 @@ Order security rules:
 ## User
 
 * name
+* lastName
 * email
+* pinCode
 * password
 * role
 * createdAt
