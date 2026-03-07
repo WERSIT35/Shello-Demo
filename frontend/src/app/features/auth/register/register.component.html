@@ -1,0 +1,44 @@
+<section class="auth">
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Create account</h1>
+    <p>Join the drop and keep every case synced.</p>
+    <div class="field-group">
+      <label for="firstName">First name</label>
+      <input id="firstName" type="text" placeholder="Jane" formControlName="name" />
+    </div>
+    <div class="field-group">
+      <label for="lastName">Last name</label>
+      <input id="lastName" type="text" placeholder="Doe" formControlName="lastName" />
+    </div>
+    <div class="field-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" formControlName="email" />
+    </div>
+    <div class="field-group">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="••••••••"
+        formControlName="password"
+      />
+    </div>
+    <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <button class="btn primary" type="submit" [disabled]="isSubmitting">
+      Create account
+    </button>
+    <div class="auth-divider">
+      <span>or</span>
+    </div>
+    <button class="btn ghost google-btn" type="button" (click)="signUpWithGoogle()" [disabled]="isSubmitting">
+      Continue with Google
+    </button>
+    <a class="helper-link" routerLink="/login">Already have an account? Sign in</a>
+    <div class="auth-loading" *ngIf="isSubmitting">
+      <div class="auth-loading-card">
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Creating your account...</p>
+      </div>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,48 @@
+<section class="checkout">
+  <form class="checkout-form" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Checkout</h1>
+    <p class="state-text error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <div class="field-group">
+      <label>Full name</label>
+      <input type="text" placeholder="Jane Doe" formControlName="fullName" />
+    </div>
+    <div class="field-group">
+      <label>Phone</label>
+      <input type="text" placeholder="+1 555 000 1122" formControlName="phone" />
+    </div>
+    <div class="field-group">
+      <label>Address</label>
+      <input type="text" placeholder="123 Main St" formControlName="addressLine" />
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>City</label>
+        <input type="text" placeholder="City" formControlName="city" />
+      </div>
+      <div class="field-group">
+        <label>Postal code</label>
+        <input type="text" placeholder="12345" formControlName="postalCode" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Country</label>
+      <input type="text" placeholder="Country" formControlName="country" />
+    </div>
+    <button class="btn primary" type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Placing order...' : 'Place order' }}
+    </button>
+  </form>
+  <aside class="checkout-summary">
+    <h2>Order summary</h2>
+    <p>
+      {{ (items$ | async)?.length || 0 }} items · Total
+      {{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+    </p>
+    <div class="summary-list">
+      <div class="summary-item" *ngFor="let item of items$ | async">
+        <span>{{ item.title }} x{{ item.quantity }}</span>
+        <span>{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      </div>
+    </div>
+  </aside>
+</section>

@@ -1,0 +1,37 @@
+.admin-section h1 {
+  font-family: var(--font-display);
+}
+
+.table {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.row {
+  background: var(--surface);
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+}
+
+.row.header {
+  background: transparent;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.state-text {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+}
+
+.state-text.error {
+  color: #ff8e8e;
+}

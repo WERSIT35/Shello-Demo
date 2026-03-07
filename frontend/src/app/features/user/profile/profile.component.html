@@ -1,0 +1,21 @@
+<section class="profile">
+  <h1>Profile</h1>
+  <div class="profile-card" *ngIf="user$ | async as user">
+    <div class="profile-row">
+      <span>Full name</span>
+      <span>{{ user.name }} {{ user.lastName }}</span>
+    </div>
+    <div class="profile-row">
+      <span>Email</span>
+      <span>{{ user.email }}</span>
+    </div>
+    <div class="profile-row">
+      <span>Pin</span>
+      <span>{{ user.pinCode }}</span>
+    </div>
+    <div class="profile-row">
+      <span>Role</span>
+      <span>{{ user.role }}</span>
+    </div>
+  </div>
+</section>

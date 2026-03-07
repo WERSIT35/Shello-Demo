@@ -92,6 +92,10 @@
         ],
         "description": "Order lifecycle status"
       },
+      "paymentInfo": {
+        "bsonType": ["object", "null"],
+        "description": "Optional payment metadata"
+      },
       "createdAt": {
         "bsonType": "date"
       },

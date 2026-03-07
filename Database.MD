@@ -40,7 +40,9 @@ Fields:
 
 * _id (ObjectId)
 * name (String, required)
+* lastName (String, required)
 * email (String, required, unique)
+* pinCode (String, required, unique, 6 digits)
 * password (String, hashed)
 * role ("user" | "admin")
 * createdAt (Date)
@@ -117,6 +119,7 @@ Security Rules:
 users:
 
 * email (unique index)
+* pinCode (unique index)
 
 products:
 

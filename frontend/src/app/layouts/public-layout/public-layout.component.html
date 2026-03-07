@@ -1,0 +1,57 @@
+<div class="page-shell">
+  <header class="site-header">
+    <a class="brand" routerLink="/">Shello</a>
+    <nav class="site-nav">
+      <a routerLink="/shop" routerLinkActive="active">Shop</a>
+      <a class="cart-link" routerLink="/cart" routerLinkActive="active">
+        Cart
+        <ng-container *ngIf="cartCount$ | async as count">
+          <span class="cart-badge" *ngIf="count > 0">{{ count }}</span>
+        </ng-container>
+      </a>
+      <a routerLink="/orders" routerLinkActive="active">Orders</a>
+    </nav>
+    <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
+      <div class="user-menu">
+        <button class="user-button" type="button" aria-haspopup="true" aria-label="Open user menu">
+          <span class="user-initial">{{ user.name.charAt(0) }}</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <div class="user-dropdown">
+          <div class="user-info">
+            <span class="user-name">{{ user.name }} {{ user.lastName }}</span>
+            <span class="user-email">{{ user.email }}</span>
+          </div>
+          <a class="menu-item" routerLink="/profile">Profile</a>
+          <a class="menu-item" routerLink="/orders">Orders</a>
+          <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin">Admin</a>
+          <button class="menu-item" type="button" (click)="logout()">Sign out</button>
+        </div>
+      </div>
+    </div>
+    <ng-template #guestActions>
+      <div class="header-actions">
+        <a class="btn ghost" routerLink="/login">Login</a>
+        <a class="btn primary" routerLink="/register">Get Started</a>
+      </div>
+    </ng-template>
+  </header>
+
+  <main class="site-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="footer-title">Shello Studio</p>
+      <p class="footer-copy">Designed for confident protection and bold style.</p>
+    </div>
+    <div class="footer-links">
+      <a routerLink="/">Shop</a>
+      <a routerLink="/cart">Cart</a>
+      <a *ngIf="(user$ | async)?.role === 'admin'" routerLink="/admin">Admin</a>
+    </div>
+  </footer>
+</div>

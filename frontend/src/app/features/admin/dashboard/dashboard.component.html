@@ -1,0 +1,19 @@
+<section class="admin-dashboard">
+  <h1>Admin overview</h1>
+  <p class="state-text" *ngIf="isLoading">Loading stats...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <div class="stats" *ngIf="!isLoading && !errorMessage">
+    <div class="stat-card">
+      <p>Active products</p>
+      <h2>{{ activeProducts }}</h2>
+    </div>
+    <div class="stat-card">
+      <p>Orders today</p>
+      <h2>{{ ordersToday }}</h2>
+    </div>
+    <div class="stat-card">
+      <p>Pending shipments</p>
+      <h2>{{ pendingShipments }}</h2>
+    </div>
+  </div>
+</section>

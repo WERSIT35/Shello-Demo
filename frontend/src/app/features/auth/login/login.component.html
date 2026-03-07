@@ -1,0 +1,36 @@
+<section class="auth">
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Welcome back</h1>
+    <p>Sign in to continue your Shello drop.</p>
+    <div class="field-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" formControlName="email" />
+    </div>
+    <div class="field-group">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="••••••••"
+        formControlName="password"
+      />
+    </div>
+    <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <button class="btn primary" type="submit" [disabled]="isSubmitting">
+      Sign in
+    </button>
+    <div class="auth-divider">
+      <span>or</span>
+    </div>
+    <button class="btn ghost google-btn" type="button" (click)="signInWithGoogle()" [disabled]="isSubmitting">
+      Continue with Google
+    </button>
+    <a class="helper-link" routerLink="/register">Need an account? Create one</a>
+    <div class="auth-loading" *ngIf="isSubmitting">
+      <div class="auth-loading-card">
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Signing you in...</p>
+      </div>
+    </div>
+  </form>
+</section>
