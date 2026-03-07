@@ -3,7 +3,9 @@
     "bsonType": "object",
     "required": [
       "name",
+      "lastName",
       "email",
+      "pinCode",
       "password",
       "role",
       "createdAt",
@@ -17,9 +19,18 @@
         "bsonType": "string",
         "description": "User full name"
       },
+      "lastName": {
+        "bsonType": "string",
+        "description": "User last name"
+      },
       "email": {
         "bsonType": "string",
         "description": "User email (must be unique)"
+      },
+      "pinCode": {
+        "bsonType": "string",
+        "pattern": "^[0-9]{6}$",
+        "description": "Unique 6-digit PIN code"
       },
       "password": {
         "bsonType": "string",
@@ -31,6 +42,32 @@
           "admin"
         ],
         "description": "Account role"
+      },
+      "tokenVersion": {
+        "bsonType": "int",
+        "description": "Token version for global session revocation"
+      },
+      "lastPasswordChangeAt": {
+        "bsonType": "date",
+        "description": "Timestamp of last password change"
+      },
+      "refreshTokens": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "object",
+          "required": ["tokenHash", "createdAt", "expiresAt", "revoked"],
+          "additionalProperties": false,
+          "properties": {
+            "tokenHash": { "bsonType": "string" },
+            "createdAt": { "bsonType": "date" },
+            "expiresAt": { "bsonType": "date" },
+            "revoked": { "bsonType": "bool" },
+            "replacedByHash": { "bsonType": ["string", "null"] },
+            "ip": { "bsonType": ["string", "null"] },
+            "userAgent": { "bsonType": ["string", "null"] },
+            "lastUsedAt": { "bsonType": ["date", "null"] }
+          }
+        }
       },
       "createdAt": {
         "bsonType": "date"

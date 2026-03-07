@@ -16,6 +16,15 @@
 * Signals for lightweight state
 * SSR-ready structure (optional future support)
 
+# 1.1 Visual Direction (Dark Liquid Glass)
+
+* Dark, glassy layers with soft translucency and blur
+* Typography: Plus Jakarta Sans for all text
+* Palette: deep charcoal base with cool cyan accent
+* Subtle motion: gentle rise/fade for sections
+* Spacious hero area for product storytelling
+* Hero background imagery with dark overlay for legibility
+
 ---
 
 # 2. Folder Structure

@@ -1,0 +1,52 @@
+.orders-header h1 {
+  font-family: var(--font-display);
+  margin-bottom: 0.2rem;
+}
+
+.orders-header p {
+  margin-top: 0;
+  color: var(--text-muted);
+}
+
+.state-text {
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+}
+
+.state-text.error {
+  color: #ff8e8e;
+}
+
+.orders-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+  animation: rise 0.6s var(--ease) both;
+}
+
+.order-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+}
+
+.order-id {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+}
+
+.order-status {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.order-total {
+  font-weight: 600;
+  color: var(--text);
+}

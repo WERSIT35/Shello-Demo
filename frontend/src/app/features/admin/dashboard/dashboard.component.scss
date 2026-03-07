@@ -1,0 +1,32 @@
+.admin-dashboard h1 {
+  font-family: var(--font-display);
+}
+
+.state-text {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+}
+
+.state-text.error {
+  color: #ff8e8e;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 1.2rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  backdrop-filter: var(--glass-blur);
+}
+
+.stat-card h2 {
+  margin: 0.4rem 0 0;
+}

@@ -1,0 +1,20 @@
+<section class="orders">
+  <div class="orders-header">
+    <h1>Your orders</h1>
+    <p>Track every drop with status snapshots.</p>
+  </div>
+  <p class="state-text" *ngIf="isLoading">Loading orders...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <div class="orders-grid">
+    <div class="order-card" *ngFor="let order of orders">
+      <div>
+        <p class="order-id">{{ order.id }}</p>
+        <p class="order-status">{{ order.status }}</p>
+      </div>
+      <span class="order-total">{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+    </div>
+  </div>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0">
+    No orders yet.
+  </p>
+</section>

@@ -1,0 +1,71 @@
+<section class="detail">
+  <p class="state-text" *ngIf="isLoading">Loading product...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <ng-container *ngIf="!isLoading && product">
+    <div class="gallery">
+      <img *ngIf="selectedImage" [src]="selectedImage" alt="" />
+      <div class="thumbs" *ngIf="product.images.length > 1">
+        <button
+          class="thumb"
+          type="button"
+          *ngFor="let image of product.images"
+          (click)="selectImage(image)"
+          [class.active]="image === selectedImage"
+        >
+          <img [src]="image" alt="" />
+        </button>
+      </div>
+    </div>
+    <div class="info">
+      <p class="pill">Limited drop</p>
+      <h1>{{ product.title }}</h1>
+      <p class="subtitle" *ngIf="product.description">{{ product.description }}</p>
+      <div class="meta" *ngIf="getMeta(product).length">
+        <span *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+      </div>
+      <div class="price-row">
+        <span class="price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+        <button class="btn primary" type="button" (click)="addToCart()">Add to cart</button>
+      </div>
+      <a class="btn ghost" routerLink="/shop">Back to shop</a>
+    </div>
+  </ng-container>
+</section>
+
+<section class="suggested-section" *ngIf="!isLoading && product">
+  <div class="suggested-header">
+    <div>
+      <h2>Suggested cases</h2>
+      <p>More drops that match this vibe.</p>
+    </div>
+  </div>
+  <p class="state-text" *ngIf="isSuggestionsLoading">Loading suggestions...</p>
+  <p class="state-text error" *ngIf="!isSuggestionsLoading && suggestionsErrorMessage">
+    {{ suggestionsErrorMessage }}
+  </p>
+  <div class="suggested-grid" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage">
+    <article class="card" *ngFor="let suggestion of suggestedProducts">
+      <a class="card-image" [routerLink]="['/products', suggestion.id]">
+        <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
+      </a>
+      <div class="card-top">
+        <span>{{ suggestion.title }}</span>
+        <span class="card-price">
+          {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+        </span>
+      </div>
+      <div class="card-meta" *ngIf="getSuggestedMeta(suggestion).length">
+        <span class="meta-pill" *ngFor="let tag of getSuggestedMeta(suggestion)">{{ tag }}</span>
+      </div>
+      <div class="card-actions">
+        <a class="card-link" [routerLink]="['/products', suggestion.id]">View details</a>
+        <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)">
+          Add
+        </button>
+      </div>
+    </article>
+  </div>
+  <p class="state-text" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length === 0">
+    No suggestions yet.
+  </p>
+</section>

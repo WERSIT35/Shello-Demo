@@ -1,0 +1,51 @@
+import { createHmac, randomBytes } from "crypto";
+import jwt from "jsonwebtoken";
+
+import { env } from "../config/env";
+
+export type AccessTokenPayload = {
+  sub: string;
+  role: "user" | "admin";
+  tokenVersion: number;
+  iat?: number;
+  exp?: number;
+};
+
+const ACCESS_TOKEN_TTL_SECONDS = 15 * 60;
+const REFRESH_TOKEN_TTL_DAYS = 14;
+
+export function createAccessToken(payload: AccessTokenPayload): string {
+  return jwt.sign(payload, env.JWT_SECRET, { expiresIn: ACCESS_TOKEN_TTL_SECONDS });
+}
+
+export function verifyAccessToken(token: string): AccessTokenPayload {
+  const payload = jwt.verify(token, env.JWT_SECRET);
+
+  if (typeof payload === "string") {
+    throw new Error("Invalid token payload");
+  }
+
+  return payload as AccessTokenPayload;
+}
+
+export function getAccessTokenTtlSeconds(): number {
+  return ACCESS_TOKEN_TTL_SECONDS;
+}
+
+export function createRefreshToken(): {
+  token: string;
+  tokenHash: string;
+  createdAt: Date;
+  expiresAt: Date;
+} {
+  const token = randomBytes(64).toString("hex");
+  const tokenHash = hashRefreshToken(token);
+  const createdAt = new Date();
+  const expiresAt = new Date(createdAt.getTime() + REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
+
+  return { token, tokenHash, createdAt, expiresAt };
+}
+
+export function hashRefreshToken(token: string): string {
+  return createHmac("sha256", env.REFRESH_TOKEN_HMAC_KEY).update(token).digest("hex");
+}

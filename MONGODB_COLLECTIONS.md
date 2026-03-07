@@ -44,12 +44,14 @@ JSON Schema validator (use with createCollection or collMod)
 {
   "$jsonSchema": {
     "bsonType": "object",
-    "required": ["name", "email", "password", "role", "createdAt", "updatedAt"],
+    "required": ["name", "lastName", "email", "pinCode", "password", "role", "createdAt", "updatedAt"],
     "additionalProperties": false,
     "properties": {
       "_id": { "bsonType": "objectId" },
       "name": { "bsonType": "string" },
+      "lastName": { "bsonType": "string" },
       "email": { "bsonType": "string" },
+      "pinCode": { "bsonType": "string", "pattern": "^[0-9]{6}$" },
       "password": { "bsonType": "string" },
       "role": { "enum": ["user", "admin"] },
       "tokenVersion": { "bsonType": "int" },
@@ -81,7 +83,9 @@ JSON Schema validator (use with createCollection or collMod)
 Mongoose model shape (informational)
 - _id: ObjectId
 - name: String (required)
+- lastName: String (required)
 - email: String (required, unique, indexed)
+- pinCode: String (required, unique, 6 digits)
 - password: String (hashed, required, select: false)
 - role: "user" | "admin" (default "user")
 - tokenVersion: Number (default 0)
@@ -93,9 +97,11 @@ Mongoose model shape (informational)
 
 Indexes
 - email: { email: 1 } unique
+- pinCode: { pinCode: 1 } unique
 
 Notes
 - Passwords MUST be bcrypt-hashed; never return password field in responses.
+- pinCode MUST be generated server-side (random 6-digit) and unique per user.
 - Keep refreshTokens array bounded (prune expired/revoked tokens).
 - Use tokenVersion/lastPasswordChangeAt to invalidate issued JWTs globally.
 

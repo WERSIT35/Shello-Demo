@@ -1,0 +1,16 @@
+<div class="admin-shell">
+  <aside class="admin-nav">
+    <div class="admin-brand">Shello Admin</div>
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+      <a routerLink="/admin/content" routerLinkActive="active">Content</a>
+      <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+      <a routerLink="/admin/users" routerLinkActive="active">Users</a>
+    </nav>
+    <a class="back-link" routerLink="/">Back to Store</a>
+  </aside>
+  <section class="admin-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>
