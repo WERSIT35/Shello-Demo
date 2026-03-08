@@ -72,6 +72,7 @@ export class AuthService {
   private readonly sessionReadySubject = new BehaviorSubject<boolean>(false);
   private accessTokenValue: string | null = null;
   private restoreSession$?: ReturnType<AuthService['refreshSession']>;
+  private readonly googleAuthStorageKey = 'shello_google_auth';
 
   readonly currentUser$ = this.currentUserSubject.asObservable();
 
@@ -116,6 +117,8 @@ export class AuthService {
       return throwError(() => new Error('Google login is only available in the browser.'));
     }
 
+    window.localStorage.removeItem(this.googleAuthStorageKey);
+
     const popup = window.open(
       `${API_BASE_URL}/auth/google`,
       'google-auth',
@@ -130,9 +133,8 @@ export class AuthService {
 
     return new Observable<AuthUser>((observer) => {
       let handled = false;
-      let refreshAttempts = 0;
-      const maxRefreshAttempts = 5;
-      const refreshDelayMs = 400;
+      let popupClosedAt: number | null = null;
+      const popupGraceMs = 5000;
       const isAbsoluteApiBase = API_BASE_URL.startsWith('http');
       const expectedOrigin = isAbsoluteApiBase
         ? new URL(API_BASE_URL).origin
@@ -175,32 +177,26 @@ export class AuthService {
         observer.complete();
       };
 
-      const tryRefresh = () => {
+      const handleStorage = (event: StorageEvent) => {
         if (handled) {
           return;
         }
 
-        this.refreshSession().subscribe((success) => {
-          if (handled) {
-            return;
-          }
+        if (event.key !== this.googleAuthStorageKey) {
+          return;
+        }
 
-          if (success && this.currentUser) {
-            handled = true;
-            observer.next(this.currentUser);
-            observer.complete();
-            return;
-          }
+        const storedPayload = this.readGoogleAuthPayload();
+        if (!storedPayload) {
+          return;
+        }
 
-          refreshAttempts += 1;
-          if (refreshAttempts >= maxRefreshAttempts) {
-            handled = true;
-            observer.error(new Error('Login cancelled.'));
-            return;
-          }
-
-          window.setTimeout(tryRefresh, refreshDelayMs);
-        });
+        handled = true;
+        cleanup();
+        this.setSession(storedPayload.accessToken, storedPayload.user);
+        this.sessionReadySubject.next(true);
+        observer.next(this.mapUser(storedPayload.user));
+        observer.complete();
       };
 
       const poll = window.setInterval(() => {
@@ -208,19 +204,51 @@ export class AuthService {
           return;
         }
 
+        const storedPayload = this.readGoogleAuthPayload();
+        if (storedPayload) {
+          handled = true;
+          cleanup();
+          if (!popup.closed) {
+            popup.close();
+          }
+          this.setSession(storedPayload.accessToken, storedPayload.user);
+          this.sessionReadySubject.next(true);
+          observer.next(this.mapUser(storedPayload.user));
+          observer.complete();
+          return;
+        }
+
         if (popup.closed) {
-          window.clearInterval(poll);
-          window.removeEventListener('message', handleMessage);
-          tryRefresh();
+          if (popupClosedAt === null) {
+            popupClosedAt = Date.now();
+          }
+
+          if (Date.now() - popupClosedAt >= popupGraceMs) {
+            handled = true;
+            cleanup();
+            observer.error(new Error('Login cancelled.'));
+          }
         }
       }, 400);
 
       const cleanup = () => {
         window.clearInterval(poll);
         window.removeEventListener('message', handleMessage);
+        window.removeEventListener('storage', handleStorage);
       };
 
       window.addEventListener('message', handleMessage);
+      window.addEventListener('storage', handleStorage);
+
+      const immediatePayload = this.readGoogleAuthPayload();
+      if (immediatePayload) {
+        handled = true;
+        cleanup();
+        this.setSession(immediatePayload.accessToken, immediatePayload.user);
+        this.sessionReadySubject.next(true);
+        observer.next(this.mapUser(immediatePayload.user));
+        observer.complete();
+      }
 
       return () => cleanup();
     });
@@ -255,6 +283,17 @@ export class AuthService {
     );
   }
 
+  consumeGoogleStoragePayload(): boolean {
+    const payload = this.readGoogleAuthPayload();
+    if (!payload) {
+      return false;
+    }
+
+    this.setSession(payload.accessToken, payload.user);
+    this.sessionReadySubject.next(true);
+    return true;
+  }
+
   private refreshSession() {
     return this.http
       .post<RefreshResponse>(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true })
@@ -277,6 +316,53 @@ export class AuthService {
   private clearSession(): void {
     this.accessTokenValue = null;
     this.currentUserSubject.next(null);
+  }
+
+  private readGoogleAuthPayload(): GoogleAuthPayload | null {
+    if (!this.isBrowser) {
+      return null;
+    }
+
+    try {
+      const raw = window.localStorage.getItem(this.googleAuthStorageKey);
+      if (!raw) {
+        return null;
+      }
+
+      window.localStorage.removeItem(this.googleAuthStorageKey);
+      const parsed = JSON.parse(raw) as unknown;
+
+      if (this.isGoogleAuthPayload(parsed)) {
+        return parsed;
+      }
+
+      if (!parsed || typeof parsed !== 'object') {
+        return null;
+      }
+
+      const wrapper = parsed as { data?: unknown; createdAt?: number };
+      if (!this.isGoogleAuthPayload(wrapper.data)) {
+        return null;
+      }
+
+      const maxAgeMs = 2 * 60 * 1000;
+      if (typeof wrapper.createdAt === 'number' && Date.now() - wrapper.createdAt > maxAgeMs) {
+        return null;
+      }
+
+      return wrapper.data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  private isGoogleAuthPayload(value: unknown): value is GoogleAuthPayload {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    const payload = value as GoogleAuthPayload;
+    return typeof payload.accessToken === 'string' && Boolean(payload.user);
   }
 
   private mapUser(user: ApiUser): AuthUser {
