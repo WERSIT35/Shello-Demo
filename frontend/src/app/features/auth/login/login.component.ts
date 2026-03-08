@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -12,10 +12,11 @@ import { AuthService, type LoginPayload } from '../../../core/services/auth.serv
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
+  private googlePollId: number | null = null;
 
   protected isSubmitting = false;
   protected errorMessage = '';
@@ -31,6 +32,10 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.stopGoogleStoragePoll();
   }
 
   protected submit(): void {
@@ -64,13 +69,16 @@ export class LoginComponent implements OnInit {
   protected signInWithGoogle(): void {
     this.isSubmitting = true;
     this.errorMessage = '';
+    this.startGoogleStoragePoll();
 
     this.auth.loginWithGooglePopup().subscribe({
       next: () => {
+        this.stopGoogleStoragePoll();
         this.isSubmitting = false;
         this.router.navigate(['/']);
       },
       error: (error: unknown) => {
+        this.stopGoogleStoragePoll();
         this.isSubmitting = false;
         if (this.auth.isAuthenticated()) {
           this.router.navigate(['/']);
@@ -106,5 +114,30 @@ export class LoginComponent implements OnInit {
     }
 
     return fallback;
+  }
+
+  private startGoogleStoragePoll(): void {
+    if (typeof window === 'undefined' || this.googlePollId !== null) {
+      return;
+    }
+
+    this.googlePollId = window.setInterval(() => {
+      if (!this.isSubmitting) {
+        return;
+      }
+
+      if (this.auth.consumeGoogleStoragePayload()) {
+        this.stopGoogleStoragePoll();
+        this.isSubmitting = false;
+        this.router.navigate(['/']);
+      }
+    }, 500);
+  }
+
+  private stopGoogleStoragePoll(): void {
+    if (this.googlePollId !== null) {
+      window.clearInterval(this.googlePollId);
+      this.googlePollId = null;
+    }
   }
 }
