@@ -13,6 +13,12 @@ const heroSchema = z.object({
 
 export const updateContentSchema = z.object({
   hero: heroSchema.partial().optional(),
+  heroTranslations: z
+    .object({
+      ka: heroSchema.partial().optional(),
+      en: heroSchema.partial().optional()
+    })
+    .optional(),
   suggestedProductIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/)).max(12).optional(),
   categories: z.array(z.string().trim().min(1).max(40)).max(20).optional()
 });

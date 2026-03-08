@@ -1,9 +1,9 @@
-<section class="grid">
+﻿<section class="grid">
   <div class="grid-header">
-    <h2>Shop drops</h2>
-    <p>Browse the full lineup. Each case is tested, tuned, and limited.</p>
+    <h2 i18n>Shop drops</h2>
+    <p i18n>Browse the full lineup. Each case is tested, tuned, and limited.</p>
   </div>
-  <p class="state-text" *ngIf="isLoading">Loading products...</p>
+  <p class="state-text" *ngIf="isLoading" i18n>Loading products...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <div class="grid-cards">
     <article class="card" *ngFor="let product of products">
@@ -12,18 +12,17 @@
       </a>
       <div class="card-top">
         <span>{{ product.title }}</span>
-        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
       <div class="card-meta" *ngIf="getMeta(product).length">
         <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
       </div>
       <div class="card-actions">
-        <a class="card-link" [routerLink]="['/products', product.id]">View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product)">Add</button>
+        <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
+        <button class="btn ghost" type="button" (click)="addToCart(product)" i18n>Add</button>
       </div>
     </article>
   </div>
-  <p class="state-text" *ngIf="!isLoading && !errorMessage && products.length === 0">
-    No products available.
-  </p>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && products.length === 0" i18n>No products available.</p>
 </section>
+

@@ -17,8 +17,10 @@
 }
 
 .admin-brand {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-family: var(--font-brand);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
 }
 
 .admin-nav nav {

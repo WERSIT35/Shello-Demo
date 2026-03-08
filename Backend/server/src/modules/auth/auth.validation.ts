@@ -15,3 +15,16 @@ export const loginSchema = z.object({
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
+
+export const twoFactorLoginSchema = z.object({
+  token: z.string().min(1),
+  code: z.string().regex(/^\d{6}$/)
+});
+
+export type TwoFactorLoginInput = z.infer<typeof twoFactorLoginSchema>;
+
+export const twoFactorCodeSchema = z.object({
+  code: z.string().regex(/^\d{6}$/)
+});
+
+export type TwoFactorCodeInput = z.infer<typeof twoFactorCodeSchema>;

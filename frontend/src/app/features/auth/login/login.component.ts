@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { AuthService, type LoginPayload } from '../../../core/services/auth.service';
+import { AuthService, type LoginPayload, type AuthUser } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,10 +20,18 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   protected isSubmitting = false;
   protected errorMessage = '';
+  protected twoFactorRequired = false;
+  protected twoFactorToken = '';
+  protected twoFactorUser: AuthUser | null = null;
+  protected showLockedModal = false;
 
   protected form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(128)]]
+  });
+
+  protected twoFactorForm = this.formBuilder.group({
+    code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
   });
 
   ngOnInit(): void {
@@ -39,6 +47,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   protected submit(): void {
+    if (this.twoFactorRequired) {
+      this.submitTwoFactor();
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.errorMessage = 'Please enter a valid email and password.';
@@ -61,6 +74,15 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate(['/']);
           return;
         }
+        if (this.handleAccountLocked(error)) {
+          return;
+        }
+        const challenge = this.extractTwoFactorChallenge(error);
+        if (challenge) {
+          this.startTwoFactorChallenge(challenge);
+          return;
+        }
+
         this.errorMessage = this.resolveError(error);
       }
     });
@@ -84,6 +106,14 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate(['/']);
           return;
         }
+        if (this.handleAccountLocked(error)) {
+          return;
+        }
+        const challenge = this.extractTwoFactorChallenge(error);
+        if (challenge) {
+          this.startTwoFactorChallenge(challenge);
+          return;
+        }
         const message = this.resolveError(error);
         if (message.toLowerCase().includes('login cancelled')) {
           return;
@@ -93,6 +123,64 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  protected submitTwoFactor(): void {
+    const rawCode = this.twoFactorForm.value.code ?? '';
+    const code = rawCode.replace(/\s+/g, '');
+
+    if (rawCode !== code) {
+      this.twoFactorForm.controls.code.setValue(code);
+    }
+
+    if (!/^\d{6}$/.test(code)) {
+      this.twoFactorForm.markAllAsTouched();
+      this.errorMessage = 'Enter the 6-digit code from your authenticator app.';
+      return;
+    }
+
+    if (!this.twoFactorToken) {
+      this.errorMessage = 'Two-factor session expired. Please sign in again.';
+      this.twoFactorRequired = false;
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+
+    this.auth.verifyTwoFactorLogin(this.twoFactorToken, code).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.clearTwoFactorChallenge();
+        this.router.navigate(['/']);
+      },
+      error: (error: unknown) => {
+        this.isSubmitting = false;
+        if (this.handleAccountLocked(error)) {
+          return;
+        }
+        const errorCode = this.extractErrorCode(error);
+        if (
+          errorCode === 'TWO_FACTOR_NOT_ENABLED' ||
+          errorCode === 'INVALID_TWO_FACTOR_TOKEN' ||
+          errorCode === 'TOKEN_REVOKED'
+        ) {
+          this.clearTwoFactorChallenge();
+          this.errorMessage = 'Two-factor session expired. Please sign in again.';
+          return;
+        }
+
+        this.errorMessage = this.resolveError(error);
+      }
+    });
+  }
+
+  protected cancelTwoFactor(): void {
+    this.clearTwoFactorChallenge();
+  }
+
+  protected closeLockedModal(): void {
+    this.showLockedModal = false;
+  }
+
   private resolveError(error: unknown): string {
     const fallback = 'Unable to sign in. Please check your details and try again.';
 
@@ -100,11 +188,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       return fallback;
     }
 
-    const maybeMessage = (error as { error?: { error?: { message?: string } }; message?: string })
-      .error?.error?.message;
+    const maybeMessage = (error as {
+      error?: { error?: { message?: string }; message?: string };
+      message?: string;
+    }).error?.error?.message;
 
     if (typeof maybeMessage === 'string' && maybeMessage.trim().length > 0) {
       return maybeMessage;
+    }
+
+    const apiMessage = (error as { error?: { message?: string } }).error?.message;
+
+    if (typeof apiMessage === 'string' && apiMessage.trim().length > 0) {
+      return apiMessage;
     }
 
     const directMessage = (error as { message?: string }).message;
@@ -126,10 +222,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (this.auth.consumeGoogleStoragePayload()) {
+      const outcome = this.auth.consumeGoogleStoragePayload();
+      if (outcome.status === 'authenticated') {
         this.stopGoogleStoragePoll();
         this.isSubmitting = false;
         this.router.navigate(['/']);
+      }
+
+      if (outcome.status === 'two-factor-required') {
+        this.stopGoogleStoragePoll();
+        this.isSubmitting = false;
+        this.startTwoFactorChallenge({ token: outcome.token, user: outcome.user });
       }
     }, 500);
   }
@@ -139,5 +242,112 @@ export class LoginComponent implements OnInit, OnDestroy {
       window.clearInterval(this.googlePollId);
       this.googlePollId = null;
     }
+  }
+
+  private startTwoFactorChallenge(challenge: { token: string; user?: AuthUser | null }): void {
+    this.isSubmitting = false;
+    this.twoFactorRequired = true;
+    this.twoFactorToken = challenge.token;
+    this.twoFactorUser = challenge.user ?? null;
+    this.twoFactorForm.reset();
+    this.errorMessage = '';
+  }
+
+  private clearTwoFactorChallenge(): void {
+    this.twoFactorRequired = false;
+    this.twoFactorToken = '';
+    this.twoFactorUser = null;
+    this.twoFactorForm.reset();
+  }
+
+  private extractTwoFactorChallenge(error: unknown): { token: string; user?: AuthUser } | null {
+    const payload = this.getErrorPayload(error);
+    const code = payload?.code;
+    if (code !== 'TWO_FACTOR_REQUIRED') {
+      return null;
+    }
+
+    const details = payload?.details as { twoFactorToken?: string; user?: unknown } | undefined;
+    const token = details?.twoFactorToken;
+
+    if (!token) {
+      return null;
+    }
+
+    const user = this.mapChallengeUser(details?.user);
+    return { token, user };
+  }
+
+  private extractErrorCode(error: unknown): string | null {
+    return this.getErrorPayload(error)?.code ?? null;
+  }
+
+  private handleAccountLocked(error: unknown): boolean {
+    const payload = this.getErrorPayload(error);
+    const code = payload?.code ?? this.extractErrorCode(error);
+    const message = payload?.message ?? '';
+
+    if (code === 'USER_DISABLED' || message.toLowerCase().includes('account disabled')) {
+      this.isSubmitting = false;
+      this.clearTwoFactorChallenge();
+      this.errorMessage = '';
+      this.showLockedModal = true;
+      return true;
+    }
+
+    return false;
+  }
+
+  private getErrorPayload(error: unknown): { code?: string; message?: string; details?: unknown } | null {
+    if (!error || typeof error !== 'object') {
+      return null;
+    }
+
+    const errorObj = error as { error?: unknown; code?: string; message?: string; details?: unknown };
+    let payload: unknown = errorObj.error ?? null;
+
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload) as unknown;
+      } catch {
+        payload = null;
+      }
+    }
+
+    if (payload && typeof payload === 'object') {
+      const wrapper = payload as { error?: unknown; code?: string; message?: string; details?: unknown };
+      if (wrapper.error && typeof wrapper.error === 'object') {
+        return wrapper.error as { code?: string; message?: string; details?: unknown };
+      }
+
+      return {
+        code: wrapper.code,
+        message: wrapper.message,
+        details: wrapper.details
+      };
+    }
+
+    if (errorObj.code || errorObj.message || errorObj.details) {
+      return { code: errorObj.code, message: errorObj.message, details: errorObj.details };
+    }
+
+    return null;
+  }
+
+  private mapChallengeUser(value: unknown): AuthUser | undefined {
+    if (!value || typeof value !== 'object') {
+      return undefined;
+    }
+
+    const user = value as { _id?: string; id?: string; name?: string; lastName?: string; email?: string; pinCode?: string; role?: AuthUser['role'] };
+
+    return {
+      id: user._id ?? user.id ?? '',
+      name: user.name ?? '',
+      lastName: user.lastName ?? '',
+      email: user.email ?? '',
+      pinCode: user.pinCode ?? '',
+      role: user.role ?? 'admin'
+    };
   }
 }

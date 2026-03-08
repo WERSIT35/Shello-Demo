@@ -3,7 +3,18 @@ import type { RequestHandler } from "express";
 
 import { env } from "../../config/env";
 import { HttpError } from "../../utils/http-error";
-import { loginUser, loginWithGoogle, logoutUser, refreshAccessToken, registerUser } from "./auth.service";
+import {
+  loginUser,
+  loginWithGoogle,
+  logoutUser,
+  refreshAccessToken,
+  registerUser,
+  getTwoFactorStatus,
+  setupTwoFactor,
+  enableTwoFactor,
+  disableTwoFactor,
+  verifyTwoFactorLogin
+} from "./auth.service";
 import {
   buildGoogleAuthUrl,
   exchangeGoogleCode,
@@ -89,6 +100,83 @@ export const refresh: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const twoFactorStatus: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new HttpError(401, "AUTH_REQUIRED", "Authentication required");
+    }
+
+    const status = await getTwoFactorStatus(req.user.id);
+    return res.status(200).json(status);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const twoFactorSetup: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new HttpError(401, "AUTH_REQUIRED", "Authentication required");
+    }
+
+    const setup = await setupTwoFactor(req.user.id);
+    return res.status(200).json(setup);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const twoFactorEnable: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new HttpError(401, "AUTH_REQUIRED", "Authentication required");
+    }
+
+    const result = await enableTwoFactor(req.user.id, req.body);
+    return res.status(200).json(result);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const twoFactorDisable: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new HttpError(401, "AUTH_REQUIRED", "Authentication required");
+    }
+
+    const result = await disableTwoFactor(req.user.id, req.body);
+    return res.status(200).json(result);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const twoFactorLogin: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await verifyTwoFactorLogin(req.body, {
+      ip: req.ip,
+      userAgent: req.get("user-agent")
+    });
+
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
+      path: "/api/v1/auth/refresh",
+      expires: result.refreshTokenExpiresAt
+    });
+
+    return res.status(200).json({
+      accessToken: result.accessToken,
+      expiresIn: result.expiresIn,
+      user: result.user
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export const googleStart: RequestHandler = async (_req, res, next) => {
   try {
     const state = generateOAuthState();
@@ -122,10 +210,60 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
 
     const tokens = await exchangeGoogleCode(code);
     const profile = await fetchGoogleProfile(tokens.access_token);
-    const result = await loginWithGoogle(profile, {
-      ip: req.ip,
-      userAgent: req.get("user-agent")
-    });
+    let result;
+
+    try {
+      result = await loginWithGoogle(profile, {
+        ip: req.ip,
+        userAgent: req.get("user-agent")
+      });
+    } catch (error) {
+      if (error instanceof HttpError && error.code === "TWO_FACTOR_REQUIRED") {
+        const details = error.details as { twoFactorToken?: string; user?: unknown } | undefined;
+        const twoFactorToken = details?.twoFactorToken;
+        const user = details?.user;
+
+        if (!twoFactorToken || !user) {
+          throw error;
+        }
+
+        const { allowedOrigin } = getGoogleConfig();
+        const payload = {
+          type: "google-auth",
+          data: {
+            twoFactorRequired: true,
+            twoFactorToken,
+            user
+          }
+        };
+
+        const nonce = randomBytes(16).toString("base64");
+        const csp = `script-src 'self' 'nonce-${nonce}'; object-src 'none'; base-uri 'none'`;
+        const html = `<!doctype html><html><head><meta charset="utf-8" /></head><body>
+          <script nonce="${nonce}">
+            (function() {
+              var payload = ${JSON.stringify(payload)};
+              try {
+                var store = { type: payload.type, data: payload.data, createdAt: Date.now() };
+                window.localStorage.setItem("shello_google_auth", JSON.stringify(store));
+              } catch (err) {
+              }
+              if (window.opener) {
+                window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
+              }
+              window.close();
+            })();
+          </script>
+        </body></html>`;
+
+        res.setHeader("Content-Type", "text/html");
+        res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+        res.setHeader("Content-Security-Policy", csp);
+        return res.status(200).send(html);
+      }
+
+      throw error;
+    }
 
     res.cookie("refreshToken", result.refreshToken, {
       httpOnly: true,

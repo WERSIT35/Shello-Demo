@@ -1,36 +1,81 @@
 <section class="auth">
   <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
-    <h1>Welcome back</h1>
-    <p>Sign in to continue your Shello drop.</p>
-    <div class="field-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="you@example.com" formControlName="email" />
-    </div>
-    <div class="field-group">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        placeholder="••••••••"
-        formControlName="password"
-      />
-    </div>
-    <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <button class="btn primary" type="submit" [disabled]="isSubmitting">
-      Sign in
-    </button>
-    <div class="auth-divider">
-      <span>or</span>
-    </div>
-    <button class="btn ghost google-btn" type="button" (click)="signInWithGoogle()" [disabled]="isSubmitting">
-      Continue with Google
-    </button>
-    <a class="helper-link" routerLink="/register">Need an account? Create one</a>
+    <ng-container *ngIf="!twoFactorRequired; else twoFactorStep">
+      <h1 i18n>Welcome back</h1>
+      <p i18n>Sign in to continue your Shello drop.</p>
+      <div class="field-group">
+        <label for="email" i18n>Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          i18n-placeholder
+          formControlName="email"
+        />
+      </div>
+      <div class="field-group">
+        <label for="password" i18n>Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          i18n-placeholder
+          formControlName="password"
+        />
+      </div>
+      <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <button class="btn primary" type="submit" [disabled]="isSubmitting">
+        <span i18n>Sign in</span>
+      </button>
+      <div class="auth-divider">
+        <span i18n>or</span>
+      </div>
+      <button class="btn ghost google-btn" type="button" (click)="signInWithGoogle()" [disabled]="isSubmitting">
+        <span i18n>Continue with Google</span>
+      </button>
+      <a class="helper-link" routerLink="/register" i18n>Need an account? Create one</a>
+    </ng-container>
+    <ng-template #twoFactorStep>
+      <h1 i18n>Authenticator code</h1>
+      <p i18n>Enter the 6-digit code from your authenticator app.</p>
+      <div class="field-group">
+        <label for="twoFactorCode" i18n>Code</label>
+        <input
+          id="twoFactorCode"
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="123456"
+          i18n-placeholder
+          [formControl]="twoFactorForm.controls.code"
+        />
+      </div>
+      <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <button class="btn primary" type="button" (click)="submitTwoFactor()" [disabled]="isSubmitting">
+        <span i18n>Verify</span>
+      </button>
+      <button class="btn ghost" type="button" (click)="cancelTwoFactor()" [disabled]="isSubmitting">
+        <span i18n>Back to login</span>
+      </button>
+    </ng-template>
     <div class="auth-loading" *ngIf="isSubmitting">
       <div class="auth-loading-card">
         <span class="spinner" aria-hidden="true"></span>
-        <p>Signing you in...</p>
+        <p i18n>Signing you in...</p>
       </div>
     </div>
   </form>
+  <div class="modal" *ngIf="showLockedModal">
+    <div class="modal-backdrop" (click)="closeLockedModal()"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 i18n>Account locked</h3>
+        <button class="btn ghost" type="button" (click)="closeLockedModal()" i18n>Close</button>
+      </div>
+      <p i18n>Your account is locked. Please contact support.</p>
+      <div class="modal-actions">
+        <button class="btn primary" type="button" (click)="closeLockedModal()" i18n>Ok</button>
+      </div>
+    </div>
+  </div>
 </section>

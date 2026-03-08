@@ -54,10 +54,32 @@ type RegisterResponse = {
 };
 
 type GoogleAuthPayload = {
-  accessToken: string;
-  expiresIn: number;
+  accessToken?: string;
+  expiresIn?: number;
   user: ApiUser;
+  twoFactorRequired?: boolean;
+  twoFactorToken?: string;
 };
+
+type TwoFactorStatusResponse = {
+  enabled: boolean;
+};
+
+type TwoFactorSetupResponse = {
+  secret: string;
+  otpauthUrl: string;
+  qrCodeDataUrl: string;
+};
+
+type TwoFactorLoginPayload = {
+  token: string;
+  code: string;
+};
+
+type GoogleStorageOutcome =
+  | { status: 'none' }
+  | { status: 'authenticated'; user: AuthUser }
+  | { status: 'two-factor-required'; user: AuthUser; token: string };
 
 type GoogleAuthMessage = {
   type: 'google-auth';
@@ -140,6 +162,35 @@ export class AuthService {
         ? new URL(API_BASE_URL).origin
         : window.location.origin;
 
+      const handlePayload = (payload: GoogleAuthPayload) => {
+        if (payload.twoFactorRequired && payload.twoFactorToken) {
+          handled = true;
+          cleanup();
+          observer.error({
+            code: 'TWO_FACTOR_REQUIRED',
+            details: {
+              twoFactorToken: payload.twoFactorToken,
+              user: payload.user
+            }
+          });
+          return;
+        }
+
+        if (!payload.accessToken) {
+          handled = true;
+          cleanup();
+          observer.error(new Error('Google login failed.'));
+          return;
+        }
+
+        this.setSession(payload.accessToken, payload.user);
+        this.sessionReadySubject.next(true);
+        handled = true;
+        cleanup();
+        observer.next(this.mapUser(payload.user));
+        observer.complete();
+      };
+
       const handleMessage = (event: MessageEvent) => {
         if (event.source && event.source !== popup) {
           return;
@@ -169,12 +220,7 @@ export class AuthService {
           return;
         }
 
-        this.setSession(message.data.accessToken, message.data.user);
-        this.sessionReadySubject.next(true);
-        handled = true;
-        cleanup();
-        observer.next(this.mapUser(message.data.user));
-        observer.complete();
+        handlePayload(message.data);
       };
 
       const handleStorage = (event: StorageEvent) => {
@@ -191,12 +237,7 @@ export class AuthService {
           return;
         }
 
-        handled = true;
-        cleanup();
-        this.setSession(storedPayload.accessToken, storedPayload.user);
-        this.sessionReadySubject.next(true);
-        observer.next(this.mapUser(storedPayload.user));
-        observer.complete();
+        handlePayload(storedPayload);
       };
 
       const poll = window.setInterval(() => {
@@ -206,15 +247,10 @@ export class AuthService {
 
         const storedPayload = this.readGoogleAuthPayload();
         if (storedPayload) {
-          handled = true;
-          cleanup();
           if (!popup.closed) {
             popup.close();
           }
-          this.setSession(storedPayload.accessToken, storedPayload.user);
-          this.sessionReadySubject.next(true);
-          observer.next(this.mapUser(storedPayload.user));
-          observer.complete();
+          handlePayload(storedPayload);
           return;
         }
 
@@ -242,12 +278,7 @@ export class AuthService {
 
       const immediatePayload = this.readGoogleAuthPayload();
       if (immediatePayload) {
-        handled = true;
-        cleanup();
-        this.setSession(immediatePayload.accessToken, immediatePayload.user);
-        this.sessionReadySubject.next(true);
-        observer.next(this.mapUser(immediatePayload.user));
-        observer.complete();
+        handlePayload(immediatePayload);
       }
 
       return () => cleanup();
@@ -283,15 +314,55 @@ export class AuthService {
     );
   }
 
-  consumeGoogleStoragePayload(): boolean {
+  getTwoFactorStatus() {
+    return this.http.get<TwoFactorStatusResponse>(`${API_BASE_URL}/auth/2fa/status`);
+  }
+
+  setupTwoFactor() {
+    return this.http.post<TwoFactorSetupResponse>(`${API_BASE_URL}/auth/2fa/setup`, {});
+  }
+
+  enableTwoFactor(code: string) {
+    return this.http.post<TwoFactorStatusResponse>(`${API_BASE_URL}/auth/2fa/enable`, { code });
+  }
+
+  disableTwoFactor(code: string) {
+    return this.http.post<TwoFactorStatusResponse>(`${API_BASE_URL}/auth/2fa/disable`, { code });
+  }
+
+  verifyTwoFactorLogin(token: string, code: string) {
+    const payload: TwoFactorLoginPayload = { token, code };
+
+    return this.http.post<LoginResponse>(`${API_BASE_URL}/auth/2fa/login`, payload).pipe(
+      tap((response) => {
+        this.setSession(response.accessToken, response.user);
+        this.sessionReadySubject.next(true);
+      }),
+      map((response) => this.mapUser(response.user))
+    );
+  }
+
+  consumeGoogleStoragePayload(): GoogleStorageOutcome {
     const payload = this.readGoogleAuthPayload();
     if (!payload) {
-      return false;
+      return { status: 'none' };
+    }
+
+    if (payload.twoFactorRequired && payload.twoFactorToken) {
+      return {
+        status: 'two-factor-required',
+        token: payload.twoFactorToken,
+        user: this.mapUser(payload.user)
+      };
+    }
+
+    if (!payload.accessToken) {
+      return { status: 'none' };
     }
 
     this.setSession(payload.accessToken, payload.user);
     this.sessionReadySubject.next(true);
-    return true;
+    return { status: 'authenticated', user: this.mapUser(payload.user) };
   }
 
   private refreshSession() {
@@ -362,7 +433,11 @@ export class AuthService {
     }
 
     const payload = value as GoogleAuthPayload;
-    return typeof payload.accessToken === 'string' && Boolean(payload.user);
+    const hasUser = Boolean(payload.user);
+    const hasAccessToken = typeof payload.accessToken === 'string';
+    const hasTwoFactor = payload.twoFactorRequired === true && typeof payload.twoFactorToken === 'string';
+
+    return hasUser && (hasAccessToken || hasTwoFactor);
   }
 
   private mapUser(user: ApiUser): AuthUser {

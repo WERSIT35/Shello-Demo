@@ -24,6 +24,8 @@ const userSchema = new Schema(
     pinCode: { type: String, required: true, unique: true, match: /^\d{6}$/ },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     isActive: { type: Boolean, default: true },
+    twoFactorEnabled: { type: Boolean, default: false },
+    twoFactorSecret: { type: String, default: null, select: false },
     tokenVersion: { type: Number, default: 0 },
     lastPasswordChangeAt: { type: Date, default: null },
     refreshTokens: { type: [refreshTokenSchema], default: [] }
