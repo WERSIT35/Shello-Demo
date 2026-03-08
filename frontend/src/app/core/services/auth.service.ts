@@ -283,6 +283,17 @@ export class AuthService {
     );
   }
 
+  consumeGoogleStoragePayload(): boolean {
+    const payload = this.readGoogleAuthPayload();
+    if (!payload) {
+      return false;
+    }
+
+    this.setSession(payload.accessToken, payload.user);
+    this.sessionReadySubject.next(true);
+    return true;
+  }
+
   private refreshSession() {
     return this.http
       .post<RefreshResponse>(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true })
