@@ -153,6 +153,11 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
       <script nonce="${nonce}">
         (function() {
           var payload = ${JSON.stringify(payload)};
+          try {
+            var store = { type: payload.type, data: payload.data, createdAt: Date.now() };
+            window.localStorage.setItem("shello_google_auth", JSON.stringify(store));
+          } catch (err) {
+          }
           if (window.opener) {
             window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
           }
@@ -179,6 +184,10 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
         <script nonce="${nonce}">
           (function() {
             var payload = ${JSON.stringify(payload)};
+            try {
+              window.localStorage.removeItem("shello_google_auth");
+            } catch (err) {
+            }
             if (window.opener) {
               window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
             }
