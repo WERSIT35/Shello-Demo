@@ -28,6 +28,7 @@ const userSchema = new Schema(
     twoFactorSecret: { type: String, default: null, select: false },
     tokenVersion: { type: Number, default: 0 },
     lastPasswordChangeAt: { type: Date, default: null },
+    lastActiveAt: { type: Date, default: null },
     refreshTokens: { type: [refreshTokenSchema], default: [] }
   },
   {

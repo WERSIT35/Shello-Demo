@@ -4,6 +4,8 @@ import { UserModel } from "../modules/users";
 import { HttpError } from "../utils/http-error";
 import { verifyAccessToken } from "../utils/jwt";
 
+const ACTIVITY_UPDATE_INTERVAL_MS = 5 * 60 * 1000;
+
 export const requireAuth: RequestHandler = async (req, _res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -52,6 +54,11 @@ export const requireAuth: RequestHandler = async (req, _res, next) => {
       if (passwordChangeTime > payload.iat) {
         throw new HttpError(401, "TOKEN_REVOKED", "Token has been revoked");
       }
+    }
+
+    const now = Date.now();
+    if (!user.lastActiveAt || now - user.lastActiveAt.getTime() > ACTIVITY_UPDATE_INTERVAL_MS) {
+      await UserModel.updateOne({ _id: user._id }, { $set: { lastActiveAt: new Date(now) } });
     }
 
     req.user = {

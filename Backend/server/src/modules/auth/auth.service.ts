@@ -45,6 +45,7 @@ type LoginContext = {
 };
 
 const MAX_REFRESH_TOKENS = 3;
+const INACTIVITY_TTL_MS = 24 * 60 * 60 * 1000;
 
 type LoginResult = {
   accessToken: string;
@@ -115,6 +116,8 @@ async function issueLoginTokens(user: UserDocument, context: LoginContext): Prom
   });
 
   const refreshToken = createRefreshToken();
+
+  user.lastActiveAt = new Date();
 
   user.refreshTokens.push({
     tokenHash: refreshToken.tokenHash,
@@ -434,10 +437,22 @@ export async function refreshAccessToken(
     throw new HttpError(401, "REFRESH_EXPIRED", "Refresh token has expired");
   }
 
+  const lastActiveAt = user.lastActiveAt ?? tokenRecord.lastUsedAt ?? tokenRecord.createdAt;
+  if (lastActiveAt && Date.now() - lastActiveAt.getTime() > INACTIVITY_TTL_MS) {
+    user.refreshTokens.forEach((token) => {
+      token.revoked = true;
+      token.replacedByHash = null;
+    });
+    await user.save();
+    throw new HttpError(401, "SESSION_EXPIRED", "Session expired due to inactivity");
+  }
+
   const nextRefreshToken = createRefreshToken();
   tokenRecord.revoked = true;
   tokenRecord.replacedByHash = nextRefreshToken.tokenHash;
   tokenRecord.lastUsedAt = new Date();
+
+  user.lastActiveAt = new Date();
 
   user.refreshTokens.push({
     tokenHash: nextRefreshToken.tokenHash,
