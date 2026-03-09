@@ -1,48 +1,50 @@
-<section class="checkout">
+﻿<section class="checkout">
   <form class="checkout-form" [formGroup]="form" (ngSubmit)="submit()">
-    <h1>Checkout</h1>
+    <h1 i18n>Checkout</h1>
     <p class="state-text error" *ngIf="errorMessage">{{ errorMessage }}</p>
     <div class="field-group">
-      <label>Full name</label>
-      <input type="text" placeholder="Jane Doe" formControlName="fullName" />
+      <label i18n>Full name</label>
+      <input type="text" placeholder="Jane Doe" i18n-placeholder formControlName="fullName" />
     </div>
     <div class="field-group">
-      <label>Phone</label>
-      <input type="text" placeholder="+1 555 000 1122" formControlName="phone" />
+      <label i18n>Phone</label>
+      <input type="text" placeholder="+1 555 000 1122" i18n-placeholder formControlName="phone" />
     </div>
     <div class="field-group">
-      <label>Address</label>
-      <input type="text" placeholder="123 Main St" formControlName="addressLine" />
+      <label i18n>Address</label>
+      <input type="text" placeholder="123 Main St" i18n-placeholder formControlName="addressLine" />
     </div>
     <div class="field-row">
       <div class="field-group">
-        <label>City</label>
-        <input type="text" placeholder="City" formControlName="city" />
+        <label i18n>City</label>
+        <input type="text" placeholder="City" i18n-placeholder formControlName="city" />
       </div>
       <div class="field-group">
-        <label>Postal code</label>
-        <input type="text" placeholder="12345" formControlName="postalCode" />
+        <label i18n>Postal code</label>
+        <input type="text" placeholder="12345" i18n-placeholder formControlName="postalCode" />
       </div>
     </div>
     <div class="field-group">
-      <label>Country</label>
-      <input type="text" placeholder="Country" formControlName="country" />
+      <label i18n>Country</label>
+      <input type="text" placeholder="Country" i18n-placeholder formControlName="country" />
     </div>
     <button class="btn primary" type="submit" [disabled]="isSubmitting">
-      {{ isSubmitting ? 'Placing order...' : 'Place order' }}
+      <span *ngIf="isSubmitting" i18n>Placing order...</span>
+      <span *ngIf="!isSubmitting" i18n>Place order</span>
     </button>
   </form>
   <aside class="checkout-summary">
-    <h2>Order summary</h2>
-    <p>
-      {{ (items$ | async)?.length || 0 }} items · Total
-      {{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+    <h2 i18n>Order summary</h2>
+    <p i18n>
+      {{ (items$ | async)?.length || 0 }} items &middot; Total
+      {{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2' }}
     </p>
     <div class="summary-list">
       <div class="summary-item" *ngFor="let item of items$ | async">
         <span>{{ item.title }} x{{ item.quantity }}</span>
-        <span>{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+        <span>{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
     </div>
   </aside>
 </section>
+

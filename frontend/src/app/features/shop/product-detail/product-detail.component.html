@@ -1,5 +1,5 @@
-<section class="detail">
-  <p class="state-text" *ngIf="isLoading">Loading product...</p>
+﻿<section class="detail">
+  <p class="state-text" *ngIf="isLoading" i18n>Loading product...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <ng-container *ngIf="!isLoading && product">
     <div class="gallery">
@@ -17,17 +17,17 @@
       </div>
     </div>
     <div class="info">
-      <p class="pill">Limited drop</p>
+      <p class="pill" i18n>Limited drop</p>
       <h1>{{ product.title }}</h1>
       <p class="subtitle" *ngIf="product.description">{{ product.description }}</p>
       <div class="meta" *ngIf="getMeta(product).length">
         <span *ngFor="let tag of getMeta(product)">{{ tag }}</span>
       </div>
       <div class="price-row">
-        <span class="price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
-        <button class="btn primary" type="button" (click)="addToCart()">Add to cart</button>
+        <span class="price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+        <button class="btn primary" type="button" (click)="addToCart()" i18n>Add to cart</button>
       </div>
-      <a class="btn ghost" routerLink="/shop">Back to shop</a>
+      <a class="btn ghost" routerLink="/shop" i18n>Back to shop</a>
     </div>
   </ng-container>
 </section>
@@ -35,11 +35,11 @@
 <section class="suggested-section" *ngIf="!isLoading && product">
   <div class="suggested-header">
     <div>
-      <h2>Suggested cases</h2>
-      <p>More drops that match this vibe.</p>
+      <h2 i18n>Suggested cases</h2>
+      <p i18n>More drops that match this vibe.</p>
     </div>
   </div>
-  <p class="state-text" *ngIf="isSuggestionsLoading">Loading suggestions...</p>
+  <p class="state-text" *ngIf="isSuggestionsLoading" i18n>Loading suggestions...</p>
   <p class="state-text error" *ngIf="!isSuggestionsLoading && suggestionsErrorMessage">
     {{ suggestionsErrorMessage }}
   </p>
@@ -51,21 +51,20 @@
       <div class="card-top">
         <span>{{ suggestion.title }}</span>
         <span class="card-price">
-          {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+          {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
         </span>
       </div>
       <div class="card-meta" *ngIf="getSuggestedMeta(suggestion).length">
         <span class="meta-pill" *ngFor="let tag of getSuggestedMeta(suggestion)">{{ tag }}</span>
       </div>
       <div class="card-actions">
-        <a class="card-link" [routerLink]="['/products', suggestion.id]">View details</a>
-        <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)">
+        <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
+        <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)" i18n>
           Add
         </button>
       </div>
     </article>
   </div>
-  <p class="state-text" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length === 0">
-    No suggestions yet.
-  </p>
+  <p class="state-text" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length === 0" i18n>No suggestions yet.</p>
 </section>
+

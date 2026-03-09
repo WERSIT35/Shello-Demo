@@ -7,10 +7,25 @@ import {
   createAccessToken,
   createRefreshToken,
   getAccessTokenTtlSeconds,
-  hashRefreshToken
+  hashRefreshToken,
+  createTwoFactorToken,
+  verifyTwoFactorToken
 } from "../../utils/jwt";
+import {
+  buildQrCodeDataUrl,
+  buildTwoFactorOtpauthUrl,
+  decryptTwoFactorSecret,
+  encryptTwoFactorSecret,
+  generateTwoFactorSecret,
+  isValidTwoFactorCode
+} from "../../utils/two-factor";
 import { HttpError } from "../../utils/http-error";
-import type { LoginInput, RegisterInput } from "./auth.validation";
+import type {
+  LoginInput,
+  RegisterInput,
+  TwoFactorCodeInput,
+  TwoFactorLoginInput
+} from "./auth.validation";
 import type { GoogleProfile } from "./google.oauth";
 
 type PublicUser = {
@@ -46,6 +61,83 @@ type RefreshResult = {
   refreshTokenExpiresAt: Date;
   user: PublicUser;
 };
+
+type TwoFactorChallenge = {
+  twoFactorToken: string;
+  user: PublicUser;
+};
+
+function buildPublicUser(user: UserDocument): PublicUser {
+  return {
+    _id: user._id.toString(),
+    name: user.name,
+    lastName: user.lastName,
+    email: user.email,
+    pinCode: user.pinCode,
+    role: user.role as "user" | "admin",
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  };
+}
+
+function isTwoFactorRequired(user: UserDocument): boolean {
+  return user.role === "admin" && Boolean(user.twoFactorEnabled) && Boolean(user.twoFactorSecret);
+}
+
+function buildTwoFactorChallenge(user: UserDocument): TwoFactorChallenge {
+  return {
+    twoFactorToken: createTwoFactorToken({
+      sub: user._id.toString(),
+      tokenVersion: user.tokenVersion ?? 0
+    }),
+    user: buildPublicUser(user)
+  };
+}
+
+function ensureTwoFactorSatisfied(user: UserDocument): void {
+  if (!isTwoFactorRequired(user)) {
+    return;
+  }
+
+  throw new HttpError(
+    401,
+    "TWO_FACTOR_REQUIRED",
+    "Two-factor authentication required",
+    buildTwoFactorChallenge(user)
+  );
+}
+
+async function issueLoginTokens(user: UserDocument, context: LoginContext): Promise<LoginResult> {
+  const accessToken = createAccessToken({
+    sub: user._id.toString(),
+    role: user.role as "user" | "admin",
+    tokenVersion: user.tokenVersion ?? 0
+  });
+
+  const refreshToken = createRefreshToken();
+
+  user.refreshTokens.push({
+    tokenHash: refreshToken.tokenHash,
+    createdAt: refreshToken.createdAt,
+    expiresAt: refreshToken.expiresAt,
+    revoked: false,
+    replacedByHash: null,
+    ip: context.ip ?? null,
+    userAgent: context.userAgent ?? null,
+    lastUsedAt: null
+  });
+
+  pruneRefreshTokens(user);
+  await user.save();
+
+  return {
+    accessToken,
+    expiresIn: getAccessTokenTtlSeconds(),
+    refreshToken: refreshToken.token,
+    refreshTokenExpiresAt: refreshToken.expiresAt,
+    user: buildPublicUser(user)
+  };
+}
 
 async function generateUniquePinCode(): Promise<string> {
   const maxAttempts = 10;
@@ -109,7 +201,9 @@ function createRandomPassword(): string {
 
 export async function loginUser(input: LoginInput, context: LoginContext): Promise<LoginResult> {
   const normalizedEmail = input.email.toLowerCase();
-  const user = (await UserModel.findOne({ email: normalizedEmail }).select("+password")) as
+  const user = (await UserModel.findOne({ email: normalizedEmail }).select(
+    "+password +twoFactorSecret"
+  )) as
     | (UserDocument & { password: string })
     | null;
 
@@ -127,44 +221,9 @@ export async function loginUser(input: LoginInput, context: LoginContext): Promi
     throw new HttpError(401, "INVALID_CREDENTIALS", "Invalid email or password");
   }
 
-  const accessToken = createAccessToken({
-    sub: user._id.toString(),
-    role: user.role as "user" | "admin",
-    tokenVersion: user.tokenVersion ?? 0
-  });
-  const refreshToken = createRefreshToken();
+  ensureTwoFactorSatisfied(user);
 
-  user.refreshTokens.push({
-    tokenHash: refreshToken.tokenHash,
-    createdAt: refreshToken.createdAt,
-    expiresAt: refreshToken.expiresAt,
-    revoked: false,
-    replacedByHash: null,
-    ip: context.ip ?? null,
-    userAgent: context.userAgent ?? null,
-    lastUsedAt: null
-  });
-
-  pruneRefreshTokens(user);
-
-  await user.save();
-
-  return {
-    accessToken,
-    expiresIn: getAccessTokenTtlSeconds(),
-    refreshToken: refreshToken.token,
-    refreshTokenExpiresAt: refreshToken.expiresAt,
-    user: {
-      _id: user._id.toString(),
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      pinCode: user.pinCode,
-      role: user.role as "user" | "admin",
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
-  };
+  return issueLoginTokens(user, context);
 }
 
 export async function loginWithGoogle(
@@ -174,7 +233,7 @@ export async function loginWithGoogle(
   const normalizedEmail = profile.email.toLowerCase();
   const existingUser = (await UserModel.findOne({
     $or: [{ googleId: profile.sub }, { email: normalizedEmail }]
-  }).select("+password")) as (UserDocument & { password: string }) | null;
+  }).select("+password +twoFactorSecret")) as (UserDocument & { password: string }) | null;
 
   let user = existingUser as UserDocument | null;
 
@@ -203,44 +262,146 @@ export async function loginWithGoogle(
     user.googleId = profile.sub;
   }
 
-  const accessToken = createAccessToken({
-    sub: user._id.toString(),
-    role: user.role as "user" | "admin",
-    tokenVersion: user.tokenVersion ?? 0
-  });
+  ensureTwoFactorSatisfied(user);
 
-  const refreshToken = createRefreshToken();
+  return issueLoginTokens(user, context);
+}
 
-  user.refreshTokens.push({
-    tokenHash: refreshToken.tokenHash,
-    createdAt: refreshToken.createdAt,
-    expiresAt: refreshToken.expiresAt,
-    revoked: false,
-    replacedByHash: null,
-    ip: context.ip ?? null,
-    userAgent: context.userAgent ?? null,
-    lastUsedAt: null
-  });
+export async function getTwoFactorStatus(userId: string): Promise<{ enabled: boolean }> {
+  const user = await UserModel.findById(userId).select("twoFactorEnabled role").lean();
 
-  pruneRefreshTokens(user);
+  if (!user) {
+    throw new HttpError(404, "USER_NOT_FOUND", "User not found");
+  }
+
+  if (user.role !== "admin") {
+    throw new HttpError(403, "FORBIDDEN", "Admin access required");
+  }
+
+  return { enabled: Boolean(user.twoFactorEnabled) };
+}
+
+export async function setupTwoFactor(userId: string): Promise<{ secret: string; otpauthUrl: string; qrCodeDataUrl: string }> {
+  const user = await UserModel.findById(userId).select("+twoFactorSecret role email");
+
+  if (!user) {
+    throw new HttpError(404, "USER_NOT_FOUND", "User not found");
+  }
+
+  if (user.role !== "admin") {
+    throw new HttpError(403, "FORBIDDEN", "Admin access required");
+  }
+
+  const secret = generateTwoFactorSecret();
+  user.twoFactorSecret = encryptTwoFactorSecret(secret);
+  user.twoFactorEnabled = false;
   await user.save();
 
-  return {
-    accessToken,
-    expiresIn: getAccessTokenTtlSeconds(),
-    refreshToken: refreshToken.token,
-    refreshTokenExpiresAt: refreshToken.expiresAt,
-    user: {
-      _id: user._id.toString(),
-      name: user.name,
-      lastName: user.lastName,
-      email: user.email,
-      pinCode: user.pinCode,
-      role: user.role as "user" | "admin",
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
-  };
+  const otpauthUrl = buildTwoFactorOtpauthUrl(user.email, secret);
+  const qrCodeDataUrl = await buildQrCodeDataUrl(otpauthUrl);
+
+  return { secret, otpauthUrl, qrCodeDataUrl };
+}
+
+export async function enableTwoFactor(userId: string, input: TwoFactorCodeInput): Promise<{ enabled: boolean }> {
+  const user = await UserModel.findById(userId).select("+twoFactorSecret role");
+
+  if (!user) {
+    throw new HttpError(404, "USER_NOT_FOUND", "User not found");
+  }
+
+  if (user.role !== "admin") {
+    throw new HttpError(403, "FORBIDDEN", "Admin access required");
+  }
+
+  if (!user.twoFactorSecret) {
+    throw new HttpError(400, "TWO_FACTOR_SETUP_REQUIRED", "Two-factor setup required");
+  }
+
+  const secret = decryptTwoFactorSecret(user.twoFactorSecret);
+  const isValid = isValidTwoFactorCode(input.code, secret);
+
+  if (!isValid) {
+    throw new HttpError(401, "INVALID_TWO_FACTOR_CODE", "Invalid authenticator code");
+  }
+
+  user.twoFactorEnabled = true;
+  await user.save();
+
+  return { enabled: true };
+}
+
+export async function disableTwoFactor(userId: string, input: TwoFactorCodeInput): Promise<{ enabled: boolean }> {
+  const user = await UserModel.findById(userId).select("+twoFactorSecret role");
+
+  if (!user) {
+    throw new HttpError(404, "USER_NOT_FOUND", "User not found");
+  }
+
+  if (user.role !== "admin") {
+    throw new HttpError(403, "FORBIDDEN", "Admin access required");
+  }
+
+  if (!user.twoFactorSecret || !user.twoFactorEnabled) {
+    return { enabled: false };
+  }
+
+  const secret = decryptTwoFactorSecret(user.twoFactorSecret);
+  const isValid = isValidTwoFactorCode(input.code, secret);
+
+  if (!isValid) {
+    throw new HttpError(401, "INVALID_TWO_FACTOR_CODE", "Invalid authenticator code");
+  }
+
+  user.twoFactorEnabled = false;
+  user.twoFactorSecret = null;
+  await user.save();
+
+  return { enabled: false };
+}
+
+export async function verifyTwoFactorLogin(
+  input: TwoFactorLoginInput,
+  context: LoginContext
+): Promise<LoginResult> {
+  let payload;
+
+  try {
+    payload = verifyTwoFactorToken(input.token);
+  } catch (error) {
+    throw new HttpError(401, "INVALID_TWO_FACTOR_TOKEN", "Two-factor token is invalid", error);
+  }
+
+  const user = await UserModel.findById(payload.sub).select(
+    "+twoFactorSecret role tokenVersion twoFactorEnabled name lastName email pinCode refreshTokens"
+  );
+
+  if (!user) {
+    throw new HttpError(401, "USER_NOT_FOUND", "User not found");
+  }
+
+  if (user.role !== "admin") {
+    throw new HttpError(403, "FORBIDDEN", "Admin access required");
+  }
+
+  const tokenVersion = user.tokenVersion ?? 0;
+
+  if (tokenVersion !== payload.tokenVersion) {
+    throw new HttpError(401, "TOKEN_REVOKED", "Token has been revoked");
+  }
+
+  if (!isTwoFactorRequired(user) || !user.twoFactorSecret) {
+    throw new HttpError(400, "TWO_FACTOR_NOT_ENABLED", "Two-factor authentication not enabled");
+  }
+
+  const secret = decryptTwoFactorSecret(user.twoFactorSecret);
+  const isValid = isValidTwoFactorCode(input.code, secret);
+
+  if (!isValid) {
+    throw new HttpError(401, "INVALID_TWO_FACTOR_CODE", "Invalid authenticator code");
+  }
+
+  return issueLoginTokens(user, context);
 }
 
 export async function refreshAccessToken(

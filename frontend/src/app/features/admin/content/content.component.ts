@@ -7,6 +7,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import {
   ContentService,
   type HeroContent,
+  type HeroTranslations,
   type UpdateContentPayload
 } from '../../../core/services/content.service';
 import { AdminProductsService, type AdminProduct } from '../../../core/services/admin-products.service';
@@ -42,6 +43,8 @@ export class AdminContentComponent implements OnInit {
     highlights: []
   };
   protected highlightsText = '';
+  protected heroDrafts: HeroTranslations = { ka: { ...this.heroDraft }, en: { ...this.heroDraft } };
+  protected heroLocale: 'ka' | 'en' = 'ka';
   protected selectedSuggestedIds = new Set<string>();
   protected readonly maxSuggested = 8;
 
@@ -60,8 +63,8 @@ export class AdminContentComponent implements OnInit {
       return;
     }
 
-    if (this.selectedSuggestedIds.size >= this.maxSuggested) {
-      this.errorMessage = `Select up to ${this.maxSuggested} suggested cases.`;
+    if (this.selectedSuggestedCount >= this.suggestedLimit) {
+      this.errorMessage = `Select up to ${this.suggestedLimit} suggested cases.`;
       this.cdr.detectChanges();
       return;
     }
@@ -125,10 +128,22 @@ export class AdminContentComponent implements OnInit {
     this.errorMessage = '';
     this.saveMessage = '';
 
+    this.syncHeroDraft();
+
     const payload: UpdateContentPayload = {
-      hero: {
-        ...this.heroDraft,
-        highlights: this.parseHighlights(this.highlightsText)
+      hero: this.heroDrafts.ka
+        ? {
+            ...this.heroDrafts.ka,
+            highlights: this.heroDrafts.ka.highlights ?? []
+          }
+        : undefined,
+      heroTranslations: {
+        ka: this.heroDrafts.ka
+          ? { ...this.heroDrafts.ka, highlights: this.heroDrafts.ka.highlights ?? [] }
+          : undefined,
+        en: this.heroDrafts.en
+          ? { ...this.heroDrafts.en, highlights: this.heroDrafts.en.highlights ?? [] }
+          : undefined
       },
       suggestedProductIds: Array.from(this.selectedSuggestedIds),
       categories: this.categoriesDraft
@@ -136,8 +151,7 @@ export class AdminContentComponent implements OnInit {
 
     this.contentService.updateContent(payload).subscribe({
       next: (content) => {
-        this.heroDraft = { ...content.hero };
-        this.highlightsText = content.hero.highlights.join('\n');
+        this.applyHeroTranslations(content.hero, content.heroTranslations);
         this.selectedSuggestedIds = new Set(content.suggestedProductIds);
         this.categoriesDraft = [...content.categories];
         this.isSaving = false;
@@ -172,6 +186,29 @@ export class AdminContentComponent implements OnInit {
     return tags;
   }
 
+  protected get suggestedLimit(): number {
+    if (this.products.length === 0) {
+      return 0;
+    }
+
+    return Math.min(this.maxSuggested, this.products.length);
+  }
+
+  protected get selectedSuggestedCount(): number {
+    if (this.products.length === 0) {
+      return 0;
+    }
+
+    let count = 0;
+    for (const product of this.products) {
+      if (this.selectedSuggestedIds.has(product.id)) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
   private loadContent(): void {
     this.isLoading = true;
     this.errorMessage = '';
@@ -188,9 +225,11 @@ export class AdminContentComponent implements OnInit {
       )
       .subscribe({
         next: ({ content, products }) => {
-          this.heroDraft = { ...content.hero };
-          this.highlightsText = content.hero.highlights.join('\n');
-          this.selectedSuggestedIds = new Set(content.suggestedProductIds);
+          this.applyHeroTranslations(content.hero, content.heroTranslations);
+          const productIdSet = new Set(products.map((product) => product.id));
+          this.selectedSuggestedIds = new Set(
+            content.suggestedProductIds.filter((id) => productIdSet.has(id))
+          );
           this.categoriesDraft = [...content.categories];
           this.products = products;
           this.isLoading = false;
@@ -202,6 +241,46 @@ export class AdminContentComponent implements OnInit {
           this.cdr.detectChanges();
         }
       });
+  }
+
+  protected setHeroLocale(locale: 'ka' | 'en'): void {
+    if (this.heroLocale === locale) {
+      return;
+    }
+
+    this.syncHeroDraft();
+    this.heroLocale = locale;
+    this.loadHeroLocaleDraft(locale);
+  }
+
+  private syncHeroDraft(): void {
+    const nextHero: HeroContent = {
+      ...this.heroDraft,
+      highlights: this.parseHighlights(this.highlightsText)
+    };
+
+    if (this.heroLocale === 'ka') {
+      this.heroDrafts.ka = nextHero;
+    } else {
+      this.heroDrafts.en = nextHero;
+    }
+  }
+
+  private loadHeroLocaleDraft(locale: 'ka' | 'en'): void {
+    const fallback = locale === 'ka' ? this.heroDrafts.ka : this.heroDrafts.en;
+    const nextHero = fallback ?? this.heroDraft;
+    this.heroDraft = { ...nextHero };
+    this.highlightsText = (nextHero.highlights ?? []).join('\n');
+  }
+
+  private applyHeroTranslations(hero: HeroContent, translations: HeroTranslations | undefined): void {
+    const kaHero = translations?.ka ?? hero;
+    const enHero = translations?.en ?? hero;
+    this.heroDrafts = {
+      ka: { ...kaHero },
+      en: { ...enHero }
+    };
+    this.loadHeroLocaleDraft(this.heroLocale);
   }
 
   private parseHighlights(value: string): string[] {

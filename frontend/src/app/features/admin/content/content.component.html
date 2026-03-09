@@ -1,48 +1,69 @@
-<section class="admin-section">
+﻿<section class="admin-section">
   <div class="header-row">
     <div>
-      <h1>Content</h1>
-      <p class="hint">Manage hero messaging and suggested cases without touching code.</p>
+      <h1 i18n>Content</h1>
+      <p class="hint" i18n>Manage hero messaging and suggested cases without touching code.</p>
     </div>
     <button class="btn primary" type="button" (click)="saveContent()" [disabled]="isSaving">
-      {{ isSaving ? 'Saving...' : 'Save changes' }}
+      <span *ngIf="isSaving" i18n>Saving...</span>
+      <span *ngIf="!isSaving" i18n>Save changes</span>
     </button>
   </div>
 
-  <p class="state-text" *ngIf="isLoading">Loading content...</p>
+  <p class="state-text" *ngIf="isLoading" i18n>Loading content...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <p class="state-text success" *ngIf="!isLoading && saveMessage">{{ saveMessage }}</p>
 
   <div class="content-grid" *ngIf="!isLoading && !errorMessage">
     <div class="panel">
-      <h2>Hero</h2>
+      <div class="panel-head">
+        <h2 i18n>Hero</h2>
+        <div class="locale-toggle">
+          <button
+            class="btn ghost"
+            type="button"
+            [class.active]="heroLocale === 'ka'"
+            (click)="setHeroLocale('ka')"
+          >
+            ქართული
+          </button>
+          <button
+            class="btn ghost"
+            type="button"
+            [class.active]="heroLocale === 'en'"
+            (click)="setHeroLocale('en')"
+          >
+            English
+          </button>
+        </div>
+      </div>
       <div class="field">
-        <label>Title</label>
+        <label i18n>Title</label>
         <input type="text" [(ngModel)]="heroDraft.title" />
       </div>
       <div class="field">
-        <label>Subtitle</label>
+        <label i18n>Subtitle</label>
         <textarea rows="3" [(ngModel)]="heroDraft.subtitle"></textarea>
       </div>
       <div class="field">
-        <label>Primary CTA</label>
-        <input type="text" placeholder="Text" [(ngModel)]="heroDraft.primaryCtaText" />
-        <input type="text" placeholder="Link" [(ngModel)]="heroDraft.primaryCtaLink" />
+        <label i18n>Primary CTA</label>
+        <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaText" />
+        <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaLink" />
       </div>
       <div class="field">
-        <label>Secondary CTA</label>
-        <input type="text" placeholder="Text" [(ngModel)]="heroDraft.secondaryCtaText" />
-        <input type="text" placeholder="Link" [(ngModel)]="heroDraft.secondaryCtaLink" />
+        <label i18n>Secondary CTA</label>
+        <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaText" />
+        <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaLink" />
       </div>
       <div class="field">
-        <label>Highlights (one per line)</label>
+        <label i18n>Highlights (one per line)</label>
         <textarea rows="4" [(ngModel)]="highlightsText"></textarea>
       </div>
       <div class="field">
-        <label>Categories</label>
+        <label i18n>Categories</label>
         <div class="category-row">
-          <input type="text" placeholder="Add category" [(ngModel)]="newCategory" />
-          <button class="btn ghost" type="button" (click)="addCategory()">Add</button>
+          <input type="text" placeholder="Add category" i18n-placeholder [(ngModel)]="newCategory" />
+          <button class="btn ghost" type="button" (click)="addCategory()" i18n>Add</button>
         </div>
         <div class="category-list" *ngIf="categoriesDraft.length">
           <button
@@ -51,20 +72,24 @@
             *ngFor="let category of categoriesDraft"
             (click)="removeCategory(category)"
             title="Remove"
+            i18n-title
           >
             {{ category }}
-            <span aria-hidden="true">×</span>
+            <svg class="icon chip-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6L6 18" />
+              <path d="M6 6l12 12" />
+            </svg>
           </button>
         </div>
       </div>
       <div class="field">
-        <label>Hero image</label>
+        <label i18n>Hero image</label>
         <div class="hero-preview" *ngIf="heroDraft.imageUrl">
           <img [src]="heroDraft.imageUrl" alt="" />
         </div>
         <label class="file-label">
           <input type="file" accept="image/*" (change)="onHeroImageSelected($event)" />
-          <span>Upload image</span>
+          <span i18n>Upload image</span>
         </label>
       </div>
     </div>
@@ -72,10 +97,12 @@
     <div class="panel">
       <div class="panel-head">
         <div>
-          <h2>Suggested cases</h2>
-          <p class="hint">Pick up to {{ maxSuggested }} products to show on the homepage.</p>
+          <h2 i18n>Suggested cases</h2>
+          <p class="hint" i18n>Pick up to {{ suggestedLimit }} products to show on the homepage.</p>
         </div>
-        <span class="pill">Selected {{ selectedSuggestedIds.size }}/{{ maxSuggested }}</span>
+        <span class="pill" *ngIf="suggestedLimit > 0" i18n>
+          Selected {{ selectedSuggestedCount }}/{{ suggestedLimit }}
+        </span>
       </div>
       <div class="products-grid">
         <button
@@ -92,7 +119,7 @@
             <div class="card-top">
               <span>{{ product.title }}</span>
               <span class="card-price">
-                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}
+                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
               </span>
             </div>
             <div class="card-meta" *ngIf="getMeta(product).length">
@@ -104,3 +131,4 @@
     </div>
   </div>
 </section>
+

@@ -12,6 +12,24 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## i18n (Georgian + English)
+
+This project uses Angular compile-time i18n. Georgian (ka) is the default build, and English (en) is a separate build.
+
+Run both builds in two terminals for language switching during development:
+
+```bash
+# Terminal 1 (Georgian) ng s -c ka --port 4200
+ng s --configuration ka --port 4200
+
+# Terminal 2 (English) ng s -c en -- port 4201
+ng s --configuration en --port 4201
+```
+
+Open:
+- Georgian: http://localhost:4200/
+- English: http://localhost:4201/en/
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

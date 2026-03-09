@@ -175,6 +175,44 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  protected toggleActive(user: AdminUser): void {
+    if (this.updatingIds.has(user.id)) {
+      return;
+    }
+
+    const nextState = user.isActive ? 'deactivate' : 'activate';
+    const confirmed = window.confirm(
+      `Are you sure you want to ${nextState} ${user.email}?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.updatingIds.add(user.id);
+
+    this.usersService
+      .updateUser(user.id, {
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        pinCode: user.pinCode,
+        role: user.role,
+        isActive: !user.isActive
+      })
+      .subscribe({
+        next: () => {
+          this.updatingIds.delete(user.id);
+          this.refreshUsers();
+        },
+        error: (error: unknown) => {
+          this.errorMessage = this.resolveError(error);
+          this.updatingIds.delete(user.id);
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
   protected deleteUser(user: AdminUser): void {
     if (this.updatingIds.has(user.id)) {
       return;

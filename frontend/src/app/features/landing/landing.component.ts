@@ -7,6 +7,8 @@ import { CartService } from '../../core/services/cart.service';
 import { ContentService, type HeroContent } from '../../core/services/content.service';
 import type { Product } from '../../core/services/products.service';
 
+declare const $localize: { locale?: string };
+
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -24,21 +26,41 @@ export class LandingComponent implements OnInit {
 
   protected isLoading = true;
   protected errorMessage = '';
-  protected hero: HeroContent = {
-    title: 'Cases that feel tailored, not templated.',
-    subtitle:
-      'Designed for confident protection and expressive color stories. Built to take hits, made to look intentional.',
-    primaryCtaText: 'Explore cases',
-    primaryCtaLink: '/shop',
-    secondaryCtaText: 'Join the drop',
-    secondaryCtaLink: '/register',
-    imageUrl: null,
-    highlights: ['Drop tested', 'Grip textured', '3-layer shell', 'Matte finish']
-  };
+  protected hero: HeroContent = this.buildDefaultHero();
   protected heroImageStyle = this.buildHeroImageStyle(this.hero.imageUrl);
   protected suggestedProducts: Product[] = [];
 
   protected panelProducts: Product[] = [];
+  private buildDefaultHero(): HeroContent {
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || 'ka';
+    const lang = locale.startsWith('en') ? 'en' : 'ka';
+
+    if (lang === 'en') {
+      return {
+        title: 'Cases that feel tailored, not templated.',
+        subtitle:
+          'Designed for confident protection and expressive color stories. Built to take hits, made to look intentional.',
+        primaryCtaText: 'Explore cases',
+        primaryCtaLink: '/shop',
+        secondaryCtaText: 'Join the drop',
+        secondaryCtaLink: '/register',
+        imageUrl: null,
+        highlights: ['Drop tested', 'Grip textured', '3-layer shell', 'Matte finish']
+      };
+    }
+
+    return {
+      title: 'ქეისები, რომლებიც შენს სტილს ერგება და არა შაბლონს.',
+      subtitle:
+        'დაცვასა და სტილს შორის არჩევანი აღარ გჭირდება. ეს ქეისი დარტყმას უძლებს და ყოველდღე გამორჩეულ იერს ინარჩუნებს.',
+      primaryCtaText: 'ქეისების დათვალიერება',
+      primaryCtaLink: '/shop',
+      secondaryCtaText: 'დროპს შემოუერთდი',
+      secondaryCtaLink: '/register',
+      imageUrl: null,
+      highlights: ['დროპ-ტესტით დადასტურებული', 'არასრიალა მოჭიდება', '3-ფენიანი დაცვა', 'მატე ზედაპირი']
+    };
+  }
 
   ngOnInit(): void {
     this.loadContent();

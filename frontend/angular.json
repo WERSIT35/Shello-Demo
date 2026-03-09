@@ -17,13 +17,21 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "ka": "src/locale/messages.ka.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "polyfills": ["@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "i18nMissingTranslation": "warning",
             "assets": [
               {
                 "glob": "**/*",
@@ -70,9 +78,21 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "ka": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "localize": ["ka"]
+            },
+            "en": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "localize": ["en"]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "ka"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
@@ -86,9 +106,17 @@
             "development": {
               "buildTarget": "frontend:build:development",
               "proxyConfig": "proxy.conf.json"
+            },
+            "ka": {
+              "buildTarget": "frontend:build:ka",
+              "proxyConfig": "proxy.conf.json"
+            },
+            "en": {
+              "buildTarget": "frontend:build:en",
+              "proxyConfig": "proxy.conf.json"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "ka"
         },
         "test": {
           "builder": "@angular/build:unit-test"

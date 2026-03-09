@@ -109,6 +109,13 @@ export const routes: Routes = [
 				path: 'users',
 				loadComponent: () =>
 					import('./features/admin/users/users.component').then((m) => m.AdminUsersComponent)
+			},
+			{
+				path: 'security',
+				loadComponent: () =>
+					import('./features/admin/security/security.component').then(
+						(m) => m.AdminSecurityComponent
+					)
 			}
 		]
 	},

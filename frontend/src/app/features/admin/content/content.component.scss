@@ -56,6 +56,26 @@
   gap: 1rem;
 }
 
+.locale-toggle {
+  display: inline-flex;
+  gap: 0.4rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.locale-toggle .btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+}
+
+.locale-toggle .btn.active {
+  background: rgba(122, 215, 255, 0.2);
+  border-color: rgba(122, 215, 255, 0.45);
+  color: var(--text);
+}
+
 .field {
   display: grid;
   gap: 0.5rem;
@@ -128,6 +148,13 @@
   align-items: center;
   font-weight: 600;
   cursor: pointer;
+}
+
+.category-chip .chip-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+  opacity: 0.9;
 }
 
 .products-grid {
