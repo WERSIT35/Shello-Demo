@@ -22,6 +22,18 @@ Shello Demo is a full-stack e-commerce app for phone cases. It includes an Expre
 
 ## Quick Start
 
+### Docker Quick Start (Linux)
+
+Run the full stack with Docker Compose and a reverse proxy:
+
+```bash
+bash scripts/bootstrap.sh shellotech.eu.org
+docker compose up -d --build
+```
+
+This starts MongoDB, the API, the Angular SSR frontend, and Nginx on port 80.
+Update FRONTEND_URL and optional admin credentials in .env as needed.
+
 ### 1) Backend
 
 ```bash

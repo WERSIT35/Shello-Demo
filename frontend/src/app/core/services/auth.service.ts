@@ -93,6 +93,7 @@ export class AuthService {
   private readonly currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   private readonly sessionReadySubject = new BehaviorSubject<boolean>(false);
   private accessTokenValue: string | null = null;
+  private accessTokenExpiresAt: number | null = null;
   private restoreSession$?: ReturnType<AuthService['refreshSession']>;
   private readonly googleAuthStorageKey = 'shello_google_auth';
 
@@ -109,7 +110,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return Boolean(this.accessTokenValue);
+    return this.isAccessTokenValid();
   }
 
   isAdmin(): boolean {
@@ -121,7 +122,7 @@ export class AuthService {
       .post<LoginResponse>(`${API_BASE_URL}/auth/login`, payload, { withCredentials: true })
       .pipe(
         tap((response) => {
-          this.setSession(response.accessToken, response.user);
+          this.setSession(response.accessToken, response.user, response.expiresIn);
           this.sessionReadySubject.next(true);
         }),
         map((response) => this.mapUser(response.user))
@@ -183,7 +184,7 @@ export class AuthService {
           return;
         }
 
-        this.setSession(payload.accessToken, payload.user);
+        this.setSession(payload.accessToken, payload.user, payload.expiresIn);
         this.sessionReadySubject.next(true);
         handled = true;
         cleanup();
@@ -291,7 +292,8 @@ export class AuthService {
       return of(true);
     }
 
-    if (this.sessionReadySubject.value) {
+    const hasValidToken = this.isAccessTokenValid();
+    if (this.sessionReadySubject.value && (hasValidToken || !this.accessTokenValue)) {
       return of(true);
     }
 
@@ -335,7 +337,7 @@ export class AuthService {
 
     return this.http.post<LoginResponse>(`${API_BASE_URL}/auth/2fa/login`, payload).pipe(
       tap((response) => {
-        this.setSession(response.accessToken, response.user);
+        this.setSession(response.accessToken, response.user, response.expiresIn);
         this.sessionReadySubject.next(true);
       }),
       map((response) => this.mapUser(response.user))
@@ -360,7 +362,7 @@ export class AuthService {
       return { status: 'none' };
     }
 
-    this.setSession(payload.accessToken, payload.user);
+    this.setSession(payload.accessToken, payload.user, payload.expiresIn);
     this.sessionReadySubject.next(true);
     return { status: 'authenticated', user: this.mapUser(payload.user) };
   }
@@ -369,24 +371,38 @@ export class AuthService {
     return this.http
       .post<RefreshResponse>(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
-        tap((response) => this.setSession(response.accessToken, response.user)),
+        tap((response) => this.setSession(response.accessToken, response.user, response.expiresIn)),
         map(() => true),
         catchError(() => {
           this.clearSession();
           return of(false);
         }),
-        finalize(() => this.sessionReadySubject.next(true))
+        finalize(() => {
+          this.restoreSession$ = undefined;
+          this.sessionReadySubject.next(true);
+        })
       );
   }
 
-  private setSession(accessToken: string, user: ApiUser): void {
+  private setSession(accessToken: string, user: ApiUser, expiresIn?: number): void {
     this.accessTokenValue = accessToken;
+    this.accessTokenExpiresAt = typeof expiresIn === 'number' ? Date.now() + expiresIn * 1000 : null;
     this.currentUserSubject.next(this.mapUser(user));
   }
 
   private clearSession(): void {
     this.accessTokenValue = null;
+    this.accessTokenExpiresAt = null;
     this.currentUserSubject.next(null);
+  }
+
+  private isAccessTokenValid(): boolean {
+    if (!this.accessTokenValue || !this.accessTokenExpiresAt) {
+      return false;
+    }
+
+    const skewMs = 30 * 1000;
+    return Date.now() < this.accessTokenExpiresAt - skewMs;
   }
 
   private readGoogleAuthPayload(): GoogleAuthPayload | null {
