@@ -17,6 +17,13 @@ const heroSchema = new Schema(
 const siteContentSchema = new Schema(
   {
     hero: { type: heroSchema, required: true },
+    heroTranslations: {
+      type: {
+        ka: { type: heroSchema, required: false },
+        en: { type: heroSchema, required: false }
+      },
+      default: {}
+    },
     suggestedProductIds: { type: [Schema.Types.ObjectId], default: [] },
     categories: { type: [String], default: ["Cases"] }
   },

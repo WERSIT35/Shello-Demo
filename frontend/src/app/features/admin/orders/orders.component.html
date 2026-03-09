@@ -1,19 +1,19 @@
-<section class="admin-section">
-  <h1>Orders</h1>
-  <p class="state-text" *ngIf="isLoading">Loading orders...</p>
+﻿<section class="admin-section">
+  <h1 i18n>Orders</h1>
+  <p class="state-text" *ngIf="isLoading" i18n>Loading orders...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <div class="table">
     <div class="row header">
-      <span>Order</span>
-      <span>User</span>
-      <span>Total</span>
-      <span>Status</span>
-      <span>Action</span>
+      <span i18n>Order</span>
+      <span i18n>User</span>
+      <span i18n>Total</span>
+      <span i18n>Status</span>
+      <span i18n>Action</span>
     </div>
     <div class="row" *ngFor="let order of orders">
       <span>{{ order.id }}</span>
       <span>{{ order.userId }}</span>
-      <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       <select [(ngModel)]="statusSelections[order.id]">
         <option *ngFor="let option of statusOptions" [ngValue]="option">
           {{ option }}
@@ -25,6 +25,8 @@
         (click)="updateStatus(order)"
         aria-label="Update status"
         title="Update status"
+        i18n-aria-label
+        i18n-title
       >
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M20 6L9 17l-5-5" />
@@ -32,7 +34,6 @@
       </button>
     </div>
   </div>
-  <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0">
-    No orders found.
-  </p>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0" i18n>No orders found.</p>
 </section>
+

@@ -1,9 +1,7 @@
-<section class="cart">
+﻿<section class="cart">
   <div class="cart-items">
-    <h1>Your cart</h1>
-    <p class="state-text" *ngIf="(items$ | async)?.length === 0">
-      Your cart is empty.
-    </p>
+    <h1 i18n>Your cart</h1>
+    <p class="state-text" *ngIf="(items$ | async)?.length === 0" i18n>Your cart is empty.</p>
     <div class="cart-item" *ngFor="let item of items$ | async">
       <div class="item-info">
         <div class="item-thumb">
@@ -11,7 +9,7 @@
         </div>
         <div>
           <p class="item-title">{{ item.title }}</p>
-          <p class="item-sub">{{ item.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</p>
+          <p class="item-sub">{{ item.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</p>
         </div>
       </div>
       <div class="item-actions">
@@ -21,31 +19,32 @@
           [value]="item.quantity"
           (change)="updateQuantity(item, $event)"
         />
-        <span class="item-total">{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
-        <button class="btn ghost" type="button" (click)="removeItem(item)">Remove</button>
+        <span class="item-total">{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+        <button class="btn ghost" type="button" (click)="removeItem(item)" i18n>Remove</button>
       </div>
     </div>
   </div>
   <aside class="cart-summary">
-    <h2>Summary</h2>
+    <h2 i18n>Summary</h2>
     <div class="summary-row">
-      <span>Subtotal</span>
-      <span>{{ subtotal$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      <span i18n>Subtotal</span>
+      <span>{{ subtotal$ | async | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
     </div>
     <div class="summary-row">
-      <span>Shipping</span>
+      <span i18n>Shipping</span>
       <span>
         {{
           (items$ | async)?.length
-            ? (shippingFee | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE')
-            : (0 | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE')
+            ? (shippingFee | currency:'GEL':'symbol-narrow':'1.2-2')
+            : (0 | currency:'GEL':'symbol-narrow':'1.2-2')
         }}
       </span>
     </div>
     <div class="summary-row total">
-      <span>Total</span>
-      <span>{{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      <span i18n>Total</span>
+      <span>{{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
     </div>
-    <a class="btn primary" routerLink="/checkout">Checkout</a>
+    <a class="btn primary" routerLink="/checkout" i18n>Checkout</a>
   </aside>
 </section>
+

@@ -1,43 +1,87 @@
 <section class="auth">
   <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
-    <h1>Create account</h1>
-    <p>Join the drop and keep every case synced.</p>
-    <div class="field-group">
-      <label for="firstName">First name</label>
-      <input id="firstName" type="text" placeholder="Jane" formControlName="name" />
-    </div>
-    <div class="field-group">
-      <label for="lastName">Last name</label>
-      <input id="lastName" type="text" placeholder="Doe" formControlName="lastName" />
-    </div>
-    <div class="field-group">
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="you@example.com" formControlName="email" />
-    </div>
-    <div class="field-group">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        placeholder="••••••••"
-        formControlName="password"
-      />
-    </div>
-    <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <button class="btn primary" type="submit" [disabled]="isSubmitting">
-      Create account
-    </button>
-    <div class="auth-divider">
-      <span>or</span>
-    </div>
-    <button class="btn ghost google-btn" type="button" (click)="signUpWithGoogle()" [disabled]="isSubmitting">
-      Continue with Google
-    </button>
-    <a class="helper-link" routerLink="/login">Already have an account? Sign in</a>
+    <ng-container *ngIf="!twoFactorRequired; else twoFactorStep">
+      <h1 i18n>Create account</h1>
+      <p i18n>Join the drop and keep every case synced.</p>
+      <div class="field-group">
+        <label for="firstName" i18n>First name</label>
+        <input
+          id="firstName"
+          type="text"
+          placeholder="Jane"
+          i18n-placeholder
+          formControlName="name"
+        />
+      </div>
+      <div class="field-group">
+        <label for="lastName" i18n>Last name</label>
+        <input
+          id="lastName"
+          type="text"
+          placeholder="Doe"
+          i18n-placeholder
+          formControlName="lastName"
+        />
+      </div>
+      <div class="field-group">
+        <label for="email" i18n>Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="you@example.com"
+          i18n-placeholder
+          formControlName="email"
+        />
+      </div>
+      <div class="field-group">
+        <label for="password" i18n>Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          i18n-placeholder
+          formControlName="password"
+        />
+      </div>
+      <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <button class="btn primary" type="submit" [disabled]="isSubmitting">
+        <span i18n>Create account</span>
+      </button>
+      <div class="auth-divider">
+        <span i18n>or</span>
+      </div>
+      <button class="btn ghost google-btn" type="button" (click)="signUpWithGoogle()" [disabled]="isSubmitting">
+        <span i18n>Continue with Google</span>
+      </button>
+      <a class="helper-link" routerLink="/login" i18n>Already have an account? Sign in</a>
+    </ng-container>
+    <ng-template #twoFactorStep>
+      <h1 i18n>Authenticator code</h1>
+      <p i18n>Enter the 6-digit code from your authenticator app.</p>
+      <div class="field-group">
+        <label for="twoFactorCode" i18n>Code</label>
+        <input
+          id="twoFactorCode"
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="123456"
+          i18n-placeholder
+          [formControl]="twoFactorForm.controls.code"
+        />
+      </div>
+      <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <button class="btn primary" type="button" (click)="submitTwoFactor()" [disabled]="isSubmitting">
+        <span i18n>Verify</span>
+      </button>
+      <button class="btn ghost" type="button" (click)="cancelTwoFactor()" [disabled]="isSubmitting">
+        <span i18n>Back to sign up</span>
+      </button>
+    </ng-template>
     <div class="auth-loading" *ngIf="isSubmitting">
       <div class="auth-loading-card">
         <span class="spinner" aria-hidden="true"></span>
-        <p>Creating your account...</p>
+        <p i18n>Creating your account...</p>
       </div>
     </div>
   </form>

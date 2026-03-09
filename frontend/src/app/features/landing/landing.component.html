@@ -1,15 +1,15 @@
-<section class="hero">
+﻿<section class="hero">
   <div class="hero-ambient"></div>
   <div class="hero-image" [style.backgroundImage]="heroImageStyle" aria-hidden="true"></div>
   <div class="hero-copy">
-    <span class="pill">Shello Studio</span>
+    <span class="pill" i18n>Shello Studio</span>
     <h1>{{ hero.title }}</h1>
-    <p>{{ hero.subtitle }}</p>
+    <p class="hero-subtitle">{{ hero.subtitle }}</p>
     <div class="cta-row">
       <a class="btn primary" [attr.href]="hero.primaryCtaLink">{{ hero.primaryCtaText }}</a>
       <a class="btn ghost" [attr.href]="hero.secondaryCtaLink">{{ hero.secondaryCtaText }}</a>
     </div>
-    <p class="scroll-hint">Scroll to preview the latest drops.</p>
+    <p class="scroll-hint" i18n>Scroll to preview the latest drops.</p>
     <div class="chip-row">
       <span class="chip" *ngFor="let tag of hero.highlights">{{ tag }}</span>
     </div>
@@ -21,7 +21,7 @@
         <p class="panel-title">{{ product.title }}</p>
         <p class="panel-sub">{{ getPanelSub(product) }}</p>
       </div>
-      <span class="panel-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+      <span class="panel-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
     </div>
   </div>
 </section>
@@ -29,19 +29,35 @@
 <section class="suggested">
   <div class="suggested-header">
     <div>
-      <h2>Suggested cases</h2>
-      <p>Scroll through the latest finishes and tap to view details.</p>
+      <h2 i18n>Suggested cases</h2>
+      <p i18n>Scroll through the latest finishes and tap to view details.</p>
     </div>
     <div class="slider-controls">
-      <button class="btn ghost" type="button" (click)="scrollCases('left')" aria-label="Scroll left">
-        ←
+      <button
+        class="btn ghost"
+        type="button"
+        (click)="scrollCases('left')"
+        aria-label="Scroll left"
+        i18n-aria-label
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </button>
-      <button class="btn ghost" type="button" (click)="scrollCases('right')" aria-label="Scroll right">
-        →
+      <button
+        class="btn ghost"
+        type="button"
+        (click)="scrollCases('right')"
+        aria-label="Scroll right"
+        i18n-aria-label
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
       </button>
     </div>
   </div>
-  <p class="state-text" *ngIf="isLoading">Loading cases...</p>
+  <p class="state-text" *ngIf="isLoading" i18n>Loading cases...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <div class="slider" #caseSlider *ngIf="!isLoading && !errorMessage">
     <article class="card" *ngFor="let product of suggestedProducts">
@@ -50,18 +66,17 @@
       </a>
       <div class="card-top">
         <span>{{ product.title }}</span>
-        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2':'ka-GE' }}</span>
+        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
       <div class="card-meta" *ngIf="getMeta(product).length">
         <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
       </div>
       <div class="card-actions">
-        <a class="card-link" [routerLink]="['/products', product.id]">View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product)">Add</button>
+        <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
+        <button class="btn ghost" type="button" (click)="addToCart(product)" i18n>Add</button>
       </div>
     </article>
   </div>
-  <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0">
-    No suggested cases yet.
-  </p>
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0" i18n>No suggested cases yet.</p>
 </section>
+

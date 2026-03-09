@@ -1,0 +1,65 @@
+<section class="admin-section">
+  <div class="header-row">
+    <div>
+      <h1 i18n>Authenticator</h1>
+      <p class="hint" i18n>Require authenticator codes for admin sign-ins.</p>
+    </div>
+    <span class="status-pill" [class.active]="isEnabled">
+      <span *ngIf="isEnabled" i18n>Enabled</span>
+      <span *ngIf="!isEnabled" i18n>Disabled</span>
+    </span>
+  </div>
+
+  <p class="state-text" *ngIf="isLoading" i18n>Loading status...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <p class="state-text success" *ngIf="!isLoading && actionMessage">{{ actionMessage }}</p>
+
+  <div class="panel" *ngIf="!isLoading">
+    <div class="panel-section" *ngIf="!isEnabled">
+      <h2 i18n>Enable authenticator</h2>
+      <p i18n>Scan the QR code with Google Authenticator, Microsoft Authenticator, or Authy.</p>
+      <button class="btn primary" type="button" (click)="startSetup()" i18n>Generate setup</button>
+      <p class="state-text error" *ngIf="setupErrorMessage">{{ setupErrorMessage }}</p>
+
+      <div class="setup-grid" *ngIf="setupData">
+        <div class="qr-card">
+          <img [src]="setupData.qrCodeDataUrl" alt="Authenticator QR code" i18n-alt />
+        </div>
+        <div class="setup-details">
+          <p class="label" i18n>Manual secret</p>
+          <p class="secret">{{ setupData.secret }}</p>
+          <p class="label" i18n>OTPAuth URL</p>
+          <p class="secret">{{ setupData.otpauthUrl }}</p>
+        </div>
+      </div>
+
+      <div class="verify-row" *ngIf="setupData">
+        <input
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="Enter 6-digit code"
+          i18n-placeholder
+          [(ngModel)]="verificationCode"
+        />
+        <button class="btn ghost" type="button" (click)="enableTwoFactor()" i18n>Verify & enable</button>
+      </div>
+    </div>
+
+    <div class="panel-section" *ngIf="isEnabled">
+      <h2 i18n>Disable authenticator</h2>
+      <p i18n>Enter a valid authenticator code to disable 2FA for admins.</p>
+      <div class="verify-row">
+        <input
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="6-digit code"
+          i18n-placeholder
+          [(ngModel)]="disableCode"
+        />
+        <button class="btn ghost danger" type="button" (click)="disableTwoFactor()" i18n>Disable</button>
+      </div>
+    </div>
+  </div>
+</section>

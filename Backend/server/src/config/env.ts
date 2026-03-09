@@ -21,6 +21,7 @@ const envSchema = z.object({
   SUPER_ADMIN_NAME: z.string().trim().min(1).max(100).optional(),
   SUPER_ADMIN_LAST_NAME: z.string().trim().min(1).max(100).optional(),
   ADMIN_RESET_PASSWORD: z.string().min(8).optional(),
+  TWO_FACTOR_ENCRYPTION_KEY: z.string().min(16).optional(),
   GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
   GOOGLE_REDIRECT_URI: z.string().min(1).optional(),

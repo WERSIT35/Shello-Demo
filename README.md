@@ -58,6 +58,7 @@ MONGO_URI=mongodb://localhost:27017/shello_db
 JWT_SECRET=replace-with-strong-secret
 REFRESH_SECRET=replace-with-strong-secret
 REFRESH_TOKEN_HMAC_KEY=replace-with-strong-secret
+TWO_FACTOR_ENCRYPTION_KEY=replace-with-strong-random-secret
 FRONTEND_URL=http://localhost:4200
 BCRYPT_ROUNDS=12
 RATE_LIMIT_WINDOW_MS=900000
@@ -76,6 +77,8 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://localhost:4200/api/v1/auth/google/callback
 GOOGLE_ALLOWED_ORIGIN=http://localhost:4200
 ```
+
+For 2FA, generate a strong random secret for `TWO_FACTOR_ENCRYPTION_KEY` (see [authentificator.md](authentificator.md)).
 
 ## Google OAuth Setup
 

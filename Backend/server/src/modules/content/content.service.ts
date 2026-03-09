@@ -16,6 +16,13 @@ export type HeroContent = {
   highlights: string[];
 };
 
+type Locale = "ka" | "en";
+
+export type HeroTranslations = {
+  ka?: HeroContent;
+  en?: HeroContent;
+};
+
 export type ContentProduct = {
   _id: string;
   title: string;
@@ -36,11 +43,12 @@ export type PublicContentResponse = {
 
 export type AdminContentResponse = {
   hero: HeroContent;
+  heroTranslations: HeroTranslations;
   suggestedProductIds: string[];
   categories: string[];
 };
 
-const defaultHero: HeroContent = {
+const defaultHeroEn: HeroContent = {
   title: "Cases that feel tailored, not templated.",
   subtitle:
     "Designed for confident protection and expressive color stories. Built to take hits, made to look intentional.",
@@ -50,6 +58,18 @@ const defaultHero: HeroContent = {
   secondaryCtaLink: "/register",
   imageUrl: "/assets/images/Iphone 17 Pro/Hero/hero-case.png",
   highlights: ["Drop tested", "Grip textured", "3-layer shell", "Matte finish"]
+};
+
+const defaultHeroKa: HeroContent = {
+  title: "ქეისები, რომლებიც შენს სტილს ერგება და არა შაბლონს.",
+  subtitle:
+    "დაცვასა და სტილს შორის არჩევანი აღარ გჭირდება. ეს ქეისი დარტყმას უძლებს და ყოველდღე გამორჩეულ იერს ინარჩუნებს.",
+  primaryCtaText: "ქეისების დათვალიერება",
+  primaryCtaLink: "/shop",
+  secondaryCtaText: "დროპს შემოუერთდი",
+  secondaryCtaLink: "/register",
+  imageUrl: "/assets/images/Iphone 17 Pro/Hero/hero-case.png",
+  highlights: ["დროპ-ტესტით დადასტურებული", "არასრიალა მოჭიდება", "3-ფენიანი დაცვა", "მატე ზედაპირი"]
 };
 
 const defaultCategories = ["Cases"];
@@ -65,6 +85,145 @@ function toHero(content: SiteContentDocument): HeroContent {
     imageUrl: content.hero.imageUrl ?? null,
     highlights: content.hero.highlights ?? []
   };
+}
+
+function getLocale(value: unknown): Locale {
+  if (value === "en") {
+    return "en";
+  }
+
+  return "ka";
+}
+
+type HeroCandidate = Omit<HeroContent, "imageUrl"> & { imageUrl?: string | null };
+
+function isSameHero(a?: HeroCandidate | null, b?: HeroCandidate | null): boolean {
+  if (!a || !b) {
+    return false;
+  }
+
+  const aHighlights = a.highlights ?? [];
+  const bHighlights = b.highlights ?? [];
+
+  if (aHighlights.length !== bHighlights.length) {
+    return false;
+  }
+
+  for (let index = 0; index < aHighlights.length; index += 1) {
+    if (aHighlights[index] !== bHighlights[index]) {
+      return false;
+    }
+  }
+
+  return (
+    a.title === b.title &&
+    a.subtitle === b.subtitle &&
+    a.primaryCtaText === b.primaryCtaText &&
+    a.primaryCtaLink === b.primaryCtaLink &&
+    a.secondaryCtaText === b.secondaryCtaText &&
+    a.secondaryCtaLink === b.secondaryCtaLink &&
+    (a.imageUrl ?? null) === (b.imageUrl ?? null)
+  );
+}
+
+function normalizeKaHeroCopy(hero: HeroCandidate): HeroContent {
+  const normalizedTitle =
+    hero.title === "ქეისები, რომლებიც მორგებულია, არა შაბლონური." ||
+    hero.title === "ქეისები, რომლებიც შენზეა მორგებული და არა შაბლონური."
+      ? defaultHeroKa.title
+      : hero.title;
+
+  const normalizedSubtitle =
+    hero.subtitle ===
+      "დიზაინი თავდაჯერებული დაცვისთვის და ექსპრესიული ფერებისთვის. გამძლეა დარტყმის მიმართ და გააზრებულად გამოიყურება." ||
+    hero.subtitle ===
+      "დიზაინი თავდაჯერებული დაცვისა და გამორჩეული ფერებისთვის. დარტყმას უძლებს და ყოველთვის გააზრებულად გამოიყურება."
+      ? defaultHeroKa.subtitle
+      : hero.subtitle;
+
+  const normalizedPrimaryCtaText =
+    hero.primaryCtaText === "ქეისების ნახვა" ? defaultHeroKa.primaryCtaText : hero.primaryCtaText;
+
+  const normalizedSecondaryCtaText =
+    hero.secondaryCtaText === "შეუერთდი დროპს" ? defaultHeroKa.secondaryCtaText : hero.secondaryCtaText;
+
+  const highlightMap: Record<string, string> = {
+    "დროფ-ტესტზე შემოწმებული": "დროპ-ტესტით დადასტურებული",
+    "დროპ-ტესტით შემოწმებული": "დროპ-ტესტით დადასტურებული",
+    "გრიპ-ტექსტურა": "არასრიალა მოჭიდება",
+    "მოჭიდების ტექსტურა": "არასრიალა მოჭიდება",
+    "3-ფენიანი კორპუსი": "3-ფენიანი დაცვა",
+    "მატე საფარი": "მატე ზედაპირი"
+  };
+
+  const normalizedHighlights = (hero.highlights ?? []).map((item) => highlightMap[item] ?? item);
+
+  return {
+    title: normalizedTitle,
+    subtitle: normalizedSubtitle,
+    primaryCtaText: normalizedPrimaryCtaText,
+    primaryCtaLink: hero.primaryCtaLink,
+    secondaryCtaText: normalizedSecondaryCtaText,
+    secondaryCtaLink: hero.secondaryCtaLink,
+    imageUrl: hero.imageUrl ?? null,
+    highlights: normalizedHighlights
+  };
+}
+
+function resolveHero(content: SiteContentDocument, locale: Locale): HeroContent {
+  const translations = content.heroTranslations as HeroTranslations | undefined;
+  if (locale === "en") {
+    return translations?.en ?? translations?.ka ?? toHero(content) ?? defaultHeroEn;
+  }
+
+  return translations?.ka ?? defaultHeroKa;
+}
+
+async function ensureHeroTranslations(content: SiteContentDocument): Promise<void> {
+  let updated = false;
+
+  if (!content.heroTranslations) {
+    content.heroTranslations = {};
+    updated = true;
+  }
+
+  const currentHero = toHero(content);
+
+  if (!content.heroTranslations.en) {
+    content.heroTranslations.en = currentHero;
+    updated = true;
+  }
+
+  if (!content.heroTranslations.ka) {
+    content.heroTranslations.ka = defaultHeroKa;
+    updated = true;
+  }
+
+  if (
+    content.heroTranslations.ka &&
+    (isSameHero(content.heroTranslations.ka, content.heroTranslations.en) ||
+      isSameHero(content.heroTranslations.ka, defaultHeroEn))
+  ) {
+    content.heroTranslations.ka = defaultHeroKa;
+    updated = true;
+  }
+
+  if (content.heroTranslations.ka) {
+    const normalizedKa = normalizeKaHeroCopy(content.heroTranslations.ka);
+    if (!isSameHero(content.heroTranslations.ka, normalizedKa)) {
+      content.heroTranslations.ka = normalizedKa;
+      updated = true;
+    }
+  }
+
+  if (content.heroTranslations.ka) {
+    content.hero = content.heroTranslations.ka;
+    updated = true;
+  }
+
+  if (updated) {
+    await content.save();
+  }
 }
 
 function toProductResponse(doc: ProductDocument): ContentProduct {
@@ -86,23 +245,29 @@ async function getOrCreateContent(): Promise<SiteContentDocument> {
   const existing = await SiteContentModel.findOne();
 
   if (existing) {
+    await ensureHeroTranslations(existing);
     return existing;
   }
 
   return SiteContentModel.create({
-    hero: defaultHero,
+    hero: defaultHeroKa,
+    heroTranslations: {
+      ka: defaultHeroKa,
+      en: defaultHeroEn
+    },
     suggestedProductIds: [],
     categories: defaultCategories
   });
 }
 
-export async function getPublicContent(): Promise<PublicContentResponse> {
+export async function getPublicContent(locale?: unknown): Promise<PublicContentResponse> {
   const content = await getOrCreateContent();
+  const selectedLocale = getLocale(locale);
   const suggestedIds = (content.suggestedProductIds ?? []).map((id) => id.toString());
 
   if (suggestedIds.length === 0) {
     return {
-      hero: toHero(content),
+      hero: resolveHero(content, selectedLocale),
       suggestedProducts: []
     };
   }
@@ -119,15 +284,21 @@ export async function getPublicContent(): Promise<PublicContentResponse> {
     .map(toProductResponse);
 
   return {
-    hero: toHero(content),
+    hero: resolveHero(content, selectedLocale),
     suggestedProducts: orderedProducts
   };
 }
 
-export async function getAdminContent(): Promise<AdminContentResponse> {
+export async function getAdminContent(locale?: unknown): Promise<AdminContentResponse> {
   const content = await getOrCreateContent();
+  const selectedLocale = getLocale(locale);
+  const translations = (content.heroTranslations || {}) as HeroTranslations;
   return {
-    hero: toHero(content),
+    hero: resolveHero(content, selectedLocale),
+    heroTranslations: {
+      ka: translations.ka ?? toHero(content),
+      en: translations.en ?? defaultHeroEn
+    },
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories
@@ -149,6 +320,31 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
     if (input.hero.highlights !== undefined) content.hero.highlights = input.hero.highlights;
   }
 
+  if (input.heroTranslations) {
+    if (!content.heroTranslations) {
+      content.heroTranslations = {};
+    }
+
+    const updateLocale = (locale: Locale, patch?: Partial<HeroContent>) => {
+      if (!patch) {
+        return;
+      }
+
+      const current = content.heroTranslations?.[locale] ?? toHero(content);
+      content.heroTranslations[locale] = {
+        ...current,
+        ...patch
+      };
+
+      if (locale === "ka") {
+        content.hero = content.heroTranslations[locale] as HeroContent;
+      }
+    };
+
+    updateLocale("ka", input.heroTranslations.ka);
+    updateLocale("en", input.heroTranslations.en);
+  }
+
   if (input.suggestedProductIds !== undefined) {
     const uniqueIds = Array.from(new Set(input.suggestedProductIds));
     content.suggestedProductIds = uniqueIds.map((id) => new Types.ObjectId(id));
@@ -161,8 +357,13 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
 
   await content.save();
 
+  const translations = (content.heroTranslations || {}) as HeroTranslations;
   return {
     hero: toHero(content),
+    heroTranslations: {
+      ka: translations.ka ?? toHero(content),
+      en: translations.en ?? defaultHeroEn
+    },
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories
