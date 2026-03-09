@@ -87,7 +87,7 @@ export const refresh: RequestHandler = async (req, res, next) => {
     if (error instanceof HttpError) {
       // Do not clear cookie on REFRESH_REVOKED: concurrent refresh requests can rotate
       // tokens out-of-order (e.g. multiple tabs/locales), and clearing here can log users out.
-      const clearCodes = ["REFRESH_INVALID", "REFRESH_EXPIRED", "REFRESH_REQUIRED"];
+      const clearCodes = ["REFRESH_INVALID", "REFRESH_EXPIRED", "REFRESH_REQUIRED", "SESSION_EXPIRED"];
       if (clearCodes.includes(error.code)) {
         res.clearCookie("refreshToken", {
           httpOnly: true,
