@@ -13,5 +13,7 @@ ENV LOCALE=ka
 COPY package*.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 EXPOSE 4200
-CMD ["sh", "-c", "node dist/frontend/${LOCALE}/server/server.mjs"]
+CMD ["/app/entrypoint.sh"]
