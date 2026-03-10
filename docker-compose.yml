@@ -21,12 +21,23 @@ services:
     depends_on:
       - mongo
 
-  frontend:
+  frontend_ka:
     build: ./frontend
     restart: unless-stopped
     environment:
       NODE_ENV: production
       PORT: 4200
+      LOCALE: ka
+    depends_on:
+      - backend
+
+  frontend_en:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4201
+      LOCALE: en
     depends_on:
       - backend
 
@@ -38,7 +49,8 @@ services:
     volumes:
       - ./infra/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - frontend
+      - frontend_ka
+      - frontend_en
       - backend
 
 volumes:
