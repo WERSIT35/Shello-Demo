@@ -2,9 +2,14 @@
 set -e
 
 LOCALE=${LOCALE:-ka}
-ROOT="/app/dist/frontend"
+ROOT="/app/dist"
 
 find_entry() {
+  if [ -f "$ROOT/${LOCALE}/server/server.mjs" ]; then
+    echo "$ROOT/${LOCALE}/server/server.mjs"
+    return 0
+  fi
+
   find "$ROOT" -name server.mjs 2>/dev/null | grep "/${LOCALE}/" | head -n 1
 }
 
