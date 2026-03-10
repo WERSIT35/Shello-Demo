@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from "crypto";
-import { authenticator } from "otplib";
+import { generateSecret, generateURI, verifySync } from "otplib";
 import qrcode from "qrcode";
 
 import { env } from "../config/env";
@@ -44,11 +44,11 @@ export function decryptTwoFactorSecret(payload: string): string {
 }
 
 export function generateTwoFactorSecret(): string {
-  return authenticator.generateSecret();
+  return generateSecret();
 }
 
 export function buildTwoFactorOtpauthUrl(email: string, secret: string): string {
-  return authenticator.keyuri(email, APP_NAME, secret);
+  return generateURI({ issuer: APP_NAME, label: email, secret });
 }
 
 export async function buildQrCodeDataUrl(otpauthUrl: string): Promise<string> {
@@ -56,6 +56,6 @@ export async function buildQrCodeDataUrl(otpauthUrl: string): Promise<string> {
 }
 
 export function isValidTwoFactorCode(code: string, secret: string): boolean {
-  authenticator.options = { window: 1 };
-  return authenticator.check(code, secret);
+  const result = verifySync({ secret, token: code, epochTolerance: 30 });
+  return result.valid;
 }
