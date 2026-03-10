@@ -12,6 +12,7 @@ declare global {
         role: "user" | "admin";
         tokenVersion: number;
       };
+      files?: unknown;
     }
   }
 }
