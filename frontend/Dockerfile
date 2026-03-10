@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build -- --configuration ka --output-path dist/ka --base-href /
+RUN npm run build -- --configuration ka --output-path dist/ka --base-href /ka/
 RUN npm run build -- --configuration en --output-path dist/en --base-href /en/
 
 FROM node:20-alpine
