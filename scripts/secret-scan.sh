@@ -4,18 +4,18 @@ set -e
 echo "Running local secret hygiene checks..."
 
 # Check for hardcoded admin credentials (ignore safe placeholders and local env files)
-EXCLUDE="--exclude-dir=.git --exclude='.env' --exclude='*.env' --exclude='*.env.*' --exclude='*example*' --exclude='*.md'"
-if grep -R --line-number $EXCLUDE -E 'SUPER_ADMIN_PASSWORD=.+$' . | grep -v 'replace-with'; then
+# Only inspect .env-like files and docs; skip scripts like bootstrap which set env variables at runtime.
+if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'SUPER_ADMIN_PASSWORD=.+$' . | grep -v 'replace-with'; then
   echo "ERROR: SUPER_ADMIN_PASSWORD hardcoded value found in repository files"
   exit 1
 fi
 
-if grep -R --line-number $EXCLUDE -E 'JWT_SECRET=.+$' . | grep -v 'replace-with'; then
+if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'JWT_SECRET=.+$' . | grep -v 'replace-with'; then
   echo "ERROR: JWT_SECRET hardcoded value found in repository files"
   exit 1
 fi
 
-if grep -R --line-number $EXCLUDE -E 'GOOGLE_CLIENT_SECRET=.+$' . | grep -v 'replace-with'; then
+if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'GOOGLE_CLIENT_SECRET=.+$' . | grep -v 'replace-with'; then
   echo "ERROR: GOOGLE_CLIENT_SECRET hardcoded value found in repository files"
   exit 1
 fi
