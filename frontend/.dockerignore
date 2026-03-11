@@ -1,0 +1,5 @@
+node_modules
+dist
+.env
+.env.*
+infra/k8s/secret.prod.yaml
