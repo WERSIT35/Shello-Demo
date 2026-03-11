@@ -28,7 +28,7 @@
           "builder": "@angular/build:application",
           "options": {
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": ["@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -47,14 +47,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": ["shellotech.eu.org"]
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "outputPath": "dist/frontend"
           },
           "configurations": {
             "production": {
