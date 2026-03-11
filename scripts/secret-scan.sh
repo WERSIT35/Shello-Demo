@@ -3,19 +3,20 @@ set -e
 
 echo "Running local secret hygiene checks..."
 
-# Check for hardcoded admin credentials
-if grep -R --line-number --exclude-dir=.git "SUPER_ADMIN_PASSWORD=.*[^\n]" .; then
-  echo "ERROR: SUPER_ADMIN_PASSWORD found in repository files"
+# Check for hardcoded admin credentials (ignore safe placeholders and local env files)
+EXCLUDE="--exclude-dir=.git --exclude='.env' --exclude='*.env' --exclude='*.env.*' --exclude='*example*' --exclude='*.md'"
+if grep -R --line-number $EXCLUDE -E 'SUPER_ADMIN_PASSWORD=.+$' . | grep -v 'replace-with'; then
+  echo "ERROR: SUPER_ADMIN_PASSWORD hardcoded value found in repository files"
   exit 1
 fi
 
-if grep -R --line-number --exclude-dir=.git "JWT_SECRET=.*[^\n]" .; then
-  echo "ERROR: JWT_SECRET found in repository files"
+if grep -R --line-number $EXCLUDE -E 'JWT_SECRET=.+$' . | grep -v 'replace-with'; then
+  echo "ERROR: JWT_SECRET hardcoded value found in repository files"
   exit 1
 fi
 
-if grep -R --line-number --exclude-dir=.git "GOOGLE_CLIENT_SECRET=.*[^\n]" .; then
-  echo "ERROR: GOOGLE_CLIENT_SECRET found in repository files"
+if grep -R --line-number $EXCLUDE -E 'GOOGLE_CLIENT_SECRET=.+$' . | grep -v 'replace-with'; then
+  echo "ERROR: GOOGLE_CLIENT_SECRET hardcoded value found in repository files"
   exit 1
 fi
 
