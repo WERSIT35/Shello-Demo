@@ -9,6 +9,9 @@
     "types": ["node"]
   },
   "include": [
-    "src/server.ts"
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
   ]
 }

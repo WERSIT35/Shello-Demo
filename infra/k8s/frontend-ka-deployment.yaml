@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: frontend-ka
-          image: wersit35/shello-frontend:latest
+          image: wersit35/shello-frontend:v0.1.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 4200
           env:

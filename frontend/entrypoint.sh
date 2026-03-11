@@ -22,7 +22,8 @@ fi
 if [ -z "$ENTRY" ]; then
   echo "Could not find server.mjs under $ROOT"
   find "$ROOT" -maxdepth 4 -type f 2>/dev/null || true
-  exit 1
+  echo "Falling back to static server."
+  exec node /app/static-server.mjs
 fi
 
 echo "Starting SSR server: $ENTRY"
