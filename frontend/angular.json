@@ -50,7 +50,7 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": ["shellotech.eu.org"]
             },
             "ssr": {
               "entry": "src/server.ts"
