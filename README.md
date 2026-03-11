@@ -77,12 +77,12 @@ RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX=100
 TRUST_PROXY=0
 
-SUPER_ADMIN_EMAIL=admin@shello.local
-SUPER_ADMIN_PASSWORD=Admin@12345
-SUPER_ADMIN_PIN_CODE=000001
+SUPER_ADMIN_EMAIL=
+SUPER_ADMIN_PASSWORD=
+SUPER_ADMIN_PIN_CODE=
 SUPER_ADMIN_NAME=Shello
 SUPER_ADMIN_LAST_NAME=Admin
-ADMIN_RESET_PASSWORD=Otariko123!
+ADMIN_RESET_PASSWORD=
 
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -90,6 +90,10 @@ GOOGLE_REDIRECT_URI=http://localhost:4200/api/v1/auth/google/callback
 GOOGLE_ALLOWED_ORIGIN=http://localhost:4200
 ```
 
+> WARNING: Do not commit real secret values into the repository. Keep `.env` local and listed in `.gitignore`.
+>
+> Use `.env.example` for placeholders only.
+>
 For 2FA, generate a strong random secret for `TWO_FACTOR_ENCRYPTION_KEY` (see [authentificator.md](authentificator.md)).
 
 ## Google OAuth Setup
