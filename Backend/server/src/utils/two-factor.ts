@@ -56,6 +56,16 @@ export async function buildQrCodeDataUrl(otpauthUrl: string): Promise<string> {
 }
 
 export function isValidTwoFactorCode(code: string, secret: string): boolean {
-  const result = verifySync({ secret, token: code, epochTolerance: 30 });
-  return result.valid;
+  try {
+    const result = verifySync({ secret, token: code, epochTolerance: 30 });
+    return result.valid;
+  } catch (error) {
+    const details = error instanceof Error ? error.message : error;
+    throw new HttpError(
+      400,
+      "TWO_FACTOR_SECRET_INVALID",
+      "Two-factor secret is invalid. Please re-enroll.",
+      details
+    );
+  }
 }

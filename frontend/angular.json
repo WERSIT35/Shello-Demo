@@ -29,7 +29,7 @@
           "options": {
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["@angular/localize/init"],
+            "polyfills": ["@angular/localize/init", "zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "i18nMissingTranslation": "warning",
@@ -47,7 +47,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "outputPath": "dist/frontend"
+            "outputPath": "dist/frontend/browser"
           },
           "configurations": {
             "production": {
@@ -111,6 +111,76 @@
             }
           },
           "defaultConfiguration": "ka"
+        },
+        "server": {
+          "builder": "@angular/build:application",
+          "options": {
+            "index": "src/index.html",
+            "server": "src/main.server.ts",
+            "polyfills": ["@angular/localize/init", "zone.js"],
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss",
+            "i18nMissingTranslation": "warning",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "outputPath": "dist/frontend/server"
+          },
+          "configurations": {
+            "production": {
+              "optimization": {
+                "fonts": false
+              },
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "ka": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "localize": ["ka"]
+            },
+            "en": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "localize": ["en"]
+            }
+          },
+          "defaultConfiguration": "ka"
+        },
+        "serve-ssr": {
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "frontend:build:development",
+              "serverTarget": "frontend:server:development"
+            },
+            "production": {
+              "browserTarget": "frontend:build:production",
+              "serverTarget": "frontend:server:production"
+            },
+            "ka": {
+              "browserTarget": "frontend:build:ka",
+              "serverTarget": "frontend:server:ka"
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular/build:unit-test"

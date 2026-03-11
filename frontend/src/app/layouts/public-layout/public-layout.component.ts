@@ -65,10 +65,11 @@ export class PublicLayoutComponent implements OnInit {
   private buildLocaleUrl(target: 'ka' | 'en'): string {
     const url = new URL(window.location.href);
     const stripped = url.pathname.replace(/^\/(en|ka)(?=\/|$)/, '') || '/';
-    const prefix = target === 'en' ? '/en' : '';
+    const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+    const prefix = isLocalhost ? '' : (target === 'en' ? '/en' : '');
     url.pathname = `${prefix}${stripped}`;
 
-    if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+    if (isLocalhost) {
       if (target === 'en' && url.port === '4200') {
         url.port = '4201';
       }
