@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-ka
+  namespace: shello
+spec:
+  selector:
+    app: frontend-ka
+  ports:
+    - name: http
+      port: 4200
+      targetPort: 4200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-en
+  namespace: shello
+spec:
+  selector:
+    app: frontend-en
+  ports:
+    - name: http
+      port: 4201
+      targetPort: 4201

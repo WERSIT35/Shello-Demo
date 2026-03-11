@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-en
+  namespace: shello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-en
+  template:
+    metadata:
+      labels:
+        app: frontend-en
+    spec:
+      containers:
+        - name: frontend-en
+          image: wersit35/shello-frontend:latest
+          ports:
+            - containerPort: 4201
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4201"
+            - name: LOCALE
+              value: "en"
