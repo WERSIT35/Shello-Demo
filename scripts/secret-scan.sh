@@ -4,14 +4,10 @@ set -e
 echo "Running local secret hygiene checks..."
 
 # Check for hardcoded admin credentials (ignore safe placeholders and local env files)
-# Only inspect tracked env documents; skip scripts like bootstrap which set env values at runtime.
-TARGETS=$(git ls-files '*.env' '*.env.example' || true)
-echo "checking files: $TARGETS"
+# Only inspect env config files; skip all docs and scripts.
+echo "checking files: .env and .env.example only"
 for FIELD in SUPER_ADMIN_PASSWORD JWT_SECRET REFRESH_SECRET TWO_FACTOR_ENCRYPTION_KEY GOOGLE_CLIENT_SECRET; do
-  if [ -z "$TARGETS" ]; then
-    continue
-  fi
-  git grep -n -E "${FIELD}=.+$" -- $TARGETS 2>/dev/null | grep -v 'replace-with' | grep -v 'your-google-client-secret' && {
+  git grep -n -E "${FIELD}=.+$" -- '*.env' '*.env.example' 2>/dev/null | grep -v 'replace-with' | grep -v 'your-google-client-secret' && {
     echo "ERROR: ${FIELD} hardcoded value found in tracked config files"
     exit 1
   }
