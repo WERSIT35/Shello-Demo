@@ -5,20 +5,16 @@ echo "Running local secret hygiene checks..."
 
 # Check for hardcoded admin credentials (ignore safe placeholders and local env files)
 # Only inspect .env-like files and docs; skip scripts like bootstrap which set env variables at runtime.
-if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'SUPER_ADMIN_PASSWORD=.+$' . | grep -v 'replace-with'; then
-  echo "ERROR: SUPER_ADMIN_PASSWORD hardcoded value found in repository files"
-  exit 1
-fi
-
-if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'JWT_SECRET=.+$' . | grep -v 'replace-with'; then
-  echo "ERROR: JWT_SECRET hardcoded value found in repository files"
-  exit 1
-fi
-
-if grep -R --line-number --include='.env' --include='*.env' --include='*.env.example' --include='*.md' -E 'GOOGLE_CLIENT_SECRET=.+$' . | grep -v 'replace-with'; then
-  echo "ERROR: GOOGLE_CLIENT_SECRET hardcoded value found in repository files"
-  exit 1
-fi
+TARGETS=$(find . -type f \( -name '.env' -o -name '*.env' -o -name '*.env.example' -o -name '*.md' \))
+echo "checking files: $TARGETS"
+for FIELD in SUPER_ADMIN_PASSWORD JWT_SECRET REFRESH_SECRET TWO_FACTOR_ENCRYPTION_KEY GOOGLE_CLIENT_SECRET; do
+  for F in $TARGETS; do
+    if grep -n -E "${FIELD}=.+$" "$F" | grep -v 'replace-with'; then
+      echo "ERROR: ${FIELD} hardcoded value found in file $F"
+      exit 1
+    fi
+  done
+done
 
 # Optional: detect-secrets invocation if available
 if command -v detect-secrets >/dev/null 2>&1; then
