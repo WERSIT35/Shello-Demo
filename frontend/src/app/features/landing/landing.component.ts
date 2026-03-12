@@ -28,6 +28,7 @@ export class LandingComponent implements OnInit {
   protected errorMessage = '';
   protected hero: HeroContent = this.buildDefaultHero();
   protected heroImageStyle = this.buildHeroImageStyle(this.hero.imageUrl);
+  protected heroProducts: Product[] = [];
   protected suggestedProducts: Product[] = [];
   protected pageToggles: { cart: boolean } | null = null;
 
@@ -133,8 +134,9 @@ export class LandingComponent implements OnInit {
 
         this.hero = content.hero;
         this.heroImageStyle = this.buildHeroImageStyle(content.hero.imageUrl);
+        this.heroProducts = content.heroProducts;
         this.suggestedProducts = content.suggestedProducts;
-        this.panelProducts = content.suggestedProducts.slice(0, 3);
+        this.panelProducts = content.heroProducts.slice(0, 4);
         this.pageToggles = { cart: content.pageToggles.cart };
       });
   }

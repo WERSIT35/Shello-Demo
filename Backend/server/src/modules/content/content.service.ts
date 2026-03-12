@@ -38,6 +38,7 @@ export type ContentProduct = {
 
 export type PublicContentResponse = {
   hero: HeroContent;
+  heroProducts: ContentProduct[];
   suggestedProducts: ContentProduct[];
   pageToggles: PageToggles;
 };
@@ -45,6 +46,7 @@ export type PublicContentResponse = {
 export type AdminContentResponse = {
   hero: HeroContent;
   heroTranslations: HeroTranslations;
+  heroProductIds: string[];
   suggestedProductIds: string[];
   categories: string[];
   pageToggles: PageToggles;
@@ -343,40 +345,46 @@ async function getOrCreateContent(): Promise<SiteContentDocument> {
       ka: defaultHeroKa,
       en: defaultHeroEn
     },
+    heroProductIds: [],
     pageToggles: defaultPageToggles,
     suggestedProductIds: [],
     categories: defaultCategories
   });
 }
 
-export async function getPublicContent(locale?: unknown): Promise<PublicContentResponse> {
-  const content = await getOrCreateContent();
-  const selectedLocale = getLocale(locale);
-  const suggestedIds = (content.suggestedProductIds ?? []).map((id) => id.toString());
-  const pageToggles = mergePageToggles(content.pageToggles);
-
-  if (suggestedIds.length === 0) {
-    return {
-      hero: resolveHero(content, selectedLocale),
-      suggestedProducts: [],
-      pageToggles
-    };
+async function resolveProductsByIds(ids: string[]): Promise<ContentProduct[]> {
+  if (ids.length === 0) {
+    return [];
   }
 
   const products = await ProductModel.find({
-    _id: { $in: suggestedIds },
+    _id: { $in: ids },
     isActive: true
   });
 
   const productMap = new Map(products.map((product) => [product._id.toString(), product]));
-  const orderedProducts = suggestedIds
+  return ids
     .map((id) => productMap.get(id))
     .filter((product): product is ProductDocument => Boolean(product))
     .map(toProductResponse);
+}
+
+export async function getPublicContent(locale?: unknown): Promise<PublicContentResponse> {
+  const content = await getOrCreateContent();
+  const selectedLocale = getLocale(locale);
+  const heroIds = (content.heroProductIds ?? []).map((id) => id.toString());
+  const suggestedIds = (content.suggestedProductIds ?? []).map((id) => id.toString());
+  const pageToggles = mergePageToggles(content.pageToggles);
+
+  const [heroProducts, suggestedProducts] = await Promise.all([
+    resolveProductsByIds(heroIds),
+    resolveProductsByIds(suggestedIds)
+  ]);
 
   return {
     hero: resolveHero(content, selectedLocale),
-    suggestedProducts: orderedProducts,
+    heroProducts,
+    suggestedProducts,
     pageToggles
   };
 }
@@ -392,6 +400,7 @@ export async function getAdminContent(locale?: unknown): Promise<AdminContentRes
       ka: translations.ka ?? toHero(content),
       en: translations.en ?? defaultHeroEn
     },
+    heroProductIds: (content.heroProductIds ?? []).map((id) => id.toString()),
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories
@@ -444,6 +453,11 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
     content.suggestedProductIds = uniqueIds.map((id) => new Types.ObjectId(id));
   }
 
+  if (input.heroProductIds !== undefined) {
+    const uniqueIds = Array.from(new Set(input.heroProductIds));
+    content.heroProductIds = uniqueIds.map((id) => new Types.ObjectId(id));
+  }
+
   if (input.categories !== undefined) {
     const uniqueCategories = Array.from(new Set(input.categories));
     content.categories = uniqueCategories;
@@ -465,6 +479,7 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
       ka: translations.ka ?? toHero(content),
       en: translations.en ?? defaultHeroEn
     },
+    heroProductIds: (content.heroProductIds ?? []).map((id) => id.toString()),
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories

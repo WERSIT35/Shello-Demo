@@ -20,6 +20,7 @@ export type HeroContent = {
 
 export type PublicContent = {
   hero: HeroContent;
+  heroProducts: Product[];
   suggestedProducts: Product[];
   pageToggles: PageToggles;
 };
@@ -27,6 +28,7 @@ export type PublicContent = {
 export type AdminContent = {
   hero: HeroContent;
   heroTranslations: HeroTranslations;
+  heroProductIds: string[];
   suggestedProductIds: string[];
   categories: string[];
   pageToggles: PageToggles;
@@ -53,6 +55,7 @@ export type PageToggles = {
 export type UpdateContentPayload = {
   hero?: Partial<HeroContent>;
   heroTranslations?: HeroTranslations;
+  heroProductIds?: string[];
   suggestedProductIds?: string[];
   categories?: string[];
   pageToggles?: Partial<PageToggles>;
@@ -89,6 +92,7 @@ type ApiProduct = {
 
 type PublicContentResponse = {
   hero: ApiHero;
+  heroProducts: ApiProduct[];
   suggestedProducts: ApiProduct[];
   pageToggles: PageToggles;
 };
@@ -96,6 +100,7 @@ type PublicContentResponse = {
 type AdminContentResponse = {
   hero: ApiHero;
   heroTranslations?: HeroTranslations;
+  heroProductIds?: string[];
   suggestedProductIds: string[];
   categories: string[];
   pageToggles?: PageToggles;
@@ -131,6 +136,7 @@ export class ContentService {
     return this.http.get<PublicContentResponse>(`${API_BASE_URL}/content`, { params }).pipe(
       map((response) => ({
         hero: this.mapHero(response.hero),
+        heroProducts: response.heroProducts.map((product) => this.mapProduct(product)),
         suggestedProducts: response.suggestedProducts.map((product) => this.mapProduct(product)),
         pageToggles: this.mergePageToggles(response.pageToggles)
       })),
@@ -148,6 +154,7 @@ export class ContentService {
       map((response) => ({
         hero: this.mapHero(response.hero),
         heroTranslations: this.mapHeroTranslations(response.heroTranslations),
+        heroProductIds: response.heroProductIds ?? [],
         suggestedProductIds: response.suggestedProductIds,
         categories: response.categories ?? [],
         pageToggles: this.mergePageToggles(response.pageToggles)
@@ -165,6 +172,7 @@ export class ContentService {
       map((response) => ({
         hero: this.mapHero(response.hero),
         heroTranslations: this.mapHeroTranslations(response.heroTranslations),
+        heroProductIds: response.heroProductIds ?? [],
         suggestedProductIds: response.suggestedProductIds,
         categories: response.categories ?? [],
         pageToggles: this.mergePageToggles(response.pageToggles)

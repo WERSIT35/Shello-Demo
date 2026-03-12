@@ -2,7 +2,7 @@
   <div class="header-row">
     <div>
       <h1 i18n>Content</h1>
-      <p class="hint" i18n>Manage hero messaging and suggested cases without touching code.</p>
+      <p class="hint" i18n>Manage hero messaging, hero cards, and suggested cases without touching code.</p>
     </div>
     <button class="btn primary" type="button" (click)="saveContent()" [disabled]="isSaving">
       <span *ngIf="isSaving" i18n>Saving...</span>
@@ -15,7 +15,7 @@
   <p class="state-text success" *ngIf="!isLoading && saveMessage">{{ saveMessage }}</p>
 
   <div class="content-grid" *ngIf="!isLoading && !errorMessage">
-    <div class="panel">
+    <div class="panel hero-panel">
       <div class="panel-head">
         <h2 i18n>Hero</h2>
         <div class="locale-toggle">
@@ -92,23 +92,87 @@
           <span i18n>Upload image</span>
         </label>
       </div>
-    </div>
 
-    <div class="panel">
-      <div class="panel-head">
+      <div class="section-divider"></div>
+      <div class="section-head">
         <div>
-          <h2 i18n>Suggested cases</h2>
-          <p class="hint" i18n>Pick up to {{ suggestedLimit }} products to show on the homepage.</p>
+          <h3 i18n>Hero featured cards</h3>
+          <p class="hint" i18n>These cards appear inside the hero area on the homepage.</p>
         </div>
-        <span class="pill" *ngIf="suggestedLimit > 0" i18n>
-          Selected {{ selectedSuggestedCount }}/{{ suggestedLimit }}
+        <span class="pill" *ngIf="heroLimit > 0" i18n>
+          Selected {{ selectedHeroCount }}/{{ heroLimit }}
         </span>
       </div>
-      <div class="products-grid">
+      <div class="filter-row">
+        <input
+          type="text"
+          placeholder="Search products"
+          i18n-placeholder
+          [(ngModel)]="heroFilterText"
+        />
+        <label class="chip-toggle">
+          <input type="checkbox" [(ngModel)]="showHeroSelectedOnly" />
+          <span i18n>Selected only</span>
+        </label>
+      </div>
+      <div class="products-grid" *ngIf="filteredHeroProducts.length">
         <button
           class="select-card"
           type="button"
-          *ngFor="let product of products"
+          *ngFor="let product of filteredHeroProducts"
+          [class.active]="isHeroSelected(product.id)"
+          (click)="toggleHeroFeatured(product.id)"
+        >
+          <article class="card">
+            <div class="card-image">
+              <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+            </div>
+            <div class="card-top">
+              <span>{{ product.title }}</span>
+              <span class="card-price">
+                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
+              </span>
+            </div>
+            <div class="card-meta" *ngIf="getMeta(product).length">
+              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+            </div>
+          </article>
+        </button>
+      </div>
+      <p class="state-text" *ngIf="!filteredHeroProducts.length" i18n>
+        No products match your filters.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head panel-head-stack">
+        <div>
+          <h2 i18n>Suggested cases</h2>
+          <p class="hint" i18n>Pick up to {{ suggestedLimit }} products to show below the hero.</p>
+        </div>
+        <div class="panel-meta">
+          <span class="pill" *ngIf="suggestedLimit > 0" i18n>
+            Selected {{ selectedSuggestedCount }}/{{ suggestedLimit }}
+          </span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <input
+          type="text"
+          placeholder="Search products"
+          i18n-placeholder
+          [(ngModel)]="suggestedFilterText"
+        />
+        <label class="chip-toggle">
+          <input type="checkbox" [(ngModel)]="showSuggestedOnly" />
+          <span i18n>Selected only</span>
+        </label>
+      </div>
+      <div class="products-grid" *ngIf="filteredSuggestedProducts.length">
+        <button
+          class="select-card"
+          type="button"
+          *ngFor="let product of filteredSuggestedProducts"
           [class.active]="isSelected(product.id)"
           (click)="toggleSuggested(product.id)"
         >
@@ -128,6 +192,9 @@
           </article>
         </button>
       </div>
+      <p class="state-text" *ngIf="!filteredSuggestedProducts.length" i18n>
+        No products match your filters.
+      </p>
     </div>
 
     <div class="panel">

@@ -44,6 +44,7 @@ const siteContentSchema = new Schema(
       },
       default: {}
     },
+    heroProductIds: { type: [Schema.Types.ObjectId], default: [] },
     suggestedProductIds: { type: [Schema.Types.ObjectId], default: [] },
     categories: { type: [String], default: ["Cases"] }
   },

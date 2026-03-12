@@ -37,6 +37,7 @@ export const updateContentSchema = z.object({
       en: heroSchema.partial().optional()
     })
     .optional(),
+  heroProductIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/)).max(4).optional(),
   suggestedProductIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/)).max(12).optional(),
   categories: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
   pageToggles: pageTogglesSchema.optional()

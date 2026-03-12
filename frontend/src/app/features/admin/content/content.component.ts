@@ -32,6 +32,10 @@ export class AdminContentComponent implements OnInit {
   protected products: AdminProduct[] = [];
   protected categoriesDraft: string[] = [];
   protected newCategory = '';
+  protected heroFilterText = '';
+  protected suggestedFilterText = '';
+  protected showHeroSelectedOnly = false;
+  protected showSuggestedOnly = false;
   protected heroDraft: HeroContent = {
     title: '',
     subtitle: '',
@@ -45,8 +49,10 @@ export class AdminContentComponent implements OnInit {
   protected highlightsText = '';
   protected heroDrafts: HeroTranslations = { ka: { ...this.heroDraft }, en: { ...this.heroDraft } };
   protected heroLocale: 'ka' | 'en' = 'ka';
+  protected selectedHeroIds = new Set<string>();
   protected selectedSuggestedIds = new Set<string>();
-  protected readonly maxSuggested = 8;
+  protected readonly maxHeroFeatured = 4;
+  protected readonly maxSuggested = 12;
   protected pageToggles: Record<string, boolean> = {};
   protected pageToggleGroups: Array<{
     title: string;
@@ -88,8 +94,87 @@ export class AdminContentComponent implements OnInit {
     this.loadContent();
   }
 
+  protected get filteredHeroProducts(): AdminProduct[] {
+    if (this.products.length === 0) {
+      return [];
+    }
+
+    const query = this.heroFilterText.trim().toLowerCase();
+    const selectedOnly = this.showHeroSelectedOnly;
+
+    return this.products.filter((product) => {
+      if (selectedOnly && !this.selectedHeroIds.has(product.id)) {
+        return false;
+      }
+
+      if (!query) {
+        return true;
+      }
+
+      const meta = product.metadata as Record<string, unknown> | null;
+      const metaValues = meta
+        ? Object.values(meta)
+            .map((value) => (typeof value === 'string' ? value : ''))
+            .join(' ')
+        : '';
+
+      const haystack = `${product.title} ${metaValues}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  }
+
+  protected get filteredSuggestedProducts(): AdminProduct[] {
+    if (this.products.length === 0) {
+      return [];
+    }
+
+    const query = this.suggestedFilterText.trim().toLowerCase();
+    const selectedOnly = this.showSuggestedOnly;
+
+    return this.products.filter((product) => {
+      if (selectedOnly && !this.selectedSuggestedIds.has(product.id)) {
+        return false;
+      }
+
+      if (!query) {
+        return true;
+      }
+
+      const meta = product.metadata as Record<string, unknown> | null;
+      const metaValues = meta
+        ? Object.values(meta)
+            .map((value) => (typeof value === 'string' ? value : ''))
+            .join(' ')
+        : '';
+
+      const haystack = `${product.title} ${metaValues}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  }
+
   protected isSelected(productId: string): boolean {
     return this.selectedSuggestedIds.has(productId);
+  }
+
+  protected isHeroSelected(productId: string): boolean {
+    return this.selectedHeroIds.has(productId);
+  }
+
+  protected toggleHeroFeatured(productId: string): void {
+    if (this.selectedHeroIds.has(productId)) {
+      this.selectedHeroIds.delete(productId);
+      this.saveMessage = '';
+      return;
+    }
+
+    if (this.selectedHeroCount >= this.heroLimit) {
+      this.errorMessage = `Select up to ${this.heroLimit} hero cards.`;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.errorMessage = '';
+    this.selectedHeroIds.add(productId);
   }
 
   protected toggleSuggested(productId: string): void {
@@ -181,6 +266,7 @@ export class AdminContentComponent implements OnInit {
           ? { ...this.heroDrafts.en, highlights: this.heroDrafts.en.highlights ?? [] }
           : undefined
       },
+      heroProductIds: Array.from(this.selectedHeroIds),
       suggestedProductIds: Array.from(this.selectedSuggestedIds),
       categories: this.categoriesDraft,
       pageToggles: this.pageToggles
@@ -189,6 +275,7 @@ export class AdminContentComponent implements OnInit {
     this.contentService.updateContent(payload).subscribe({
       next: (content) => {
         this.applyHeroTranslations(content.hero, content.heroTranslations);
+        this.selectedHeroIds = new Set(content.heroProductIds ?? []);
         this.selectedSuggestedIds = new Set(content.suggestedProductIds);
         this.categoriesDraft = [...content.categories];
         this.pageToggles = { ...content.pageToggles };
@@ -232,6 +319,14 @@ export class AdminContentComponent implements OnInit {
     return Math.min(this.maxSuggested, this.products.length);
   }
 
+  protected get heroLimit(): number {
+    if (this.products.length === 0) {
+      return 0;
+    }
+
+    return Math.min(this.maxHeroFeatured, this.products.length);
+  }
+
   protected get selectedSuggestedCount(): number {
     if (this.products.length === 0) {
       return 0;
@@ -240,6 +335,21 @@ export class AdminContentComponent implements OnInit {
     let count = 0;
     for (const product of this.products) {
       if (this.selectedSuggestedIds.has(product.id)) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
+  protected get selectedHeroCount(): number {
+    if (this.products.length === 0) {
+      return 0;
+    }
+
+    let count = 0;
+    for (const product of this.products) {
+      if (this.selectedHeroIds.has(product.id)) {
         count += 1;
       }
     }
@@ -265,6 +375,9 @@ export class AdminContentComponent implements OnInit {
         next: ({ content, products }) => {
           this.applyHeroTranslations(content.hero, content.heroTranslations);
           const productIdSet = new Set(products.map((product) => product.id));
+          this.selectedHeroIds = new Set(
+            (content.heroProductIds ?? []).filter((id) => productIdSet.has(id))
+          );
           this.selectedSuggestedIds = new Set(
             content.suggestedProductIds.filter((id) => productIdSet.has(id))
           );
