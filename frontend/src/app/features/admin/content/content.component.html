@@ -15,206 +15,231 @@
   <p class="state-text success" *ngIf="!isLoading && saveMessage">{{ saveMessage }}</p>
 
   <div class="content-grid" *ngIf="!isLoading && !errorMessage">
-    <div class="panel hero-panel">
-      <div class="panel-head">
-        <h2 i18n>Hero</h2>
-        <div class="locale-toggle">
-          <button
-            class="btn ghost"
-            type="button"
-            [class.active]="heroLocale === 'ka'"
-            (click)="setHeroLocale('ka')"
-          >
-            ქართული
-          </button>
-          <button
-            class="btn ghost"
-            type="button"
-            [class.active]="heroLocale === 'en'"
-            (click)="setHeroLocale('en')"
-          >
-            English
-          </button>
-        </div>
-      </div>
-      <div class="field">
-        <label i18n>Title</label>
-        <input type="text" [(ngModel)]="heroDraft.title" />
-      </div>
-      <div class="field">
-        <label i18n>Subtitle</label>
-        <textarea rows="3" [(ngModel)]="heroDraft.subtitle"></textarea>
-      </div>
-      <div class="field">
-        <label i18n>Primary CTA</label>
-        <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaText" />
-        <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaLink" />
-      </div>
-      <div class="field">
-        <label i18n>Secondary CTA</label>
-        <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaText" />
-        <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaLink" />
-      </div>
-      <div class="field">
-        <label i18n>Highlights (one per line)</label>
-        <textarea rows="4" [(ngModel)]="highlightsText"></textarea>
-      </div>
-      <div class="field">
-        <label i18n>Categories</label>
-        <div class="category-row">
-          <input type="text" placeholder="Add category" i18n-placeholder [(ngModel)]="newCategory" />
-          <button class="btn ghost" type="button" (click)="addCategory()" i18n>Add</button>
-        </div>
-        <div class="category-list" *ngIf="categoriesDraft.length">
-          <button
-            class="category-chip"
-            type="button"
-            *ngFor="let category of categoriesDraft"
-            (click)="removeCategory(category)"
-            title="Remove"
-            i18n-title
-          >
-            {{ category }}
-            <svg class="icon chip-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M18 6L6 18" />
-              <path d="M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="field">
-        <label i18n>Hero image</label>
-        <div class="hero-preview" *ngIf="heroDraft.imageUrl">
-          <img [src]="heroDraft.imageUrl" alt="" />
-        </div>
-        <label class="file-label">
-          <input type="file" accept="image/*" (change)="onHeroImageSelected($event)" />
-          <span i18n>Upload image</span>
-        </label>
-      </div>
-
-      <div class="section-divider"></div>
-      <div class="section-head">
-        <div>
-          <h3 i18n>Hero featured cards</h3>
-          <p class="hint" i18n>These cards appear inside the hero area on the homepage.</p>
-        </div>
-        <span class="pill" *ngIf="heroLimit > 0" i18n>
-          Selected {{ selectedHeroCount }}/{{ heroLimit }}
-        </span>
-      </div>
-      <div class="filter-row">
-        <input
-          type="text"
-          placeholder="Search products"
-          i18n-placeholder
-          [(ngModel)]="heroFilterText"
-        />
-        <label class="chip-toggle">
-          <input type="checkbox" [(ngModel)]="showHeroSelectedOnly" />
-          <span i18n>Selected only</span>
-        </label>
-      </div>
-      <div class="products-grid" *ngIf="filteredHeroProducts.length">
-        <button
-          class="select-card"
-          type="button"
-          *ngFor="let product of filteredHeroProducts"
-          [class.active]="isHeroSelected(product.id)"
-          (click)="toggleHeroFeatured(product.id)"
-        >
-          <article class="card">
-            <div class="card-image">
-              <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
-            </div>
-            <div class="card-top">
-              <span>{{ product.title }}</span>
-              <span class="card-price">
-                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
-              </span>
-            </div>
-            <div class="card-meta" *ngIf="getMeta(product).length">
-              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
-            </div>
-          </article>
-        </button>
-      </div>
-      <p class="state-text" *ngIf="!filteredHeroProducts.length" i18n>
-        No products match your filters.
-      </p>
-    </div>
-
     <div class="panel">
-      <div class="panel-head panel-head-stack">
-        <div>
-          <h2 i18n>Suggested cases</h2>
-          <p class="hint" i18n>Pick up to {{ suggestedLimit }} products to show below the hero.</p>
-        </div>
-        <div class="panel-meta">
-          <span class="pill" *ngIf="suggestedLimit > 0" i18n>
-            Selected {{ selectedSuggestedCount }}/{{ suggestedLimit }}
-          </span>
-        </div>
-      </div>
-      <div class="filter-row">
-        <input
-          type="text"
-          placeholder="Search products"
-          i18n-placeholder
-          [(ngModel)]="suggestedFilterText"
-        />
-        <label class="chip-toggle">
-          <input type="checkbox" [(ngModel)]="showSuggestedOnly" />
-          <span i18n>Selected only</span>
-        </label>
-      </div>
-      <div class="products-grid" *ngIf="filteredSuggestedProducts.length">
-        <button
-          class="select-card"
-          type="button"
-          *ngFor="let product of filteredSuggestedProducts"
-          [class.active]="isSelected(product.id)"
-          (click)="toggleSuggested(product.id)"
-        >
-          <article class="card">
-            <div class="card-image">
-              <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+      <details class="fold" open>
+        <summary class="fold-head">
+          <div>
+            <h2 i18n>Hero content</h2>
+            <p class="hint" i18n>Title, subtitle, CTA buttons, highlights, and hero image.</p>
+          </div>
+          <span class="fold-chip fold-open" i18n>Open</span>
+          <span class="fold-chip fold-closed" i18n>Collapsed</span>
+        </summary>
+        <div class="fold-body">
+          <div class="panel-head">
+            <h3 i18n>Hero</h3>
+            <div class="locale-toggle">
+              <button
+                class="btn ghost"
+                type="button"
+                [class.active]="heroLocale === 'ka'"
+                (click)="setHeroLocale('ka')"
+              >
+                ქართული
+              </button>
+              <button
+                class="btn ghost"
+                type="button"
+                [class.active]="heroLocale === 'en'"
+                (click)="setHeroLocale('en')"
+              >
+                English
+              </button>
             </div>
-            <div class="card-top">
-              <span>{{ product.title }}</span>
-              <span class="card-price">
-                {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
-              </span>
+          </div>
+          <div class="field">
+            <label i18n>Title</label>
+            <input type="text" [(ngModel)]="heroDraft.title" />
+          </div>
+          <div class="field">
+            <label i18n>Subtitle</label>
+            <textarea rows="3" [(ngModel)]="heroDraft.subtitle"></textarea>
+          </div>
+          <div class="field">
+            <label i18n>Primary CTA</label>
+            <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaText" />
+            <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.primaryCtaLink" />
+          </div>
+          <div class="field">
+            <label i18n>Secondary CTA</label>
+            <input type="text" placeholder="Text" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaText" />
+            <input type="text" placeholder="Link" i18n-placeholder [(ngModel)]="heroDraft.secondaryCtaLink" />
+          </div>
+          <div class="field">
+            <label i18n>Highlights (one per line)</label>
+            <textarea rows="4" [(ngModel)]="highlightsText"></textarea>
+          </div>
+          <div class="field">
+            <label i18n>Categories</label>
+            <div class="category-row">
+              <input type="text" placeholder="Add category" i18n-placeholder [(ngModel)]="newCategory" />
+              <button class="btn ghost" type="button" (click)="addCategory()" i18n>Add</button>
             </div>
-            <div class="card-meta" *ngIf="getMeta(product).length">
-              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+            <div class="category-list" *ngIf="categoriesDraft.length">
+              <button
+                class="category-chip"
+                type="button"
+                *ngFor="let category of categoriesDraft"
+                (click)="removeCategory(category)"
+                title="Remove"
+                i18n-title
+              >
+                {{ category }}
+                <svg class="icon chip-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 6L6 18" />
+                  <path d="M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-          </article>
-        </button>
-      </div>
-      <p class="state-text" *ngIf="!filteredSuggestedProducts.length" i18n>
-        No products match your filters.
-      </p>
-    </div>
-
-    <div class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 i18n>Page visibility</h2>
-          <p class="hint" i18n>Toggle pages on or off without redeploying.</p>
-        </div>
-      </div>
-      <div class="toggle-groups">
-        <div class="toggle-group" *ngFor="let group of pageToggleGroups">
-          <div class="toggle-group-title">{{ group.title }}</div>
-          <div class="toggle-grid">
-            <label class="toggle-row" *ngFor="let item of group.items">
-              <span>{{ item.label }}</span>
-              <input type="checkbox" [(ngModel)]="pageToggles[item.key]" />
+          </div>
+          <div class="field">
+            <label i18n>Hero image</label>
+            <div class="hero-preview" *ngIf="heroDraft.imageUrl">
+              <img [src]="heroDraft.imageUrl" alt="" />
+            </div>
+            <label class="file-label">
+              <input type="file" accept="image/*" (change)="onHeroImageSelected($event)" />
+              <span i18n>Upload image</span>
             </label>
           </div>
         </div>
-      </div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <details class="fold">
+        <summary class="fold-head">
+          <div>
+            <h2 i18n>Hero featured cards</h2>
+            <p class="hint" i18n>Pick up to {{ heroLimit }} cards shown inside the hero.</p>
+          </div>
+          <span class="pill" *ngIf="heroLimit > 0" i18n>
+            Selected {{ selectedHeroCount }}/{{ heroLimit }}
+          </span>
+        </summary>
+        <div class="fold-body">
+          <div class="filter-row">
+            <input
+              type="text"
+              placeholder="Search products"
+              i18n-placeholder
+              [(ngModel)]="heroFilterText"
+            />
+            <label class="chip-toggle">
+              <input type="checkbox" [(ngModel)]="showHeroSelectedOnly" />
+              <span i18n>Selected only</span>
+            </label>
+          </div>
+          <div class="products-grid" *ngIf="filteredHeroProducts.length">
+            <button
+              class="select-card"
+              type="button"
+              *ngFor="let product of filteredHeroProducts"
+              [class.active]="isHeroSelected(product.id)"
+              (click)="toggleHeroFeatured(product.id)"
+            >
+              <article class="card">
+                <div class="card-image">
+                  <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+                </div>
+                <div class="card-top">
+                  <span>{{ product.title }}</span>
+                  <span class="card-price">
+                    {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
+                  </span>
+                </div>
+                <div class="card-meta" *ngIf="getMeta(product).length">
+                  <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+                </div>
+              </article>
+            </button>
+          </div>
+          <p class="state-text" *ngIf="!filteredHeroProducts.length" i18n>
+            No products match your filters.
+          </p>
+        </div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <details class="fold">
+        <summary class="fold-head">
+          <div>
+            <h2 i18n>Suggested cases</h2>
+            <p class="hint" i18n>Pick up to {{ suggestedLimit }} products to show below the hero.</p>
+          </div>
+          <span class="pill" *ngIf="suggestedLimit > 0" i18n>
+            Selected {{ selectedSuggestedCount }}/{{ suggestedLimit }}
+          </span>
+        </summary>
+        <div class="fold-body">
+          <div class="filter-row">
+            <input
+              type="text"
+              placeholder="Search products"
+              i18n-placeholder
+              [(ngModel)]="suggestedFilterText"
+            />
+            <label class="chip-toggle">
+              <input type="checkbox" [(ngModel)]="showSuggestedOnly" />
+              <span i18n>Selected only</span>
+            </label>
+          </div>
+          <div class="products-grid" *ngIf="filteredSuggestedProducts.length">
+            <button
+              class="select-card"
+              type="button"
+              *ngFor="let product of filteredSuggestedProducts"
+              [class.active]="isSelected(product.id)"
+              (click)="toggleSuggested(product.id)"
+            >
+              <article class="card">
+                <div class="card-image">
+                  <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+                </div>
+                <div class="card-top">
+                  <span>{{ product.title }}</span>
+                  <span class="card-price">
+                    {{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
+                  </span>
+                </div>
+                <div class="card-meta" *ngIf="getMeta(product).length">
+                  <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+                </div>
+              </article>
+            </button>
+          </div>
+          <p class="state-text" *ngIf="!filteredSuggestedProducts.length" i18n>
+            No products match your filters.
+          </p>
+        </div>
+      </details>
+    </div>
+
+    <div class="panel">
+      <details class="fold">
+        <summary class="fold-head">
+          <div>
+            <h2 i18n>Page visibility</h2>
+            <p class="hint" i18n>Toggle pages on or off without redeploying.</p>
+          </div>
+          <span class="fold-chip fold-open" i18n>Open</span>
+          <span class="fold-chip fold-closed" i18n>Collapsed</span>
+        </summary>
+        <div class="fold-body">
+          <div class="toggle-groups compact">
+            <div class="toggle-group" *ngFor="let group of pageToggleGroups">
+              <div class="toggle-group-title">{{ group.title }}</div>
+              <div class="toggle-grid">
+                <label class="toggle-row" *ngFor="let item of group.items">
+                  <span>{{ item.label }}</span>
+                  <input type="checkbox" [(ngModel)]="pageToggles[item.key]" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
 </section>
