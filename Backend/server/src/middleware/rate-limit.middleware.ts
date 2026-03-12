@@ -5,7 +5,7 @@ import { env } from "../config/env";
 export const globalRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
   max: env.RATE_LIMIT_MAX,
-  skip: (req) => req.path.startsWith("/api/v1/auth"),
+  skip: (req) => req.path === "/health" || req.path.startsWith("/api/v1/auth"),
   standardHeaders: true,
   legacyHeaders: false,
   message: {
