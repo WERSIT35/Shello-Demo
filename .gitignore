@@ -1,4 +1,4 @@
 .env
 .secrets-baseline
 infra/k8s/secret.prod.yaml
-
+infra/k8s/secret.yaml
