@@ -48,22 +48,40 @@ export class AdminContentComponent implements OnInit {
   protected selectedSuggestedIds = new Set<string>();
   protected readonly maxSuggested = 8;
   protected pageToggles: Record<string, boolean> = {};
-  protected pageToggleEntries: Array<{ key: string; label: string }> = [
-    { key: 'home', label: 'Home' },
-    { key: 'shop', label: 'Shop' },
-    { key: 'product', label: 'Product detail' },
-    { key: 'cart', label: 'Cart' },
-    { key: 'checkout', label: 'Checkout' },
-    { key: 'login', label: 'Login' },
-    { key: 'register', label: 'Register' },
-    { key: 'orders', label: 'Orders' },
-    { key: 'profile', label: 'Profile' },
-    { key: 'admin', label: 'Admin shell' },
-    { key: 'adminProducts', label: 'Admin Products' },
-    { key: 'adminContent', label: 'Admin Content' },
-    { key: 'adminOrders', label: 'Admin Orders' },
-    { key: 'adminUsers', label: 'Admin Users' },
-    { key: 'adminSecurity', label: 'Admin Security' }
+  protected pageToggleGroups: Array<{
+    title: string;
+    items: Array<{ key: string; label: string }>;
+  }> = [
+    {
+      title: 'Storefront',
+      items: [
+        { key: 'home', label: 'Home' },
+        { key: 'shop', label: 'Shop' },
+        { key: 'product', label: 'Product detail' },
+        { key: 'cart', label: 'Cart' },
+        { key: 'checkout', label: 'Checkout' }
+      ]
+    },
+    {
+      title: 'Customer',
+      items: [
+        { key: 'login', label: 'Login' },
+        { key: 'register', label: 'Register' },
+        { key: 'orders', label: 'Orders' },
+        { key: 'profile', label: 'Profile' }
+      ]
+    },
+    {
+      title: 'Admin',
+      items: [
+        { key: 'admin', label: 'Admin shell' },
+        { key: 'adminProducts', label: 'Admin Products' },
+        { key: 'adminContent', label: 'Admin Content' },
+        { key: 'adminOrders', label: 'Admin Orders' },
+        { key: 'adminUsers', label: 'Admin Users' },
+        { key: 'adminSecurity', label: 'Admin Security' }
+      ]
+    }
   ];
 
   ngOnInit(): void {

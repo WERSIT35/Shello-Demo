@@ -7,13 +7,12 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         i18n
-        *ngIf="pageToggles?.admin !== false || isAdmin || !pageToggles"
       >Dashboard</a>
-      <a routerLink="/admin/products" routerLinkActive="active" i18n *ngIf="pageToggles?.adminProducts !== false || isAdmin || !pageToggles">Products</a>
-      <a routerLink="/admin/content" routerLinkActive="active" i18n *ngIf="pageToggles?.adminContent !== false || isAdmin || !pageToggles">Content</a>
-      <a routerLink="/admin/orders" routerLinkActive="active" i18n *ngIf="pageToggles?.adminOrders !== false || isAdmin || !pageToggles">Orders</a>
-      <a routerLink="/admin/users" routerLinkActive="active" i18n *ngIf="pageToggles?.adminUsers !== false || isAdmin || !pageToggles">Users</a>
-      <a routerLink="/admin/security" routerLinkActive="active" i18n *ngIf="pageToggles?.adminSecurity !== false || isAdmin || !pageToggles">Security</a>
+      <a routerLink="/admin/products" routerLinkActive="active" i18n>Products</a>
+      <a routerLink="/admin/content" routerLinkActive="active" i18n>Content</a>
+      <a routerLink="/admin/orders" routerLinkActive="active" i18n>Orders</a>
+      <a routerLink="/admin/users" routerLinkActive="active" i18n>Users</a>
+      <a routerLink="/admin/security" routerLinkActive="active" i18n>Security</a>
     </nav>
     <a class="back-link" routerLink="/" i18n>Back to Store</a>
   </aside>
