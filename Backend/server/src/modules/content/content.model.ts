@@ -24,6 +24,26 @@ const siteContentSchema = new Schema(
       },
       default: {}
     },
+    pageToggles: {
+      type: {
+        home: { type: Boolean, default: true },
+        shop: { type: Boolean, default: true },
+        product: { type: Boolean, default: true },
+        cart: { type: Boolean, default: true },
+        checkout: { type: Boolean, default: true },
+        login: { type: Boolean, default: true },
+        register: { type: Boolean, default: true },
+        orders: { type: Boolean, default: true },
+        profile: { type: Boolean, default: true },
+        admin: { type: Boolean, default: true },
+        adminProducts: { type: Boolean, default: true },
+        adminContent: { type: Boolean, default: true },
+        adminOrders: { type: Boolean, default: true },
+        adminUsers: { type: Boolean, default: true },
+        adminSecurity: { type: Boolean, default: true }
+      },
+      default: {}
+    },
     suggestedProductIds: { type: [Schema.Types.ObjectId], default: [] },
     categories: { type: [String], default: ["Cases"] }
   },

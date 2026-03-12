@@ -129,6 +129,21 @@
         </button>
       </div>
     </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 i18n>Page visibility</h2>
+          <p class="hint" i18n>Toggle pages on or off without redeploying.</p>
+        </div>
+      </div>
+      <div class="toggle-grid">
+        <label class="toggle-row" *ngFor="let item of pageToggleEntries">
+          <span>{{ item.label }}</span>
+          <input type="checkbox" [(ngModel)]="pageToggles[item.key]" />
+        </label>
+      </div>
+    </div>
   </div>
 </section>
 

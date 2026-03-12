@@ -2,13 +2,9 @@
   <header class="site-header">
     <a class="brand" routerLink="/">Shello</a>
     <nav class="site-nav">
-      <a routerLink="/shop" routerLinkActive="active" i18n>Shop</a>
-      <a class="cart-link" routerLink="/cart" routerLinkActive="active" i18n>Cart
-        <ng-container *ngIf="cartCount$ | async as count">
-          <span class="cart-badge" *ngIf="count > 0">{{ count }}</span>
-        </ng-container>
-      </a>
-      <a routerLink="/orders" routerLinkActive="active" i18n>Orders</a>
+      <a routerLink="/shop" routerLinkActive="active" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
+      <a class="cart-link" routerLink="/cart" routerLinkActive="active" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
+      <a routerLink="/orders" routerLinkActive="active" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
     </nav>
     <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
       <div class="user-menu">
@@ -30,7 +26,7 @@
             <span class="user-email">{{ user.email }}</span>
           </div>
           <a class="menu-item" routerLink="/profile" i18n>Profile</a>
-          <a class="menu-item" routerLink="/orders" i18n>Orders</a>
+          <a class="menu-item" routerLink="/orders" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
           <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" i18n>Admin</a>
           <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
         </div>
@@ -38,8 +34,8 @@
     </div>
     <ng-template #guestActions>
       <div class="header-actions">
-        <a class="btn ghost" routerLink="/login" i18n>Login</a>
-        <a class="btn primary" routerLink="/register" i18n>Get Started</a>
+        <a class="btn ghost" routerLink="/login" i18n *ngIf="pageToggles?.login !== false">Login</a>
+        <a class="btn primary" routerLink="/register" i18n *ngIf="pageToggles?.register !== false">Get Started</a>
       </div>
     </ng-template>
   </header>
@@ -55,7 +51,7 @@
     </div>
     <div class="footer-links">
       <a routerLink="/" i18n>Shop</a>
-      <a routerLink="/cart" i18n>Cart</a>
+      <a routerLink="/cart" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
       <a *ngIf="(user$ | async)?.role === 'admin'" routerLink="/admin" i18n>Admin</a>
     </div>
     <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>

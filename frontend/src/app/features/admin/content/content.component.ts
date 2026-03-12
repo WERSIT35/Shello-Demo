@@ -47,6 +47,24 @@ export class AdminContentComponent implements OnInit {
   protected heroLocale: 'ka' | 'en' = 'ka';
   protected selectedSuggestedIds = new Set<string>();
   protected readonly maxSuggested = 8;
+  protected pageToggles: Record<string, boolean> = {};
+  protected pageToggleEntries: Array<{ key: string; label: string }> = [
+    { key: 'home', label: 'Home' },
+    { key: 'shop', label: 'Shop' },
+    { key: 'product', label: 'Product detail' },
+    { key: 'cart', label: 'Cart' },
+    { key: 'checkout', label: 'Checkout' },
+    { key: 'login', label: 'Login' },
+    { key: 'register', label: 'Register' },
+    { key: 'orders', label: 'Orders' },
+    { key: 'profile', label: 'Profile' },
+    { key: 'admin', label: 'Admin shell' },
+    { key: 'adminProducts', label: 'Admin Products' },
+    { key: 'adminContent', label: 'Admin Content' },
+    { key: 'adminOrders', label: 'Admin Orders' },
+    { key: 'adminUsers', label: 'Admin Users' },
+    { key: 'adminSecurity', label: 'Admin Security' }
+  ];
 
   ngOnInit(): void {
     this.loadContent();
@@ -146,7 +164,8 @@ export class AdminContentComponent implements OnInit {
           : undefined
       },
       suggestedProductIds: Array.from(this.selectedSuggestedIds),
-      categories: this.categoriesDraft
+      categories: this.categoriesDraft,
+      pageToggles: this.pageToggles
     };
 
     this.contentService.updateContent(payload).subscribe({
@@ -154,6 +173,7 @@ export class AdminContentComponent implements OnInit {
         this.applyHeroTranslations(content.hero, content.heroTranslations);
         this.selectedSuggestedIds = new Set(content.suggestedProductIds);
         this.categoriesDraft = [...content.categories];
+        this.pageToggles = { ...content.pageToggles };
         this.isSaving = false;
         this.saveMessage = 'Content updated.';
         this.cdr.detectChanges();
@@ -231,6 +251,7 @@ export class AdminContentComponent implements OnInit {
             content.suggestedProductIds.filter((id) => productIdSet.has(id))
           );
           this.categoriesDraft = [...content.categories];
+          this.pageToggles = { ...content.pageToggles };
           this.products = products;
           this.isLoading = false;
           this.cdr.detectChanges();

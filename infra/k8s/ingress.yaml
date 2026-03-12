@@ -44,3 +44,10 @@ spec:
                 name: frontend-ka
                 port:
                   number: 4200
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-ka
+                port:
+                  number: 4200

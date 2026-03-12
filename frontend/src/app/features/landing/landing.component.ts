@@ -29,6 +29,7 @@ export class LandingComponent implements OnInit {
   protected hero: HeroContent = this.buildDefaultHero();
   protected heroImageStyle = this.buildHeroImageStyle(this.hero.imageUrl);
   protected suggestedProducts: Product[] = [];
+  protected pageToggles: { cart: boolean } | null = null;
 
   protected panelProducts: Product[] = [];
   private buildDefaultHero(): HeroContent {
@@ -134,6 +135,7 @@ export class LandingComponent implements OnInit {
         this.heroImageStyle = this.buildHeroImageStyle(content.hero.imageUrl);
         this.suggestedProducts = content.suggestedProducts;
         this.panelProducts = content.suggestedProducts.slice(0, 3);
+        this.pageToggles = { cart: content.pageToggles.cart };
       });
   }
 

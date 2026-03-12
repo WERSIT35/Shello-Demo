@@ -39,6 +39,7 @@ export type ContentProduct = {
 export type PublicContentResponse = {
   hero: HeroContent;
   suggestedProducts: ContentProduct[];
+  pageToggles: PageToggles;
 };
 
 export type AdminContentResponse = {
@@ -46,6 +47,25 @@ export type AdminContentResponse = {
   heroTranslations: HeroTranslations;
   suggestedProductIds: string[];
   categories: string[];
+  pageToggles: PageToggles;
+};
+
+export type PageToggles = {
+  home: boolean;
+  shop: boolean;
+  product: boolean;
+  cart: boolean;
+  checkout: boolean;
+  login: boolean;
+  register: boolean;
+  orders: boolean;
+  profile: boolean;
+  admin: boolean;
+  adminProducts: boolean;
+  adminContent: boolean;
+  adminOrders: boolean;
+  adminUsers: boolean;
+  adminSecurity: boolean;
 };
 
 const defaultHeroEn: HeroContent = {
@@ -73,6 +93,71 @@ const defaultHeroKa: HeroContent = {
 };
 
 const defaultCategories = ["Cases"];
+const defaultPageToggles: PageToggles = {
+  home: true,
+  shop: true,
+  product: true,
+  cart: true,
+  checkout: true,
+  login: true,
+  register: true,
+  orders: true,
+  profile: true,
+  admin: true,
+  adminProducts: true,
+  adminContent: true,
+  adminOrders: true,
+  adminUsers: true,
+  adminSecurity: true
+};
+
+const pageToggleKeys: (keyof PageToggles)[] = [
+  "home",
+  "shop",
+  "product",
+  "cart",
+  "checkout",
+  "login",
+  "register",
+  "orders",
+  "profile",
+  "admin",
+  "adminProducts",
+  "adminContent",
+  "adminOrders",
+  "adminUsers",
+  "adminSecurity"
+];
+
+function toPlainObject(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+
+  const maybeDoc = value as { toObject?: () => Record<string, unknown> };
+  if (typeof maybeDoc.toObject === "function") {
+    return maybeDoc.toObject();
+  }
+
+  return value as Record<string, unknown>;
+}
+
+function pickPageToggles(value: unknown): Partial<PageToggles> {
+  const source = toPlainObject(value);
+  const next: Partial<PageToggles> = {};
+
+  for (const key of pageToggleKeys) {
+    if (typeof source[key] === "boolean") {
+      next[key] = source[key] as boolean;
+    }
+  }
+
+  return next;
+}
+
+function mergePageToggles(value: unknown): PageToggles {
+  return { ...defaultPageToggles, ...pickPageToggles(value) };
+}
 
 function toHero(content: SiteContentDocument): HeroContent {
   return {
@@ -246,6 +331,9 @@ async function getOrCreateContent(): Promise<SiteContentDocument> {
 
   if (existing) {
     await ensureHeroTranslations(existing);
+    const merged = mergePageToggles(existing.pageToggles);
+    existing.pageToggles = merged as unknown as SiteContentDocument["pageToggles"];
+    await existing.save();
     return existing;
   }
 
@@ -255,6 +343,7 @@ async function getOrCreateContent(): Promise<SiteContentDocument> {
       ka: defaultHeroKa,
       en: defaultHeroEn
     },
+    pageToggles: defaultPageToggles,
     suggestedProductIds: [],
     categories: defaultCategories
   });
@@ -264,11 +353,13 @@ export async function getPublicContent(locale?: unknown): Promise<PublicContentR
   const content = await getOrCreateContent();
   const selectedLocale = getLocale(locale);
   const suggestedIds = (content.suggestedProductIds ?? []).map((id) => id.toString());
+  const pageToggles = mergePageToggles(content.pageToggles);
 
   if (suggestedIds.length === 0) {
     return {
       hero: resolveHero(content, selectedLocale),
-      suggestedProducts: []
+      suggestedProducts: [],
+      pageToggles
     };
   }
 
@@ -285,7 +376,8 @@ export async function getPublicContent(locale?: unknown): Promise<PublicContentR
 
   return {
     hero: resolveHero(content, selectedLocale),
-    suggestedProducts: orderedProducts
+    suggestedProducts: orderedProducts,
+    pageToggles
   };
 }
 
@@ -293,6 +385,7 @@ export async function getAdminContent(locale?: unknown): Promise<AdminContentRes
   const content = await getOrCreateContent();
   const selectedLocale = getLocale(locale);
   const translations = (content.heroTranslations || {}) as HeroTranslations;
+  const pageToggles = mergePageToggles(content.pageToggles);
   return {
     hero: resolveHero(content, selectedLocale),
     heroTranslations: {
@@ -302,7 +395,8 @@ export async function getAdminContent(locale?: unknown): Promise<AdminContentRes
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories
-      : defaultCategories
+      : defaultCategories,
+    pageToggles
   };
 }
 
@@ -355,9 +449,16 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
     content.categories = uniqueCategories;
   }
 
+  if (input.pageToggles !== undefined) {
+    const current = mergePageToggles(content.pageToggles);
+    const next: PageToggles = { ...current, ...pickPageToggles(input.pageToggles) };
+    content.pageToggles = next as unknown as SiteContentDocument["pageToggles"];
+  }
+
   await content.save();
 
   const translations = (content.heroTranslations || {}) as HeroTranslations;
+  const pageToggles = mergePageToggles(content.pageToggles);
   return {
     hero: toHero(content),
     heroTranslations: {
@@ -367,6 +468,7 @@ export async function updateContent(input: UpdateContentInput): Promise<AdminCon
     suggestedProductIds: (content.suggestedProductIds ?? []).map((id) => id.toString()),
     categories: (content.categories && content.categories.length > 0)
       ? content.categories
-      : defaultCategories
+      : defaultCategories,
+    pageToggles
   };
 }

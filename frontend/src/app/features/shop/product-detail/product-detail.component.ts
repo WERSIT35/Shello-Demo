@@ -28,8 +28,13 @@ export class ProductDetailComponent implements OnInit {
   protected suggestedProducts: Product[] = [];
   protected isSuggestionsLoading = true;
   protected suggestionsErrorMessage = '';
+  protected cartEnabled = true;
 
   ngOnInit(): void {
+    this.contentService.getPageToggles().subscribe((toggles) => {
+      this.cartEnabled = toggles.cart;
+      this.cdr.detectChanges();
+    });
     this.route.paramMap.pipe(distinctUntilChanged()).subscribe((params) => {
       const id = params.get('id');
 

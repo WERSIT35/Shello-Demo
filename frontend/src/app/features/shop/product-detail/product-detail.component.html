@@ -25,8 +25,8 @@
       </div>
       <div class="price-row">
         <span class="price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-        <button class="btn primary" type="button" (click)="addToCart()" i18n>Add to cart</button>
       </div>
+      <button class="btn primary" type="button" (click)="addToCart()" i18n *ngIf="cartEnabled">Add to cart</button>
       <a class="btn ghost" routerLink="/shop" i18n>Back to shop</a>
     </div>
   </ng-container>
@@ -59,7 +59,7 @@
       </div>
       <div class="card-actions">
         <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
-        <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)" i18n>
+        <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)" i18n *ngIf="cartEnabled">
           Add
         </button>
       </div>

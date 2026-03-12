@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { CartService } from '../../../core/services/cart.service';
+import { ContentService } from '../../../core/services/content.service';
 import { ProductsService, type Product } from '../../../core/services/products.service';
 
 @Component({
@@ -14,14 +15,20 @@ import { ProductsService, type Product } from '../../../core/services/products.s
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly contentService = inject(ContentService);
   private readonly cartService = inject(CartService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected products: Product[] = [];
   protected isLoading = true;
   protected errorMessage = '';
+  protected cartEnabled = true;
 
   ngOnInit(): void {
+    this.contentService.getPageToggles().subscribe((toggles) => {
+      this.cartEnabled = toggles.cart;
+      this.cdr.detectChanges();
+    });
     this.productsService.getProducts().subscribe({
       next: (products) => {
         this.products = products;

@@ -19,7 +19,7 @@
       </div>
       <div class="card-actions">
         <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product)" i18n>Add</button>
+        <button class="btn ghost" type="button" (click)="addToCart(product)" i18n *ngIf="cartEnabled">Add</button>
       </div>
     </article>
   </div>

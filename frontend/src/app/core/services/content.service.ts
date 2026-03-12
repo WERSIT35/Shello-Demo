@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { BehaviorSubject, map, of, switchMap } from 'rxjs';
 
 import { API_BASE_URL } from '../config/api.config';
 import type { Product } from './products.service';
@@ -21,6 +21,7 @@ export type HeroContent = {
 export type PublicContent = {
   hero: HeroContent;
   suggestedProducts: Product[];
+  pageToggles: PageToggles;
 };
 
 export type AdminContent = {
@@ -28,6 +29,25 @@ export type AdminContent = {
   heroTranslations: HeroTranslations;
   suggestedProductIds: string[];
   categories: string[];
+  pageToggles: PageToggles;
+};
+
+export type PageToggles = {
+  home: boolean;
+  shop: boolean;
+  product: boolean;
+  cart: boolean;
+  checkout: boolean;
+  login: boolean;
+  register: boolean;
+  orders: boolean;
+  profile: boolean;
+  admin: boolean;
+  adminProducts: boolean;
+  adminContent: boolean;
+  adminOrders: boolean;
+  adminUsers: boolean;
+  adminSecurity: boolean;
 };
 
 export type UpdateContentPayload = {
@@ -35,6 +55,7 @@ export type UpdateContentPayload = {
   heroTranslations?: HeroTranslations;
   suggestedProductIds?: string[];
   categories?: string[];
+  pageToggles?: Partial<PageToggles>;
 };
 
 export type HeroTranslations = {
@@ -69,6 +90,7 @@ type ApiProduct = {
 type PublicContentResponse = {
   hero: ApiHero;
   suggestedProducts: ApiProduct[];
+  pageToggles: PageToggles;
 };
 
 type AdminContentResponse = {
@@ -76,10 +98,32 @@ type AdminContentResponse = {
   heroTranslations?: HeroTranslations;
   suggestedProductIds: string[];
   categories: string[];
+  pageToggles?: PageToggles;
+};
+
+const defaultPageToggles: PageToggles = {
+  home: true,
+  shop: true,
+  product: true,
+  cart: true,
+  checkout: true,
+  login: true,
+  register: true,
+  orders: true,
+  profile: true,
+  admin: true,
+  adminProducts: true,
+  adminContent: true,
+  adminOrders: true,
+  adminUsers: true,
+  adminSecurity: true
 };
 
 @Injectable({ providedIn: 'root' })
 export class ContentService {
+  private readonly pageTogglesSubject = new BehaviorSubject<PageToggles>(defaultPageToggles);
+  private togglesLoaded = false;
+
   constructor(private readonly http: HttpClient) {}
 
   getPublicContent() {
@@ -87,8 +131,14 @@ export class ContentService {
     return this.http.get<PublicContentResponse>(`${API_BASE_URL}/content`, { params }).pipe(
       map((response) => ({
         hero: this.mapHero(response.hero),
-        suggestedProducts: response.suggestedProducts.map((product) => this.mapProduct(product))
-      }))
+        suggestedProducts: response.suggestedProducts.map((product) => this.mapProduct(product)),
+        pageToggles: this.mergePageToggles(response.pageToggles)
+      })),
+      map((content) => {
+        this.pageTogglesSubject.next(content.pageToggles);
+        this.togglesLoaded = true;
+        return content;
+      })
     );
   }
 
@@ -99,8 +149,14 @@ export class ContentService {
         hero: this.mapHero(response.hero),
         heroTranslations: this.mapHeroTranslations(response.heroTranslations),
         suggestedProductIds: response.suggestedProductIds,
-        categories: response.categories ?? []
-      }))
+        categories: response.categories ?? [],
+        pageToggles: this.mergePageToggles(response.pageToggles)
+      })),
+      map((content) => {
+        this.pageTogglesSubject.next(content.pageToggles);
+        this.togglesLoaded = true;
+        return content;
+      })
     );
   }
 
@@ -110,8 +166,25 @@ export class ContentService {
         hero: this.mapHero(response.hero),
         heroTranslations: this.mapHeroTranslations(response.heroTranslations),
         suggestedProductIds: response.suggestedProductIds,
-        categories: response.categories ?? []
-      }))
+        categories: response.categories ?? [],
+        pageToggles: this.mergePageToggles(response.pageToggles)
+      })),
+      map((content) => {
+        this.pageTogglesSubject.next(content.pageToggles);
+        this.togglesLoaded = true;
+        return content;
+      })
+    );
+  }
+
+  getPageToggles() {
+    if (this.togglesLoaded) {
+      return this.pageTogglesSubject.asObservable();
+    }
+
+    return this.getPublicContent().pipe(
+      map((content) => content.pageToggles),
+      switchMap(() => this.pageTogglesSubject.asObservable())
     );
   }
 
@@ -157,5 +230,9 @@ export class ContentService {
       metadata: product.metadata ?? null,
       createdAt: product.createdAt
     };
+  }
+
+  private mergePageToggles(toggles?: PageToggles): PageToggles {
+    return { ...defaultPageToggles, ...(toggles ?? {}) };
   }
 }

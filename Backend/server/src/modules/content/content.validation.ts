@@ -11,6 +11,24 @@ const heroSchema = z.object({
   highlights: z.array(z.string().trim().min(1).max(40)).max(10)
 });
 
+const pageTogglesSchema = z.object({
+  home: z.boolean().optional(),
+  shop: z.boolean().optional(),
+  product: z.boolean().optional(),
+  cart: z.boolean().optional(),
+  checkout: z.boolean().optional(),
+  login: z.boolean().optional(),
+  register: z.boolean().optional(),
+  orders: z.boolean().optional(),
+  profile: z.boolean().optional(),
+  admin: z.boolean().optional(),
+  adminProducts: z.boolean().optional(),
+  adminContent: z.boolean().optional(),
+  adminOrders: z.boolean().optional(),
+  adminUsers: z.boolean().optional(),
+  adminSecurity: z.boolean().optional()
+});
+
 export const updateContentSchema = z.object({
   hero: heroSchema.partial().optional(),
   heroTranslations: z
@@ -20,7 +38,8 @@ export const updateContentSchema = z.object({
     })
     .optional(),
   suggestedProductIds: z.array(z.string().regex(/^[0-9a-fA-F]{24}$/)).max(12).optional(),
-  categories: z.array(z.string().trim().min(1).max(40)).max(20).optional()
+  categories: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
+  pageToggles: pageTogglesSchema.optional()
 });
 
 export type UpdateContentInput = z.infer<typeof updateContentSchema>;
