@@ -183,6 +183,10 @@
   position: relative;
 }
 
+.user-mobile-panel {
+  display: none;
+}
+
 .user-menu::after {
   content: "";
   position: absolute;
@@ -421,6 +425,16 @@
   }
 
   .user-menu {
+    width: 100%;
+  }
+
+  .desktop-user-menu {
+    display: none;
+  }
+
+  .user-mobile-panel {
+    display: grid;
+    gap: 8px;
     width: 100%;
   }
 

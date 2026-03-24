@@ -73,6 +73,48 @@
       </div>
     </div>
   </div>
+  <div class="modal" *ngIf="reorderTarget">
+    <div class="modal-backdrop" (click)="closeImageReorder()"></div>
+    <div class="modal-card image-reorder-modal">
+      <div class="modal-header">
+        <h3 i18n>Reorder images</h3>
+        <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Close</button>
+      </div>
+      <p class="state-text" *ngIf="reorderTarget" i18n>First image becomes primary.</p>
+      <p class="state-text error" *ngIf="reorderErrorMessage">{{ reorderErrorMessage }}</p>
+      <div class="image-order-list" *ngIf="imageOrderDraft.length > 0; else noImages">
+        <div class="image-order-item" *ngFor="let image of imageOrderDraft; let i = index">
+          <span class="image-rank">{{ i + 1 }}</span>
+          <img [src]="image" alt="" />
+          <span class="image-path">{{ image }}</span>
+          <div class="image-controls">
+            <button class="btn ghost icon-btn" type="button" (click)="moveImage(i, -1)" [disabled]="i === 0" aria-label="Move up" title="Move up" i18n-aria-label i18n-title>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5l-6 6" />
+                <path d="M12 5l6 6" />
+              </svg>
+            </button>
+            <button class="btn ghost icon-btn" type="button" (click)="moveImage(i, 1)" [disabled]="i === imageOrderDraft.length - 1" aria-label="Move down" title="Move down" i18n-aria-label i18n-title>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 19l-6-6" />
+                <path d="M12 19l6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noImages>
+        <p class="state-text" i18n>No images found.</p>
+      </ng-template>
+      <div class="modal-actions">
+        <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Cancel</button>
+        <button class="btn primary" type="button" (click)="saveImageOrder()" [disabled]="isSavingImageOrder || imageOrderDraft.length < 2">
+          <span *ngIf="isSavingImageOrder" i18n>Saving...</span>
+          <span *ngIf="!isSavingImageOrder" i18n>Save order</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="table loading" *ngIf="isLoading">
     <div class="row header">
       <span i18n>Image</span>
@@ -139,6 +181,26 @@
         <span i18n>Active</span>
       </label>
       <div class="row-actions">
+        <button
+          class="btn ghost icon-btn"
+          type="button"
+          *ngIf="editingId !== product.id"
+          (click)="openImageReorder(product)"
+          [disabled]="product.images.length < 2"
+          aria-label="Reorder images"
+          title="Reorder images"
+          i18n-aria-label
+          i18n-title
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 6h12" />
+            <path d="M4 6h.01" />
+            <path d="M8 12h12" />
+            <path d="M4 12h.01" />
+            <path d="M8 18h12" />
+            <path d="M4 18h.01" />
+          </svg>
+        </button>
         <button
           class="btn ghost icon-btn"
           type="button"

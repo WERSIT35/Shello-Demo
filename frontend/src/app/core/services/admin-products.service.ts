@@ -52,6 +52,7 @@ type UpdateProductPayload = {
   price?: number;
   stock?: number;
   isActive?: boolean;
+  images?: string[];
 };
 
 @Injectable({ providedIn: 'root' })

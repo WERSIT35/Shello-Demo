@@ -48,6 +48,10 @@ export class AdminProductsComponent implements OnInit {
     model: ''
   };
   protected selectedFiles: File[] = [];
+  protected reorderTarget: AdminProduct | null = null;
+  protected imageOrderDraft: string[] = [];
+  protected isSavingImageOrder = false;
+  protected reorderErrorMessage = '';
 
   protected categories: string[] = [];
 
@@ -196,6 +200,62 @@ export class AdminProductsComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  protected openImageReorder(product: AdminProduct): void {
+    this.reorderTarget = product;
+    this.imageOrderDraft = [...(product.images ?? [])];
+    this.reorderErrorMessage = '';
+  }
+
+  protected closeImageReorder(): void {
+    this.reorderTarget = null;
+    this.imageOrderDraft = [];
+    this.isSavingImageOrder = false;
+    this.reorderErrorMessage = '';
+  }
+
+  protected moveImage(index: number, direction: -1 | 1): void {
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= this.imageOrderDraft.length) {
+      return;
+    }
+
+    const nextDraft = [...this.imageOrderDraft];
+    [nextDraft[index], nextDraft[nextIndex]] = [nextDraft[nextIndex], nextDraft[index]];
+    this.imageOrderDraft = nextDraft;
+  }
+
+  protected saveImageOrder(): void {
+    if (!this.reorderTarget || this.isSavingImageOrder) {
+      return;
+    }
+
+    if (this.imageOrderDraft.length === 0) {
+      this.reorderErrorMessage = 'At least one image is required.';
+      return;
+    }
+
+    this.isSavingImageOrder = true;
+    this.reorderErrorMessage = '';
+
+    this.productsService
+      .updateProduct(this.reorderTarget.id, { images: this.imageOrderDraft })
+      .pipe(
+        finalize(() => {
+          this.isSavingImageOrder = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.closeImageReorder();
+          this.refreshProducts();
+        },
+        error: () => {
+          this.reorderErrorMessage = 'Unable to save image order.';
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   protected createProduct(): void {

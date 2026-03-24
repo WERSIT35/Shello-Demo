@@ -80,6 +80,65 @@
   margin-top: 1rem;
 }
 
+.image-reorder-modal {
+  width: min(860px, 94vw);
+}
+
+.image-order-list {
+  display: grid;
+  gap: 10px;
+  max-height: 52vh;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.image-order-item {
+  display: grid;
+  grid-template-columns: auto 70px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.image-order-item img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.image-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: rgba(255, 90, 107, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(255, 90, 107, 0.28);
+}
+
+.image-path {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image-controls {
+  display: inline-flex;
+  gap: 8px;
+}
+
 .table {
   margin-top: 1.5rem;
   display: grid;
@@ -218,6 +277,21 @@
 }
 
 @media (max-width: 900px) {
+  .image-order-item {
+    grid-template-columns: auto 56px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+  }
+
+  .image-order-item img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .image-controls {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
   .table {
     overflow: visible;
     max-height: none;

@@ -33,7 +33,7 @@
 
       <section class="mobile-section" (click)="$event.stopPropagation()">
       <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
-        <div class="user-menu" #userMenu [class.open]="isUserMenuOpen">
+        <div class="user-menu desktop-user-menu" #userMenu [class.open]="isUserMenuOpen">
           <button
             class="user-button"
             type="button"
@@ -58,6 +58,16 @@
             <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" (click)="closeUserMenu(); closeMobileMenu()" i18n>Admin</a>
             <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
           </div>
+        </div>
+        <div class="user-mobile-panel">
+          <div class="user-info">
+            <span class="user-name">{{ user.name }} {{ user.lastName }}</span>
+            <span class="user-email">{{ user.email }}</span>
+          </div>
+          <a class="menu-item" routerLink="/profile" (click)="closeMobileMenu()" i18n>Profile</a>
+          <a class="menu-item" routerLink="/orders" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
+          <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" (click)="closeMobileMenu()" i18n>Admin</a>
+          <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
         </div>
       </div>
       <ng-template #guestActions>
@@ -95,6 +105,7 @@
     <div>
       <p class="footer-title" i18n>Shello Studio</p>
       <p class="footer-copy" i18n>Designed for confident protection and bold style.</p>
+      <p class="footer-copy" i18n>Created by Shello Studio</p>
     </div>
     <div class="footer-links">
       <a routerLink="/" i18n>Shop</a>
