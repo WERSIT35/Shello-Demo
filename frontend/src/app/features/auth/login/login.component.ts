@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: () => {
         this.stopGoogleStoragePoll();
         this.isSubmitting = false;
-        this.router.navigate(['/']);
+        this.finishGoogleLogin();
       },
       error: (error: unknown) => {
         this.stopGoogleStoragePoll();
@@ -226,7 +226,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (outcome.status === 'authenticated') {
         this.stopGoogleStoragePoll();
         this.isSubmitting = false;
-        this.router.navigate(['/']);
+        this.finishGoogleLogin();
       }
 
       if (outcome.status === 'two-factor-required') {
@@ -258,6 +258,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.twoFactorToken = '';
     this.twoFactorUser = null;
     this.twoFactorForm.reset();
+  }
+
+  private finishGoogleLogin(): void {
+    if (typeof window !== 'undefined') {
+      // Force full reload so cookie/session state is rehydrated immediately.
+      window.location.assign('/');
+      return;
+    }
+
+    this.router.navigate(['/']);
   }
 
   private extractTwoFactorChallenge(error: unknown): { token: string; user?: AuthUser } | null {
