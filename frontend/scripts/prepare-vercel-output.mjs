@@ -40,11 +40,48 @@ function collectIndexDirs(rootDir, maxDepth = 4) {
 
 function rankEnglishCandidate(candidateDir) {
   const rel = path.relative(buildBase, candidateDir).replace(/\\/g, "/");
-  if (!rel) return 100;
-  if (rel === "en") return 0;
-  if (rel.endsWith("/en")) return 1;
-  if (rel.includes("/ka") || rel === "ka") return 50;
-  return 10;
+  if (rel.includes("/ka") || rel === "ka") return 100;
+  if (!rel) return 0;
+  if (rel === "en") return 1;
+  if (rel.endsWith("/en")) return 2;
+  return 5;
+}
+
+function extractAssetRefs(indexHtml) {
+  const refs = [];
+  const pattern = /(?:src|href)=["']([^"']+)["']/g;
+  let match;
+  while ((match = pattern.exec(indexHtml)) !== null) {
+    const value = match[1];
+    if (!value || value.startsWith("http://") || value.startsWith("https://") || value.startsWith("data:")) {
+      continue;
+    }
+    if (value.endsWith(".js") || value.endsWith(".css")) {
+      refs.push(value);
+    }
+  }
+  return refs;
+}
+
+function scoreCandidate(candidateDir) {
+  const indexPath = path.join(candidateDir, "index.html");
+  const html = fs.readFileSync(indexPath, "utf8");
+  const refs = extractAssetRefs(html);
+  if (refs.length === 0) {
+    return { missing: 999, total: 0 };
+  }
+
+  let missing = 0;
+  for (const ref of refs) {
+    const clean = ref.split("?")[0].split("#")[0];
+    const normalized = clean.startsWith("/") ? clean.slice(1) : clean;
+    const filePath = path.join(candidateDir, normalized);
+    if (!exists(filePath)) {
+      missing += 1;
+    }
+  }
+
+  return { missing, total: refs.length };
 }
 
 function findEnglishRoot() {
@@ -53,7 +90,17 @@ function findEnglishRoot() {
     return null;
   }
 
-  discovered.sort((a, b) => rankEnglishCandidate(a) - rankEnglishCandidate(b));
+  discovered.sort((a, b) => {
+    const scoreA = scoreCandidate(a);
+    const scoreB = scoreCandidate(b);
+    if (scoreA.missing !== scoreB.missing) {
+      return scoreA.missing - scoreB.missing;
+    }
+    if (scoreA.total !== scoreB.total) {
+      return scoreB.total - scoreA.total;
+    }
+    return rankEnglishCandidate(a) - rankEnglishCandidate(b);
+  });
   return discovered[0];
 }
 

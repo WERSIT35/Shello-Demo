@@ -1,3 +1,11 @@
+@font-face {
+	font-family: "BPG DejaVu Sans";
+	src: url("/assets/fonts/bpg_dejavu_sans.otf") format("opentype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
 :root {
 	color-scheme: dark;
 	--font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -276,4 +284,10 @@ html[lang='ka'] .btn {
 html[lang='ka'] .pill {
 	font-size: 0.76rem;
 	padding: 0.32rem 0.72rem;
+}
+
+html[lang='ka'] {
+	--font-body: "BPG DejaVu Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	--font-display: var(--font-body);
+	--font-brand: var(--font-body);
 }
