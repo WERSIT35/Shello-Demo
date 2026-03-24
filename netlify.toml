@@ -1,7 +1,7 @@
 [build]
   base = "frontend"
   command = "npm run build -- --configuration production"
-  publish = "dist/frontend/browser/browser/shellotech"
+  publish = "dist/frontend/browser/browser"
 
 [[redirects]]
   from = "/api/*"
@@ -17,15 +17,15 @@
 
 [[redirects]]
   from = "/ka/*"
-  to = "/ka/index.html"
+  to = "/shellotech/ka/index.html"
   status = 200
 
 [[redirects]]
   from = "/en/*"
-  to = "/index.html"
+  to = "/shellotech/index.html"
   status = 200
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/shellotech/index.html"
   status = 200
