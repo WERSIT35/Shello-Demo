@@ -26,6 +26,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   padding: 0.25rem 0.7rem;
   border-radius: 999px;
   font-size: 0.78rem;
@@ -50,24 +51,25 @@
 
 .cart-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, auto);
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1.15rem 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1.5rem;
+  padding: 1.2rem 0;
   border-bottom: 1px solid var(--border);
 }
 
 .item-info {
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  gap: 1.1rem;
+  align-items: flex-start;
   min-width: 0;
 }
 
 .item-thumb {
   position: relative;
-  width: 96px;
-  height: 96px;
+  width: 116px;
+  height: 116px;
+  flex: 0 0 116px;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
@@ -80,6 +82,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+}
+
+.item-copy {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
 }
 
 .thumb-fallback {
@@ -104,30 +113,27 @@
   margin: 0;
   font-weight: 700;
   font-size: 1.02rem;
-  max-width: 28ch;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.32;
+  max-width: 34ch;
 }
 
 .item-sub {
-  margin: 0.3rem 0 0;
+  margin: 0;
   color: var(--text-muted);
   font-size: 0.92rem;
 }
 
 .item-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  display: grid;
+  justify-items: end;
   gap: 0.7rem;
-  min-width: 0;
+  min-width: 250px;
 }
 
-.qty-group {
+.item-controls {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.8rem;
 }
 
 .qty-control {
@@ -141,8 +147,8 @@
 }
 
 .qty-control input {
-  width: 56px;
-  min-width: 56px;
+  width: 48px;
+  min-width: 48px;
   text-align: center;
   border: 0;
   background: transparent;
@@ -152,7 +158,7 @@
 
 .item-total {
   font-weight: 700;
-  min-width: 88px;
+  min-width: 92px;
   text-align: right;
 }
 
@@ -203,16 +209,17 @@
   }
 
   .item-thumb {
-    width: 84px;
-    height: 84px;
+    width: 100px;
+    height: 100px;
+    flex-basis: 100px;
   }
 
   .item-actions {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-items: start;
+    min-width: 0;
   }
 
-  .qty-group {
+  .item-controls {
     width: 100%;
     justify-content: space-between;
   }

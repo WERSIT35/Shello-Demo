@@ -1,8 +1,8 @@
 .detail {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: 3rem;
-  align-items: center;
+  align-items: start;
   animation: rise 0.6s var(--ease) both;
 }
 
@@ -21,8 +21,15 @@
 
 .detail-info {
   display: grid;
-  gap: 0.9rem;
+  gap: 1rem;
   align-content: start;
+  min-width: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: var(--glass-blur);
 }
 
 .state-text {
@@ -51,6 +58,10 @@
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
+}
+
+.detail-gallery {
+  min-width: 0;
 }
 
 .gallery::after {
@@ -131,27 +142,36 @@
 
 .info h1 {
   font-family: var(--font-display);
-  margin: 0.8rem 0 0.4rem;
+  margin: 0.2rem 0 0.35rem;
+  line-height: 1.2;
 }
 
 .subtitle {
   color: var(--text-muted);
-  margin: 0 0 1rem;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .meta {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+.meta span {
+  padding: 0.28rem 0.62rem;
+  border-radius: 999px;
+  background: rgba(255, 90, 107, 0.12);
+  border: 1px solid rgba(255, 90, 107, 0.24);
 }
 
 .price-row {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  margin: 2rem 0 1rem;
+  margin: 0.4rem 0 0.2rem;
 }
 
 .detail-actions {
@@ -167,9 +187,15 @@
 }
 
 .suggested-section {
-  margin-top: 4rem;
+  margin-top: 1.1rem;
   display: grid;
   gap: 1.5rem;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: var(--glass-blur);
 }
 
 .suggested-header h2 {
@@ -282,15 +308,14 @@
 .card-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 0.6rem;
   font-weight: 600;
 }
 
 .card-top span:first-child {
-  max-width: 70%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 1.35;
 }
 
 .card-price {
@@ -354,6 +379,10 @@
     min-height: clamp(420px, 64vh, 620px);
   }
 
+  .detail-info {
+    padding: 1rem;
+  }
+
   .gallery-nav {
     padding: 0 8px;
   }
@@ -375,5 +404,10 @@
 
   .suggested-grid {
     grid-auto-columns: minmax(86vw, 1fr);
+  }
+
+  .suggested-section {
+    padding: 1rem;
+    margin-top: 0.7rem;
   }
 }

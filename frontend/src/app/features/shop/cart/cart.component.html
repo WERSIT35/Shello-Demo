@@ -2,7 +2,9 @@
   <div class="cart-items">
     <div class="cart-head">
       <h1 i18n>Your cart</h1>
-      <span class="items-count" *ngIf="(totalItems$ | async) as totalItems">{{ totalItems }} <span i18n>items</span></span>
+      <span class="items-count" *ngIf="(totalItems$ | async) as totalItems"
+        >{{ totalItems }}&nbsp;<span i18n>items</span></span
+      >
     </div>
 
     <p class="state-text empty" *ngIf="(items$ | async)?.length === 0" i18n>Your cart is empty.</p>
@@ -13,16 +15,22 @@
           <img *ngIf="item.image" [src]="item.image" alt="" (error)="onImageError($event)" />
           <div class="thumb-fallback" i18n>No image</div>
         </div>
-        <div>
+        <div class="item-copy">
           <p class="item-title">{{ item.title }}</p>
           <p class="item-sub">{{ item.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</p>
         </div>
       </div>
 
       <div class="item-actions">
-        <div class="qty-group">
+        <div class="item-controls">
           <div class="qty-control">
-            <button class="btn ghost icon-btn" type="button" (click)="decreaseQuantity(item)" aria-label="Decrease quantity" i18n-aria-label>
+            <button
+              class="btn ghost icon-btn"
+              type="button"
+              (click)="decreaseQuantity(item)"
+              aria-label="Decrease quantity"
+              i18n-aria-label
+            >
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M5 12h14" />
               </svg>
@@ -33,7 +41,13 @@
               [value]="item.quantity"
               (change)="updateQuantity(item, $event)"
             />
-            <button class="btn ghost icon-btn" type="button" (click)="increaseQuantity(item)" aria-label="Increase quantity" i18n-aria-label>
+            <button
+              class="btn ghost icon-btn"
+              type="button"
+              (click)="increaseQuantity(item)"
+              aria-label="Increase quantity"
+              i18n-aria-label
+            >
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 5v14" />
                 <path d="M5 12h14" />
