@@ -370,8 +370,14 @@ export class AuthService {
         tap((response) => this.setSession(response.accessToken, response.user, response.expiresIn)),
         map(() => true),
         catchError(() => {
-          this.clearSession();
-          return of(false);
+          // Avoid clearing a freshly established in-memory session (e.g. Google popup)
+          // when an earlier concurrent refresh request fails.
+          if (!this.isAccessTokenValid()) {
+            this.clearSession();
+            return of(false);
+          }
+
+          return of(true);
         }),
         finalize(() => {
           this.restoreSession$ = undefined;
