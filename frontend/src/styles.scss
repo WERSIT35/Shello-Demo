@@ -47,6 +47,7 @@
 
 html,
 body {
+	width: 100%;
 	min-height: 100%;
 }
 
@@ -57,8 +58,8 @@ html {
 		linear-gradient(180deg, #141523 0%, #0c0d12 42%, #120f1c 100%);
 	background-color: var(--bg);
 	background-repeat: no-repeat;
-	background-position: 12% -180px, 85% 118%, center top;
-	background-size: 1360px 980px, 1080px 860px, 100% 100%;
+	background-position: 12% -180px, 85% 118%, center center;
+	background-size: 1360px 980px, 1080px 860px, 100vw 100vh;
 	background-attachment: fixed, fixed, fixed;
 }
 
