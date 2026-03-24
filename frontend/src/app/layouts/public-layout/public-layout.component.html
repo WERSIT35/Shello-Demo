@@ -26,7 +26,12 @@
       <section class="mobile-section" (click)="$event.stopPropagation()">
       <nav class="site-nav">
         <a routerLink="/shop" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
-        <a class="cart-link" routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
+        <a class="cart-link" routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.cart !== false">
+          Cart
+          <ng-container *ngIf="(cartCount$ | async) as cartCount">
+            <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount > 99 ? '99+' : cartCount }}</span>
+          </ng-container>
+        </a>
         <a routerLink="/orders" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
       </nav>
       </section>
@@ -105,7 +110,7 @@
     <div>
       <p class="footer-title" i18n>Shello Studio</p>
       <p class="footer-copy" i18n>Designed for confident protection and bold style.</p>
-      <p class="footer-copy" i18n>Created by Shello Studio</p>
+      <p class="footer-copy" i18n>Website Created By Shello Studio</p>
     </div>
     <div class="footer-links">
       <a routerLink="/" i18n>Shop</a>

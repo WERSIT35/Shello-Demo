@@ -21,11 +21,22 @@ export class CartComponent {
   protected readonly total$ = combineLatest([this.subtotal$, this.items$]).pipe(
     map(([subtotal, items]) => (items.length > 0 ? subtotal + this.shippingFee : 0))
   );
+  protected readonly totalItems$ = this.items$.pipe(
+    map((items) => items.reduce((sum, item) => sum + item.quantity, 0))
+  );
 
   protected updateQuantity(item: CartItem, event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = Number(input.value);
+    const value = Math.max(1, Number(input.value) || 1);
     this.cartService.updateQuantity(item.productId, value);
+  }
+
+  protected increaseQuantity(item: CartItem): void {
+    this.cartService.updateQuantity(item.productId, item.quantity + 1);
+  }
+
+  protected decreaseQuantity(item: CartItem): void {
+    this.cartService.updateQuantity(item.productId, Math.max(1, item.quantity - 1));
   }
 
   protected removeItem(item: CartItem): void {

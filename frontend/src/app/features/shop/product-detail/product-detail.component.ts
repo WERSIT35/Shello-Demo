@@ -105,6 +105,36 @@ export class ProductDetailComponent implements OnInit {
     this.selectedImage = url;
   }
 
+  protected selectPrevImage(): void {
+    if (!this.product || this.product.images.length < 2 || !this.selectedImage) {
+      return;
+    }
+
+    const currentIndex = this.product.images.indexOf(this.selectedImage);
+    if (currentIndex < 0) {
+      this.selectedImage = this.product.images[0] ?? null;
+      return;
+    }
+
+    const prevIndex = (currentIndex - 1 + this.product.images.length) % this.product.images.length;
+    this.selectedImage = this.product.images[prevIndex] ?? this.selectedImage;
+  }
+
+  protected selectNextImage(): void {
+    if (!this.product || this.product.images.length < 2 || !this.selectedImage) {
+      return;
+    }
+
+    const currentIndex = this.product.images.indexOf(this.selectedImage);
+    if (currentIndex < 0) {
+      this.selectedImage = this.product.images[0] ?? null;
+      return;
+    }
+
+    const nextIndex = (currentIndex + 1) % this.product.images.length;
+    this.selectedImage = this.product.images[nextIndex] ?? this.selectedImage;
+  }
+
   protected getMeta(product: Product): string[] {
     const meta = product.metadata as Record<string, unknown> | null;
     if (!meta) {

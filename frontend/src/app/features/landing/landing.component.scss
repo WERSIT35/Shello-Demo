@@ -16,10 +16,9 @@
 
 .hero-ambient {
   position: absolute;
-  inset: -30% -15% auto;
-  height: 180%;
-  filter: blur(36px);
-  opacity: 0.9;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.95;
   pointer-events: none;
 }
 
@@ -27,23 +26,25 @@
 .hero-ambient::after {
   content: "";
   position: absolute;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
+  transform: translateZ(0);
 }
 
 .hero-ambient::before {
-  width: 380px;
-  height: 380px;
-  left: 8%;
-  top: 12%;
+  width: 26rem;
+  left: -8%;
+  top: -12%;
   background: rgba(255, 90, 107, 0.34);
+  filter: blur(28px);
 }
 
 .hero-ambient::after {
-  width: 320px;
-  height: 320px;
-  right: 6%;
-  top: 4%;
+  width: 22rem;
+  right: -6%;
+  top: -10%;
   background: rgba(179, 139, 255, 0.2);
+  filter: blur(24px);
 }
 
 .hero-image {

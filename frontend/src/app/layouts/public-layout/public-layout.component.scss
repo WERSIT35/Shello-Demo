@@ -25,10 +25,15 @@
 }
 
 .header-content {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   gap: 16px;
+  justify-self: end;
+  width: auto;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .mobile-sheet-head {
@@ -64,6 +69,34 @@
   align-items: center;
   padding: 0 8px;
   border-radius: 10px;
+  position: relative;
+  color: color-mix(in srgb, var(--text-muted) 88%, white);
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 86%, white), color-mix(in srgb, var(--info) 72%, white));
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  transition: transform 0.2s var(--ease), opacity 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.site-nav a:hover::after {
+  transform: scaleX(1);
+  opacity: 0.9;
 }
 
 .cart-link {
@@ -92,8 +125,18 @@
 
 .site-nav a.active {
   color: var(--text);
-  font-weight: 600;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  font-weight: 700;
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    color-mix(in srgb, var(--info) 14%, transparent)
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.site-nav a.active::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 .header-actions {
@@ -354,6 +397,8 @@
     background:
       radial-gradient(500px circle at 15% -10%, rgba(255, 90, 107, 0.18), transparent 65%),
       rgba(11, 12, 18, 0.98);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--shadow-lg);
     padding: calc(12px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
     z-index: 12;
@@ -411,6 +456,24 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.03);
+  }
+
+  .site-nav a::after {
+    left: 12px;
+    right: 12px;
+    bottom: 8px;
+  }
+
+  .cart-link {
+    justify-content: space-between;
+  }
+
+  .cart-badge {
+    position: static;
+    margin-left: auto;
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
   }
 
   .header-actions {

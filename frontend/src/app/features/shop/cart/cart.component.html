@@ -1,7 +1,12 @@
-﻿<section class="cart">
+<section class="cart">
   <div class="cart-items">
-    <h1 i18n>Your cart</h1>
-    <p class="state-text" *ngIf="(items$ | async)?.length === 0" i18n>Your cart is empty.</p>
+    <div class="cart-head">
+      <h1 i18n>Your cart</h1>
+      <span class="items-count" *ngIf="(totalItems$ | async) as totalItems">{{ totalItems }} <span i18n>items</span></span>
+    </div>
+
+    <p class="state-text empty" *ngIf="(items$ | async)?.length === 0" i18n>Your cart is empty.</p>
+
     <div class="cart-item" *ngFor="let item of items$ | async">
       <div class="item-info">
         <div class="item-thumb">
@@ -12,18 +17,33 @@
           <p class="item-sub">{{ item.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</p>
         </div>
       </div>
+
       <div class="item-actions">
-        <input
-          type="number"
-          min="1"
-          [value]="item.quantity"
-          (change)="updateQuantity(item, $event)"
-        />
+        <div class="qty-control">
+          <button class="btn ghost icon-btn" type="button" (click)="decreaseQuantity(item)" aria-label="Decrease quantity" i18n-aria-label>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14" />
+            </svg>
+          </button>
+          <input
+            type="number"
+            min="1"
+            [value]="item.quantity"
+            (change)="updateQuantity(item, $event)"
+          />
+          <button class="btn ghost icon-btn" type="button" (click)="increaseQuantity(item)" aria-label="Increase quantity" i18n-aria-label>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14" />
+              <path d="M5 12h14" />
+            </svg>
+          </button>
+        </div>
         <span class="item-total">{{ item.price * item.quantity | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
         <button class="btn ghost" type="button" (click)="removeItem(item)" i18n>Remove</button>
       </div>
     </div>
   </div>
+
   <aside class="cart-summary">
     <h2 i18n>Summary</h2>
     <div class="summary-row">
@@ -45,6 +65,6 @@
       <span>{{ total$ | async | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
     </div>
     <a class="btn primary" routerLink="/checkout" i18n>Checkout</a>
+    <a class="btn ghost" routerLink="/shop" i18n>Continue shopping</a>
   </aside>
 </section>
-

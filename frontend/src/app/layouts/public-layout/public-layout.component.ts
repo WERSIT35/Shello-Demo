@@ -3,8 +3,9 @@ import { Component, DestroyRef, ElementRef, HostListener, OnInit, ViewChild, inj
 import { PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
+import { CartService } from '../../core/services/cart.service';
 import { ContentService, type PageToggles } from '../../core/services/content.service';
 
 declare const $localize: { locale?: string };
@@ -27,6 +28,7 @@ export class PublicLayoutComponent implements OnInit {
   private readonly userMenuRef?: ElementRef<HTMLDivElement>;
 
   private readonly auth = inject(AuthService);
+  private readonly cart = inject(CartService);
   private readonly contentService = inject(ContentService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -34,6 +36,9 @@ export class PublicLayoutComponent implements OnInit {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   protected readonly user$ = this.auth.currentUser$;
+  protected readonly cartCount$ = this.cart.items$.pipe(
+    map((items) => items.reduce((sum, item) => sum + item.quantity, 0))
+  );
   protected pageToggles: PageToggles | null = null;
   protected isMobileMenuOpen = false;
   protected isUserMenuOpen = false;

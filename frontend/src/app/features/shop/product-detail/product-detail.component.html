@@ -4,6 +4,30 @@
   <ng-container *ngIf="!isLoading && product">
     <div class="gallery">
       <img *ngIf="selectedImage" [src]="selectedImage" alt="" />
+      <div class="gallery-nav" *ngIf="product.images.length > 1">
+        <button
+          class="btn ghost icon-btn gallery-nav-btn"
+          type="button"
+          (click)="selectPrevImage()"
+          aria-label="Previous image"
+          i18n-aria-label
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button
+          class="btn ghost icon-btn gallery-nav-btn"
+          type="button"
+          (click)="selectNextImage()"
+          aria-label="Next image"
+          i18n-aria-label
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
       <div class="thumbs" *ngIf="product.images.length > 1">
         <button
           class="thumb"
