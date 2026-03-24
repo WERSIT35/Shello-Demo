@@ -6,6 +6,25 @@
   animation: rise 0.6s var(--ease) both;
 }
 
+.product-detail-page {
+  display: grid;
+  gap: 2.2rem;
+}
+
+.detail-state {
+  min-height: 0;
+}
+
+.detail-main {
+  margin-top: 0;
+}
+
+.detail-info {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
 .state-text {
   margin: 0 0 1.5rem;
   color: var(--text-muted);
@@ -133,6 +152,12 @@
   align-items: center;
   gap: 1.5rem;
   margin: 2rem 0 1rem;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .price {
@@ -319,6 +344,10 @@
 @media (max-width: 900px) {
   .detail {
     grid-template-columns: 1fr;
+  }
+
+  .product-detail-page {
+    gap: 1.4rem;
   }
 
   .gallery {

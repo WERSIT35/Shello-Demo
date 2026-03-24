@@ -42,4 +42,14 @@ export class CartComponent {
   protected removeItem(item: CartItem): void {
     this.cartService.removeItem(item.productId);
   }
+
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement | null;
+    if (!img) {
+      return;
+    }
+
+    img.style.display = 'none';
+    img.parentElement?.classList.add('is-fallback');
+  }
 }
