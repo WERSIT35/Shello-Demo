@@ -5,9 +5,9 @@
     { "source": "/uploads/(.*)", "destination": "https://shello-demo-api.onrender.com/uploads/$1" },
     { "source": "/ka", "destination": "/ka/index.html" },
     { "source": "/ka/(.*)", "destination": "/ka/index.html" },
-    { "source": "/en", "destination": "/en/index.html" },
-    { "source": "/en/(.*)", "destination": "/en/index.html" },
-    { "source": "/", "destination": "/en/index.html" },
-    { "source": "/(.*)", "destination": "/en/index.html" }
+    { "source": "/en", "destination": "/index.html" },
+    { "source": "/en/(.*)", "destination": "/index.html" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
