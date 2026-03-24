@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "dist/frontend/browser",
+  "outputDirectory": "dist/frontend/browser/browser",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://shello-demo-api.onrender.com/api/$1" },
     { "source": "/uploads/(.*)", "destination": "https://shello-demo-api.onrender.com/uploads/$1" },
