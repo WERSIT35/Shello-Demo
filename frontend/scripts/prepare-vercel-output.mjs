@@ -208,6 +208,16 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
+function rewriteBaseHref(indexPath, href) {
+  if (!exists(indexPath)) {
+    return;
+  }
+
+  const html = fs.readFileSync(indexPath, "utf8");
+  const next = html.replace(/<base\s+href="[^"]*"\s*>/i, `<base href="${href}">`);
+  fs.writeFileSync(indexPath, next, "utf8");
+}
+
 function createEnglishMirror() {
   const enDir = path.join(deployOut, "en");
   fs.rmSync(enDir, { recursive: true, force: true });
@@ -256,7 +266,12 @@ function main() {
     fs.copyFileSync(path.join(deployOut, "index.html"), kaIndex);
   }
 
+  // Keep canonical paths stable per locale.
+  rewriteBaseHref(path.join(deployOut, "index.html"), "/");
+  rewriteBaseHref(path.join(deployOut, "ka", "index.html"), "/ka/");
+
   createEnglishMirror();
+  rewriteBaseHref(path.join(deployOut, "en", "index.html"), "/en/");
 
   console.log(`Prepared Vercel output at: ${deployOut}`);
 }
