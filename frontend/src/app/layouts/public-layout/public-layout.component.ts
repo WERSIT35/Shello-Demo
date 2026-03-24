@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, isPlatformBrowser } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgIf, isPlatformBrowser } from '@angular/common';
 import { Component, DestroyRef, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -27,6 +27,7 @@ export class PublicLayoutComponent implements OnInit {
   private readonly contentService = inject(ContentService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   protected readonly user$ = this.auth.currentUser$;
@@ -43,7 +44,7 @@ export class PublicLayoutComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.isMobileMenuOpen = false;
+        this.setMobileMenuState(false);
       });
     this.setDragPosition(this.currentLocale);
   }
@@ -79,17 +80,17 @@ export class PublicLayoutComponent implements OnInit {
 
   protected logout(): void {
     this.auth.logout().subscribe(() => {
-      this.isMobileMenuOpen = false;
+      this.setMobileMenuState(false);
       this.router.navigate(['/login']);
     });
   }
 
   protected toggleMobileMenu(): void {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    this.setMobileMenuState(!this.isMobileMenuOpen);
   }
 
   protected closeMobileMenu(): void {
-    this.isMobileMenuOpen = false;
+    this.setMobileMenuState(false);
   }
 
   private buildLocaleUrl(target: 'ka' | 'en'): string {
@@ -195,8 +196,17 @@ export class PublicLayoutComponent implements OnInit {
   @HostListener('window:resize')
   onResize(): void {
     if (typeof window !== 'undefined' && window.innerWidth > 900) {
-      this.isMobileMenuOpen = false;
+      this.setMobileMenuState(false);
     }
+  }
+
+  private setMobileMenuState(next: boolean): void {
+    this.isMobileMenuOpen = next;
+    if (!this.isBrowser) {
+      return;
+    }
+
+    this.document.body.style.overflow = next ? 'hidden' : '';
   }
 
 }

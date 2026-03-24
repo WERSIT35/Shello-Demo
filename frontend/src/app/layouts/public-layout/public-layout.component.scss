@@ -31,6 +31,18 @@
   gap: 16px;
 }
 
+.mobile-sheet-head {
+  display: none;
+}
+
+.mobile-section {
+  display: contents;
+}
+
+.mobile-sheet-title {
+  margin: 0;
+}
+
 .brand {
   font-family: var(--font-brand);
   font-size: 1.4rem;
@@ -320,35 +332,64 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(7, 8, 12, 0.5);
-    backdrop-filter: blur(2px);
+    background: rgba(6, 7, 10, 0.7);
+    backdrop-filter: blur(5px);
     z-index: 9;
   }
 
   .header-content {
     position: fixed;
+    left: 0;
     right: 0;
     top: 0;
-    width: min(88vw, 380px);
     height: 100dvh;
     display: grid;
-    gap: 14px;
+    gap: 12px;
     align-content: start;
-    background: rgba(15, 17, 24, 0.96);
-    border-left: 1px solid var(--border);
+    background:
+      radial-gradient(500px circle at 15% -10%, rgba(255, 90, 107, 0.18), transparent 65%),
+      rgba(11, 12, 18, 0.98);
     box-shadow: var(--shadow-lg);
-    padding: 16px 14px calc(16px + env(safe-area-inset-bottom));
+    padding: calc(12px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
     z-index: 12;
-    transform: translateX(105%);
+    overflow-y: auto;
+    transform: translateY(-3%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
   }
 
   .header-content.open {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .mobile-sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 2px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .mobile-sheet-title {
+    margin: 0;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .mobile-section {
+    display: grid;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
   }
 
   .site-nav {
@@ -394,6 +435,9 @@
     transform: none;
     pointer-events: auto;
     margin-top: 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   .lang-switch {

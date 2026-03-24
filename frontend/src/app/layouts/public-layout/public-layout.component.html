@@ -13,11 +13,25 @@
 
     <div class="mobile-overlay" *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
     <div class="header-content" [class.open]="isMobileMenuOpen">
+      <div class="mobile-sheet-head">
+        <p class="mobile-sheet-title" i18n>Menu</p>
+        <button class="btn ghost icon-btn" type="button" (click)="closeMobileMenu()" aria-label="Close menu" i18n-aria-label>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6l-12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <section class="mobile-section">
       <nav class="site-nav">
         <a routerLink="/shop" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
         <a class="cart-link" routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
         <a routerLink="/orders" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
       </nav>
+      </section>
+
+      <section class="mobile-section">
       <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
         <div class="user-menu">
           <button
@@ -50,6 +64,9 @@
           <a class="btn primary" routerLink="/register" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.register !== false">Get Started</a>
         </div>
       </ng-template>
+      </section>
+
+      <section class="mobile-section">
       <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
         <div class="drag-track" #dragTrack (pointerdown)="startDrag($event)">
           <span class="drag-label left">KA</span>
@@ -64,6 +81,7 @@
           </div>
         </div>
       </div>
+      </section>
     </div>
   </header>
 
