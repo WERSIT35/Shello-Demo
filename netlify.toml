@@ -16,6 +16,16 @@
   force = true
 
 [[redirects]]
+  from = "/ka/*"
+  to = "/ka/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/en/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

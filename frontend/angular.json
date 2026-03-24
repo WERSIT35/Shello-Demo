@@ -54,6 +54,7 @@
               "optimization": {
                 "fonts": false
               },
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",

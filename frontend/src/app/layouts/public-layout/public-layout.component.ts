@@ -37,8 +37,19 @@ export class PublicLayoutComponent implements OnInit {
   }
 
   protected get currentLocale(): 'ka' | 'en' {
-    const locale = (typeof $localize !== 'undefined' && $localize.locale) || 'ka';
-    return locale.startsWith('en') ? 'en' : 'ka';
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    if (locale.startsWith('ka')) {
+      return 'ka';
+    }
+    if (locale.startsWith('en')) {
+      return 'en';
+    }
+
+    if (this.isBrowser) {
+      return window.location.pathname.startsWith('/ka') ? 'ka' : 'en';
+    }
+
+    return 'en';
   }
 
   protected switchLocale(target: 'ka' | 'en'): void {
@@ -64,7 +75,7 @@ export class PublicLayoutComponent implements OnInit {
     const url = new URL(window.location.href);
     const stripped = url.pathname.replace(/^\/(en|ka)(?=\/|$)/, '') || '/';
     const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
-    const prefix = isLocalhost ? '' : (target === 'en' ? '/en' : '');
+    const prefix = isLocalhost ? '' : (target === 'ka' ? '/ka' : '');
     url.pathname = `${prefix}${stripped}`;
 
     if (isLocalhost) {

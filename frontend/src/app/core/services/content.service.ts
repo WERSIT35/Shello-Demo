@@ -203,8 +203,17 @@ export class ContentService {
   }
 
   private getLocaleParams(): { lang: string } {
-    const locale = (typeof $localize !== 'undefined' && $localize.locale) || 'ka';
-    const lang = locale.startsWith('en') ? 'en' : 'ka';
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    let lang: 'ka' | 'en' = 'en';
+
+    if (locale.startsWith('ka')) {
+      lang = 'ka';
+    } else if (locale.startsWith('en')) {
+      lang = 'en';
+    } else if (typeof window !== 'undefined') {
+      lang = window.location.pathname.startsWith('/ka') ? 'ka' : 'en';
+    }
+
     return { lang };
   }
 
