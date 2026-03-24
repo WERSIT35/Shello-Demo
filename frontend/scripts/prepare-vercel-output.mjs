@@ -120,6 +120,29 @@ function copyDir(from, to) {
   fs.cpSync(from, to, { recursive: true });
 }
 
+function mergeBuildArtifacts() {
+  if (!exists(buildBase)) {
+    return;
+  }
+
+  const entries = fs.readdirSync(buildBase, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.name === "index.html") {
+      continue;
+    }
+
+    const from = path.join(buildBase, entry.name);
+    const to = path.join(deployOut, entry.name);
+
+    if (entry.isDirectory()) {
+      fs.cpSync(from, to, { recursive: true, force: true });
+      continue;
+    }
+
+    fs.copyFileSync(from, to);
+  }
+}
+
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
@@ -133,6 +156,7 @@ function main() {
   fs.rmSync(deployOut, { recursive: true, force: true });
   ensureDir(path.dirname(deployOut));
   copyDir(englishRoot, deployOut);
+  mergeBuildArtifacts();
 
   const kaSource = findKaSource();
   if (kaSource) {
