@@ -144,10 +144,28 @@ export class LandingComponent implements OnInit {
   private buildHeroImageStyle(imageUrl: string | null): string {
     const overlay =
       'linear-gradient(120deg, rgba(12, 13, 18, 0.7), rgba(12, 13, 18, 0.2))';
-    if (!imageUrl) {
+    const resolvedImageUrl = this.resolveHeroImageUrl(imageUrl);
+    if (!resolvedImageUrl) {
       return overlay;
     }
 
-    return `${overlay}, url('${imageUrl}')`;
+    return `${overlay}, url('${resolvedImageUrl}')`;
+  }
+
+  private resolveHeroImageUrl(imageUrl: string | null): string | null {
+    if (!imageUrl) {
+      return null;
+    }
+
+    const trimmed = imageUrl.trim();
+    if (!trimmed) {
+      return null;
+    }
+
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) {
+      return trimmed;
+    }
+
+    return `/uploads/${trimmed}`;
   }
 }
