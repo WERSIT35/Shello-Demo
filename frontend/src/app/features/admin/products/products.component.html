@@ -208,9 +208,15 @@
           <p class="state-text form-wide" i18n>No images found.</p>
         </ng-template>
 
-        <label class="status-toggle form-wide">
-          <input type="checkbox" [(ngModel)]="editDraft.isActive" />
-          <span i18n>Active</span>
+        <label class="field field-toggle form-wide">
+          <span class="field-label" i18n>Status</span>
+          <span class="toggle-control">
+            <span i18n>Active</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="editDraft.isActive" />
+              <span class="switch-track"></span>
+            </label>
+          </span>
         </label>
       </div>
       <div class="modal-actions">
