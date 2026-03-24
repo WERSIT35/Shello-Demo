@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://shello-demo-api.onrender.com/api/$1" },
+    { "source": "/uploads/(.*)", "destination": "https://shello-demo-api.onrender.com/uploads/$1" },
+    { "source": "/ka/(.*)", "destination": "/ka/index.html" },
+    { "source": "/en/(.*)", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
