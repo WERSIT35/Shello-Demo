@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto";
 import type { RequestHandler } from "express";
+import type { CookieOptions } from "express";
 
 import { env } from "../../config/env";
 import { HttpError } from "../../utils/http-error";
@@ -23,6 +24,18 @@ import {
   getGoogleConfig
 } from "./google.oauth";
 
+function getRefreshCookieOptions(expires?: Date): CookieOptions {
+  const isProduction = env.NODE_ENV === "production";
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    // Cross-site frontend (Vercel) -> backend (Render) requires SameSite=None in production.
+    sameSite: isProduction ? "none" : "lax",
+    path: "/api/v1/auth/refresh",
+    ...(expires ? { expires } : {})
+  };
+}
+
 export const register: RequestHandler = async (req, res, next) => {
   try {
     const user = await registerUser(req.body);
@@ -39,13 +52,7 @@ export const login: RequestHandler = async (req, res, next) => {
       userAgent: req.get("user-agent")
     });
 
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      path: "/api/v1/auth/refresh",
-      expires: result.refreshTokenExpiresAt
-    });
+    res.cookie("refreshToken", result.refreshToken, getRefreshCookieOptions(result.refreshTokenExpiresAt));
 
     return res.status(200).json({
       accessToken: result.accessToken,
@@ -70,13 +77,7 @@ export const refresh: RequestHandler = async (req, res, next) => {
       userAgent: req.get("user-agent")
     });
 
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      path: "/api/v1/auth/refresh",
-      expires: result.refreshTokenExpiresAt
-    });
+    res.cookie("refreshToken", result.refreshToken, getRefreshCookieOptions(result.refreshTokenExpiresAt));
 
     return res.status(200).json({
       accessToken: result.accessToken,
@@ -89,12 +90,7 @@ export const refresh: RequestHandler = async (req, res, next) => {
       // tokens out-of-order (e.g. multiple tabs/locales), and clearing here can log users out.
       const clearCodes = ["REFRESH_INVALID", "REFRESH_EXPIRED", "REFRESH_REQUIRED", "SESSION_EXPIRED"];
       if (clearCodes.includes(error.code)) {
-        res.clearCookie("refreshToken", {
-          httpOnly: true,
-          secure: env.NODE_ENV === "production",
-          sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-          path: "/api/v1/auth/refresh"
-        });
+        res.clearCookie("refreshToken", getRefreshCookieOptions());
       }
     }
 
@@ -161,13 +157,7 @@ export const twoFactorLogin: RequestHandler = async (req, res, next) => {
       userAgent: req.get("user-agent")
     });
 
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      path: "/api/v1/auth/refresh",
-      expires: result.refreshTokenExpiresAt
-    });
+    res.cookie("refreshToken", result.refreshToken, getRefreshCookieOptions(result.refreshTokenExpiresAt));
 
     return res.status(200).json({
       accessToken: result.accessToken,
@@ -270,13 +260,7 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
       throw error;
     }
 
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      path: "/api/v1/auth/refresh",
-      expires: result.refreshTokenExpiresAt
-    });
+    res.cookie("refreshToken", result.refreshToken, getRefreshCookieOptions(result.refreshTokenExpiresAt));
 
     const { allowedOrigins } = getGoogleConfig();
     const payloadData: Record<string, unknown> = {
@@ -363,12 +347,7 @@ export const logout: RequestHandler = async (req, res, next) => {
       await logoutUser(refreshToken);
     }
 
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-        sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
-      path: "/api/v1/auth/refresh"
-    });
+    res.clearCookie("refreshToken", getRefreshCookieOptions());
 
     return res.status(204).send();
   } catch (error) {
