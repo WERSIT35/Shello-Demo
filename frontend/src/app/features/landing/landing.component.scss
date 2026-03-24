@@ -335,6 +335,10 @@
 
 .landing-splide {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 0.8rem;
 }
 
 .landing-splide .splide__track {
@@ -346,9 +350,8 @@
 }
 
 .landing-splide .splide__arrows {
-  position: absolute;
-  top: -3.1rem;
-  right: 0;
+  position: static;
+  justify-self: end;
   display: flex;
   gap: 0.6rem;
 }
@@ -356,21 +359,7 @@
 .landing-splide .splide__arrow {
   position: static;
   transform: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  opacity: 1;
-}
-
-.landing-splide .splide__arrow:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.landing-splide .splide__arrow:disabled {
-  opacity: 0.35;
+  inset: auto;
 }
 
 .card:focus-visible {

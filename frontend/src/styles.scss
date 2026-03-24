@@ -377,3 +377,62 @@ html[lang='ka'] {
 html[lang='ka'] body {
 	letter-spacing: 0;
 }
+
+/* Keep all Splide sliders clipped to their container and visually consistent. */
+.splide {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.splide__track,
+.splide__list,
+.splide__slide {
+	min-width: 0;
+}
+
+.splide__track {
+	overflow: hidden;
+}
+
+.splide__slide {
+	box-sizing: border-box;
+}
+
+.splide .splide__arrow {
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	border: 1px solid color-mix(in srgb, var(--accent) 44%, var(--border));
+	background: color-mix(in srgb, rgba(10, 12, 18, 0.72) 88%, var(--accent) 12%);
+	color: color-mix(in srgb, var(--accent) 78%, white);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+	opacity: 1;
+	transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.splide .splide__arrow:hover:not(:disabled) {
+	background: color-mix(in srgb, rgba(10, 12, 18, 0.6) 80%, var(--accent) 20%);
+	border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+	color: color-mix(in srgb, var(--accent) 88%, white);
+	box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 90, 107, 0.2);
+}
+
+.splide .splide__arrow:disabled {
+	opacity: 0.34;
+	box-shadow: none;
+}
+
+.splide .splide__arrow svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+.splide .splide__arrow svg path {
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 2.35;
+}

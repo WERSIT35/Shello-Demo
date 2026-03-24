@@ -71,6 +71,8 @@
 .detail-gallery-splide,
 .detail-gallery-thumbs {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .detail-gallery-splide .splide__slide img {
@@ -100,17 +102,15 @@
 }
 
 .detail-gallery-splide .splide__arrow {
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(10, 12, 18, 0.55);
-  color: var(--text);
-  opacity: 1;
+  inset-inline: 0.9rem;
 }
 
-.detail-gallery-splide .splide__arrow:hover:not(:disabled) {
-  background: rgba(10, 12, 18, 0.75);
+.detail-gallery-splide .splide__arrow--prev {
+  left: 0.9rem;
+}
+
+.detail-gallery-splide .splide__arrow--next {
+  right: 0.9rem;
 }
 
 .info h1 {
@@ -189,6 +189,10 @@
 
 .detail-suggested-splide {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 0.8rem;
 }
 
 .detail-suggested-splide .splide__slide {
@@ -197,6 +201,19 @@
 
 .detail-suggested-splide .splide__track {
   padding-bottom: 0.5rem;
+}
+
+.detail-suggested-splide .splide__arrows {
+  position: static;
+  justify-self: end;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.detail-suggested-splide .splide__arrow {
+  position: static;
+  transform: none;
+  inset: auto;
 }
 
 .card {
@@ -362,6 +379,10 @@
 
   .detail-gallery-splide .splide__slide img {
     height: clamp(300px, 52vh, 500px);
+  }
+
+  .detail-gallery-splide .splide__arrow {
+    inset-inline: 0.55rem;
   }
 
   .detail-gallery-thumbs .splide__slide img {
