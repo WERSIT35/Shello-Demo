@@ -4,12 +4,11 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "https://shello-demo-api.onrender.com/api/$1" },
     { "src": "/uploads/(.*)", "dest": "https://shello-demo-api.onrender.com/uploads/$1" },
-    { "src": "^/$", "status": 308, "headers": { "Location": "/en/" } },
-    { "src": "^/en$", "status": 308, "headers": { "Location": "/en/" } },
+    { "src": "^/en/?$", "status": 308, "headers": { "Location": "/" } },
     { "src": "^/ka$", "status": 308, "headers": { "Location": "/ka/" } },
     { "handle": "filesystem" },
     { "src": "/ka(?:/.*)?", "dest": "/ka/index.html" },
-    { "src": "/en(?:/.*)?", "dest": "/en/index.html" },
-    { "src": "/.*", "dest": "/en/index.html" }
+    { "src": "/en(?:/.*)?", "dest": "/index.html" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
