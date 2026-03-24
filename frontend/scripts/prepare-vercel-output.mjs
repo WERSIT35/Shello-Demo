@@ -208,6 +208,28 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
+function createEnglishMirror() {
+  const enDir = path.join(deployOut, "en");
+  fs.rmSync(enDir, { recursive: true, force: true });
+  ensureDir(enDir);
+
+  const entries = fs.readdirSync(deployOut, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.name === "en") {
+      continue;
+    }
+
+    const from = path.join(deployOut, entry.name);
+    const to = path.join(enDir, entry.name);
+
+    if (entry.isDirectory()) {
+      fs.cpSync(from, to, { recursive: true, force: true });
+    } else {
+      fs.copyFileSync(from, to);
+    }
+  }
+}
+
 function main() {
   const englishRoot = findEnglishRoot();
   if (!englishRoot) {
@@ -233,6 +255,8 @@ function main() {
     ensureDir(path.join(deployOut, "ka"));
     fs.copyFileSync(path.join(deployOut, "index.html"), kaIndex);
   }
+
+  createEnglishMirror();
 
   console.log(`Prepared Vercel output at: ${deployOut}`);
 }
