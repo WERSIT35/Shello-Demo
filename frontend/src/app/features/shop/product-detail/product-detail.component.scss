@@ -119,6 +119,11 @@
   line-height: 1.2;
 }
 
+.info .pill {
+  justify-self: start;
+  width: auto;
+}
+
 .subtitle {
   color: var(--text-muted);
   margin: 0;

@@ -26,7 +26,8 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
   GOOGLE_REDIRECT_URI: z.string().min(1).optional(),
   GOOGLE_ALLOWED_ORIGIN: z.string().min(1).optional(),
-  UPLOAD_DIR: z.string().min(1).optional()
+  UPLOAD_DIR: z.string().min(1).optional(),
+  UPLOAD_BUCKET: z.string().min(1).optional()
 });
 
 export type Env = z.infer<typeof envSchema>;

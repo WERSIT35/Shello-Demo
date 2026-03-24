@@ -14,6 +14,7 @@ import { productRouter } from "./modules/products";
 import { orderRouter } from "./modules/orders";
 import userRouter from "./modules/users/user.routes";
 import uploadRouter from "./modules/uploads/upload.routes";
+import { streamImageFromGridFs } from "./modules/uploads/gridfs.service";
 
 const app = express();
 const uploadDir = env.UPLOAD_DIR || path.join(process.cwd(), "uploads");
@@ -32,6 +33,17 @@ app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(cookieParser());
 app.use(globalRateLimiter);
 app.use("/uploads", express.static(uploadDir));
+app.get("/uploads/:filename", async (req, res, next) => {
+  try {
+    const found = await streamImageFromGridFs(req.params.filename, res);
+    if (!found) {
+      return next();
+    }
+    return;
+  } catch (error) {
+    return next(error);
+  }
+});
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/content", contentRouter);
