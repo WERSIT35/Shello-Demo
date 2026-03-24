@@ -1,7 +1,9 @@
 import { AsyncPipe, NgIf, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
 import { ContentService, type PageToggles } from '../../core/services/content.service';
 
@@ -24,6 +26,7 @@ export class PublicLayoutComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly contentService = inject(ContentService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   protected readonly user$ = this.auth.currentUser$;
@@ -34,6 +37,14 @@ export class PublicLayoutComponent implements OnInit {
     this.contentService.getPageToggles().subscribe((toggles) => {
       this.pageToggles = toggles;
     });
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.isMobileMenuOpen = false;
+      });
     this.setDragPosition(this.currentLocale);
   }
 

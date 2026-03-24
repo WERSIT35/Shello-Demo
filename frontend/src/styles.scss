@@ -20,16 +20,16 @@
 	--surface-strong: rgba(255, 255, 255, 0.09);
 	--text: #f4f5f7;
 	--text-muted: #a0a7b4;
-	--accent: #7ad7ff;
-	--accent-dark: #4bb5ff;
+	--accent: #ff5a6b;
+	--accent-dark: #e04759;
 	--success: #52d18e;
 	--success-soft: rgba(82, 209, 142, 0.18);
 	--warning: #f2c56a;
 	--warning-soft: rgba(242, 197, 106, 0.18);
 	--danger: #ff8f9d;
 	--danger-soft: rgba(255, 143, 157, 0.2);
-	--info: #8bb8ff;
-	--info-soft: rgba(139, 184, 255, 0.18);
+	--info: #b38bff;
+	--info-soft: rgba(179, 139, 255, 0.18);
 	--border: rgba(255, 255, 255, 0.08);
 	--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
 	--shadow-md: 0 18px 40px rgba(0, 0, 0, 0.45);
@@ -56,8 +56,8 @@ body {
 	line-height: var(--line-body);
 	letter-spacing: 0.002em;
 	color: var(--text);
-	background: radial-gradient(1200px circle at 15% -10%, rgba(90, 140, 255, 0.22) 0%, transparent 60%),
-		radial-gradient(900px circle at 80% 110%, rgba(122, 215, 255, 0.1) 0%, transparent 70%),
+	background: radial-gradient(1200px circle at 15% -10%, rgba(224, 71, 89, 0.2) 0%, transparent 60%),
+		radial-gradient(900px circle at 80% 110%, rgba(179, 139, 255, 0.1) 0%, transparent 70%),
 		var(--bg);
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -111,8 +111,8 @@ input:focus,
 textarea:focus,
 select:focus {
 	outline: none;
-	border-color: rgba(10, 132, 255, 0.6);
-	box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15);
+	border-color: color-mix(in srgb, var(--accent) 72%, transparent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .btn {
@@ -132,7 +132,7 @@ select:focus {
 .btn.primary {
 	background: var(--accent);
 	color: #0c0d12;
-	box-shadow: 0 12px 24px rgba(122, 215, 255, 0.25);
+	box-shadow: 0 12px 24px rgba(255, 90, 107, 0.25);
 }
 
 .btn.primary:hover {
@@ -282,7 +282,7 @@ select:focus {
 	padding: 0.35rem 0.8rem;
 	border-radius: 999px;
 	font-size: 0.8rem;
-	background: rgba(122, 215, 255, 0.15);
+	background: rgba(255, 90, 107, 0.15);
 	color: var(--accent);
 	font-weight: 600;
 }
