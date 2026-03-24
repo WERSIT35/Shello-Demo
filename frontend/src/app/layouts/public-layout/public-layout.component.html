@@ -12,8 +12,8 @@
     </div>
 
     <div class="mobile-overlay" *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
-    <div class="header-content" [class.open]="isMobileMenuOpen">
-      <div class="mobile-sheet-head">
+    <div class="header-content" [class.open]="isMobileMenuOpen" (click)="onMobileSheetBackgroundClick($event)">
+      <div class="mobile-sheet-head" (click)="$event.stopPropagation()">
         <p class="mobile-sheet-title" i18n>Menu</p>
         <button class="btn ghost icon-btn" type="button" (click)="closeMobileMenu()" aria-label="Close menu" i18n-aria-label>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -23,7 +23,7 @@
         </button>
       </div>
 
-      <section class="mobile-section">
+      <section class="mobile-section" (click)="$event.stopPropagation()">
       <nav class="site-nav">
         <a routerLink="/shop" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
         <a class="cart-link" routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
@@ -31,15 +31,17 @@
       </nav>
       </section>
 
-      <section class="mobile-section">
+      <section class="mobile-section" (click)="$event.stopPropagation()">
       <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
-        <div class="user-menu">
+        <div class="user-menu" #userMenu [class.open]="isUserMenuOpen">
           <button
             class="user-button"
             type="button"
             aria-haspopup="true"
+            [attr.aria-expanded]="isUserMenuOpen"
             aria-label="Open user menu"
             i18n-aria-label
+            (click)="toggleUserMenu($event)"
           >
             <span class="user-initial">{{ user.name.charAt(0) }}</span>
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,9 +53,9 @@
               <span class="user-name">{{ user.name }} {{ user.lastName }}</span>
               <span class="user-email">{{ user.email }}</span>
             </div>
-            <a class="menu-item" routerLink="/profile" (click)="closeMobileMenu()" i18n>Profile</a>
-            <a class="menu-item" routerLink="/orders" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
-            <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" (click)="closeMobileMenu()" i18n>Admin</a>
+            <a class="menu-item" routerLink="/profile" (click)="closeUserMenu(); closeMobileMenu()" i18n>Profile</a>
+            <a class="menu-item" routerLink="/orders" (click)="closeUserMenu(); closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
+            <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" (click)="closeUserMenu(); closeMobileMenu()" i18n>Admin</a>
             <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
           </div>
         </div>
@@ -66,7 +68,7 @@
       </ng-template>
       </section>
 
-      <section class="mobile-section">
+      <section class="mobile-section" (click)="$event.stopPropagation()">
       <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
         <div class="drag-track" #dragTrack (pointerdown)="startDrag($event)">
           <span class="drag-label left">KA</span>

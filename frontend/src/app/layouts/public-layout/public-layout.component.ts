@@ -23,6 +23,9 @@ export class PublicLayoutComponent implements OnInit {
   @ViewChild('dragThumb')
   private readonly dragThumbRef?: ElementRef<HTMLDivElement>;
 
+  @ViewChild('userMenu')
+  private readonly userMenuRef?: ElementRef<HTMLDivElement>;
+
   private readonly auth = inject(AuthService);
   private readonly contentService = inject(ContentService);
   private readonly router = inject(Router);
@@ -33,6 +36,7 @@ export class PublicLayoutComponent implements OnInit {
   protected readonly user$ = this.auth.currentUser$;
   protected pageToggles: PageToggles | null = null;
   protected isMobileMenuOpen = false;
+  protected isUserMenuOpen = false;
   ngOnInit(): void {
     this.auth.ensureSession().subscribe();
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -85,12 +89,27 @@ export class PublicLayoutComponent implements OnInit {
     });
   }
 
+  protected toggleUserMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  protected closeUserMenu(): void {
+    this.isUserMenuOpen = false;
+  }
+
   protected toggleMobileMenu(): void {
     this.setMobileMenuState(!this.isMobileMenuOpen);
   }
 
   protected closeMobileMenu(): void {
     this.setMobileMenuState(false);
+  }
+
+  protected onMobileSheetBackgroundClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.setMobileMenuState(false);
+    }
   }
 
   private buildLocaleUrl(target: 'ka' | 'en'): string {
@@ -200,8 +219,30 @@ export class PublicLayoutComponent implements OnInit {
     }
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const menuElement = this.userMenuRef?.nativeElement;
+    const target = event.target as Node | null;
+    if (!menuElement || !target) {
+      return;
+    }
+
+    if (!menuElement.contains(target)) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.isUserMenuOpen = false;
+    this.setMobileMenuState(false);
+  }
+
   private setMobileMenuState(next: boolean): void {
     this.isMobileMenuOpen = next;
+    if (!next) {
+      this.isUserMenuOpen = false;
+    }
     if (!this.isBrowser) {
       return;
     }

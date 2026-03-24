@@ -237,7 +237,8 @@
 }
 
 .user-menu:focus-within .user-dropdown,
-.user-menu:hover .user-dropdown {
+.user-menu:hover .user-dropdown,
+.user-menu.open .user-dropdown {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -431,13 +432,19 @@
 
   .user-dropdown {
     position: static;
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
     margin-top: 8px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.02);
     border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .user-menu.open .user-dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .lang-switch {
