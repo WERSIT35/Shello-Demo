@@ -1,94 +1,124 @@
-﻿<section class="admin-section">
+<section class="admin-section">
   <h1 i18n>Products</h1>
+
   <div class="create-header-bar">
     <h2 i18n>Add product</h2>
     <button class="btn primary" type="button" (click)="showCreate = true" i18n>New product</button>
   </div>
+
   <div class="modal" *ngIf="showCreate">
     <div class="modal-backdrop" (click)="showCreate = false"></div>
-    <div class="modal-card">
+    <div class="modal-card product-editor-modal">
       <div class="modal-header">
         <h3 i18n>New product</h3>
         <button class="btn ghost" type="button" (click)="showCreate = false" i18n>Close</button>
       </div>
       <p class="state-text error" *ngIf="createErrorMessage">{{ createErrorMessage }}</p>
-      <div class="create-grid">
-        <input type="text" placeholder="Title" i18n-placeholder [(ngModel)]="createDraft.title" />
-        <input type="text" placeholder="Title (KA)" i18n-placeholder [(ngModel)]="createDraft.titleKa" />
-        <input type="text" placeholder="Title (EN)" i18n-placeholder [(ngModel)]="createDraft.titleEn" />
-        <select [(ngModel)]="createDraft.category">
-          <option *ngFor="let category of categories" [value]="category">
-            {{ category }}
-          </option>
-        </select>
-        <select [(ngModel)]="createDraft.caseType">
-          <option *ngFor="let option of caseTypes" [value]="option">{{ option }}</option>
-        </select>
-        <select [(ngModel)]="createDraft.brand">
-          <option *ngFor="let option of brands" [value]="option">{{ option }}</option>
-        </select>
-        <select [(ngModel)]="createDraft.color">
-          <option *ngFor="let option of colors" [value]="option">{{ option }}</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Model (e.g. iPhone 15 Pro)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.model"
-        />
-        <input
-          type="text"
-          placeholder="Model (KA)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.modelKa"
-        />
-        <input
-          type="text"
-          placeholder="Model (EN)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.modelEn"
-        />
-        <div class="file-input">
-          <label class="file-label">
-            <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" />
-            <span *ngIf="selectedFiles.length" i18n>
-              {{ selectedFiles.length }} images selected
-            </span>
-            <span *ngIf="!selectedFiles.length" i18n>Upload images</span>
-          </label>
-          <p class="hint" i18n>Up to 8 images, 5MB each.</p>
-        </div>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Price"
-          i18n-placeholder
-          [(ngModel)]="createDraft.price"
-        />
-        <input type="number" min="0" placeholder="Stock" i18n-placeholder [(ngModel)]="createDraft.stock" />
-        <input
-          type="text"
-          placeholder="Description (optional)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.description"
-        />
-        <textarea
-          rows="2"
-          placeholder="Description (KA)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.descriptionKa"
-        ></textarea>
-        <textarea
-          rows="2"
-          placeholder="Description (EN)"
-          i18n-placeholder
-          [(ngModel)]="createDraft.descriptionEn"
-        ></textarea>
-        <label class="status-toggle">
-          <input type="checkbox" [(ngModel)]="createDraft.isActive" />
-          <span i18n>Active</span>
-        </label>
+      <div class="editor-sections">
+        <section class="editor-section">
+          <h4 i18n>Basic info</h4>
+          <div class="create-grid">
+            <label class="field">
+              <span class="field-label" i18n>Title</span>
+              <input type="text" [(ngModel)]="createDraft.title" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Title (KA)</span>
+              <input type="text" [(ngModel)]="createDraft.titleKa" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Title (EN)</span>
+              <input type="text" [(ngModel)]="createDraft.titleEn" />
+            </label>
+
+            <label class="field">
+              <span class="field-label" i18n>Category</span>
+              <select [(ngModel)]="createDraft.category">
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Case type</span>
+              <select [(ngModel)]="createDraft.caseType">
+                <option *ngFor="let option of caseTypes" [value]="option">{{ option }}</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Brand</span>
+              <select [(ngModel)]="createDraft.brand">
+                <option *ngFor="let option of brands" [value]="option">{{ option }}</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label" i18n>Color</span>
+              <select [(ngModel)]="createDraft.color">
+                <option *ngFor="let option of colors" [value]="option">{{ option }}</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Model (e.g. iPhone 15 Pro)</span>
+              <input type="text" [(ngModel)]="createDraft.model" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Model (KA)</span>
+              <input type="text" [(ngModel)]="createDraft.modelKa" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Model (EN)</span>
+              <input type="text" [(ngModel)]="createDraft.modelEn" />
+            </label>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <h4 i18n>Pricing and description</h4>
+          <div class="create-grid">
+            <label class="field">
+              <span class="field-label" i18n>Price</span>
+              <input type="number" min="0" step="0.01" [(ngModel)]="createDraft.price" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Stock</span>
+              <input type="number" min="0" [(ngModel)]="createDraft.stock" />
+            </label>
+            <label class="field field-toggle">
+              <span class="field-label" i18n>Status</span>
+              <span class="toggle-control">
+                <span i18n>Active</span>
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="createDraft.isActive" />
+                  <span class="switch-track"></span>
+                </label>
+              </span>
+            </label>
+
+            <label class="field form-wide">
+              <span class="field-label" i18n>Description (optional)</span>
+              <input type="text" [(ngModel)]="createDraft.description" />
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Description (KA)</span>
+              <textarea rows="2" [(ngModel)]="createDraft.descriptionKa"></textarea>
+            </label>
+            <label class="field">
+              <span class="field-label" i18n>Description (EN)</span>
+              <textarea rows="2" [(ngModel)]="createDraft.descriptionEn"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="editor-section">
+          <h4 i18n>Images</h4>
+          <div class="file-input form-wide">
+            <label class="file-label">
+              <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" />
+              <span *ngIf="selectedFiles.length" i18n>{{ selectedFiles.length }} images selected</span>
+              <span *ngIf="!selectedFiles.length" i18n>Upload images</span>
+            </label>
+            <p class="hint" i18n>Up to 8 images, 5MB each.</p>
+          </div>
+        </section>
       </div>
       <div class="modal-actions">
         <button class="btn ghost" type="button" (click)="showCreate = false" i18n>Cancel</button>
@@ -99,63 +129,100 @@
       </div>
     </div>
   </div>
-  <div class="modal" *ngIf="reorderTarget">
-    <div class="modal-backdrop" (click)="closeImageReorder()"></div>
-    <div class="modal-card image-reorder-modal">
+
+  <div class="modal" *ngIf="showEdit && editingProduct">
+    <div class="modal-backdrop" (click)="closeEdit()"></div>
+    <div class="modal-card product-editor-modal">
       <div class="modal-header">
-        <h3 i18n>Manage images</h3>
-        <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Close</button>
+        <h3 i18n>Edit product</h3>
+        <button class="btn ghost" type="button" (click)="closeEdit()" i18n>Close</button>
       </div>
-      <p class="state-text" *ngIf="reorderTarget" i18n>First image is primary. You can reorder, remove, and add new images.</p>
-      <p class="state-text error" *ngIf="reorderErrorMessage">{{ reorderErrorMessage }}</p>
-      <div class="file-input update-file-input">
-        <label class="file-label">
-          <input type="file" accept="image/*" multiple (change)="onUpdateFilesSelected($event)" />
-          <span *ngIf="imageUpdateFiles.length" i18n>{{ imageUpdateFiles.length }} new image(s) selected</span>
-          <span *ngIf="!imageUpdateFiles.length" i18n>Add new images</span>
-        </label>
-        <p class="hint" i18n>New images are appended at the end. Max 8 total images.</p>
-      </div>
-      <div class="image-order-list" *ngIf="imageOrderDraft.length > 0; else noImages">
-        <div class="image-order-item" *ngFor="let image of imageOrderDraft; let i = index">
-          <span class="image-rank">{{ i + 1 }}</span>
-          <img [src]="image" alt="" />
-          <span class="image-path">{{ image }}</span>
-          <div class="image-controls">
-            <button class="btn ghost icon-btn" type="button" (click)="moveImage(i, -1)" [disabled]="i === 0" aria-label="Move up" title="Move up" i18n-aria-label i18n-title>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 5l-6 6" />
-                <path d="M12 5l6 6" />
-              </svg>
-            </button>
-            <button class="btn ghost icon-btn" type="button" (click)="moveImage(i, 1)" [disabled]="i === imageOrderDraft.length - 1" aria-label="Move down" title="Move down" i18n-aria-label i18n-title>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 19l-6-6" />
-                <path d="M12 19l6-6" />
-              </svg>
-            </button>
-            <button class="btn ghost icon-btn danger" type="button" (click)="removeImage(i)" aria-label="Remove image" title="Remove image" i18n-aria-label i18n-title>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M6 7h12" />
-                <path d="M9 7V5h6v2" />
-                <path d="M8 7l1 12h6l1-12" />
-              </svg>
-            </button>
+      <p class="state-text error" *ngIf="editErrorMessage">{{ editErrorMessage }}</p>
+      <div class="create-grid">
+        <input type="text" placeholder="Title" i18n-placeholder [(ngModel)]="editDraft.title" />
+        <input type="text" placeholder="Title (KA)" i18n-placeholder [(ngModel)]="editDraft.titleKa" />
+        <input type="text" placeholder="Title (EN)" i18n-placeholder [(ngModel)]="editDraft.titleEn" />
+
+        <select [(ngModel)]="editDraft.category">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <select [(ngModel)]="editDraft.caseType">
+          <option *ngFor="let option of caseTypes" [value]="option">{{ option }}</option>
+        </select>
+        <select [(ngModel)]="editDraft.brand">
+          <option *ngFor="let option of brands" [value]="option">{{ option }}</option>
+        </select>
+
+        <select [(ngModel)]="editDraft.color">
+          <option *ngFor="let option of colors" [value]="option">{{ option }}</option>
+        </select>
+        <input type="text" placeholder="Model (e.g. iPhone 15 Pro)" i18n-placeholder [(ngModel)]="editDraft.model" />
+        <input type="text" placeholder="Model (KA)" i18n-placeholder [(ngModel)]="editDraft.modelKa" />
+
+        <input type="text" placeholder="Model (EN)" i18n-placeholder [(ngModel)]="editDraft.modelEn" />
+        <input type="number" min="0" step="0.01" placeholder="Price" i18n-placeholder [(ngModel)]="editDraft.price" />
+        <input type="number" min="0" placeholder="Stock" i18n-placeholder [(ngModel)]="editDraft.stock" />
+
+        <input type="text" placeholder="Description (optional)" i18n-placeholder [(ngModel)]="editDraft.description" class="form-wide" />
+        <textarea rows="2" placeholder="Description (KA)" i18n-placeholder [(ngModel)]="editDraft.descriptionKa"></textarea>
+        <textarea rows="2" placeholder="Description (EN)" i18n-placeholder [(ngModel)]="editDraft.descriptionEn"></textarea>
+
+        <div class="file-input form-wide">
+          <label class="file-label">
+            <input type="file" accept="image/*" multiple (change)="onEditFilesSelected($event)" />
+            <span *ngIf="selectedEditFiles.length" i18n>{{ selectedEditFiles.length }} new image(s) selected</span>
+            <span *ngIf="!selectedEditFiles.length" i18n>Add new images</span>
+          </label>
+          <p class="hint" i18n>New images are appended at the end. Max 8 total images.</p>
+        </div>
+
+        <div class="image-order-list form-wide" *ngIf="editImageOrderDraft.length > 0; else noEditImages">
+          <div class="image-order-item" *ngFor="let image of editImageOrderDraft; let i = index">
+            <span class="image-rank">{{ i + 1 }}</span>
+            <img [src]="image" alt="" />
+            <span class="image-path">{{ image }}</span>
+            <div class="image-controls">
+              <button class="btn ghost icon-btn" type="button" (click)="moveEditImage(i, -1)" [disabled]="i === 0" aria-label="Move up" title="Move up" i18n-aria-label i18n-title>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5l-6 6" />
+                  <path d="M12 5l6 6" />
+                </svg>
+              </button>
+              <button class="btn ghost icon-btn" type="button" (click)="moveEditImage(i, 1)" [disabled]="i === editImageOrderDraft.length - 1" aria-label="Move down" title="Move down" i18n-aria-label i18n-title>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 19l-6-6" />
+                  <path d="M12 19l6-6" />
+                </svg>
+              </button>
+              <button class="btn ghost icon-btn danger" type="button" (click)="removeEditImage(i)" aria-label="Remove image" title="Remove image" i18n-aria-label i18n-title>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 7h12" />
+                  <path d="M9 7V5h6v2" />
+                  <path d="M8 7l1 12h6l1-12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
+        <ng-template #noEditImages>
+          <p class="state-text form-wide" i18n>No images found.</p>
+        </ng-template>
+
+        <label class="status-toggle form-wide">
+          <input type="checkbox" [(ngModel)]="editDraft.isActive" />
+          <span i18n>Active</span>
+        </label>
       </div>
-      <ng-template #noImages>
-        <p class="state-text" i18n>No images found.</p>
-      </ng-template>
       <div class="modal-actions">
-        <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Cancel</button>
-        <button class="btn primary" type="button" (click)="saveImageOrder()" [disabled]="isSavingImageOrder || (imageOrderDraft.length === 0 && imageUpdateFiles.length === 0)">
-          <span *ngIf="isSavingImageOrder" i18n>Saving...</span>
-          <span *ngIf="!isSavingImageOrder" i18n>Save order</span>
+        <button class="btn ghost" type="button" (click)="closeEdit()" i18n>Cancel</button>
+        <button class="btn primary" type="button" (click)="saveEdit()" [disabled]="isSavingEdit">
+          <span *ngIf="isSavingEdit" i18n>Saving...</span>
+          <span *ngIf="!isSavingEdit" i18n>Save changes</span>
         </button>
       </div>
     </div>
   </div>
+
   <div class="table loading" *ngIf="isLoading">
     <div class="row header">
       <span i18n>Image</span>
@@ -177,7 +244,9 @@
       </div>
     </div>
   </div>
+
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+
   <div class="table" *ngIf="!isLoading">
     <div class="row header">
       <span i18n>Image</span>
@@ -187,109 +256,33 @@
       <span i18n>Status</span>
       <span i18n>Action</span>
     </div>
+
     <div class="row" *ngFor="let product of products">
       <div class="thumb">
         <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
         <span *ngIf="!product.images.length">&mdash;</span>
       </div>
-      <span *ngIf="editingId !== product.id">{{ product.title }}</span>
-      <input
-        *ngIf="editingId === product.id"
-        type="text"
-        [(ngModel)]="draft.title"
-      />
-      <span *ngIf="editingId !== product.id">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-      <input
-        *ngIf="editingId === product.id"
-        type="number"
-        min="0"
-        step="0.01"
-        [(ngModel)]="draft.price"
-      />
-      <span *ngIf="editingId !== product.id">{{ product.stock }}</span>
-      <input
-        *ngIf="editingId === product.id"
-        type="number"
-        min="0"
-        [(ngModel)]="draft.stock"
-      />
-      <span *ngIf="editingId !== product.id">
+
+      <span>{{ product.title }}</span>
+      <span>{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+      <span>{{ product.stock }}</span>
+      <span>
         <span *ngIf="product.isActive" i18n>Active</span>
         <span *ngIf="!product.isActive" i18n>Inactive</span>
       </span>
-      <label class="status-toggle" *ngIf="editingId === product.id">
-        <input type="checkbox" [(ngModel)]="draft.isActive" />
-        <span i18n>Active</span>
-      </label>
+
       <div class="row-actions">
-        <button
-          class="btn ghost icon-btn"
-          type="button"
-          *ngIf="editingId !== product.id"
-          (click)="openImageReorder(product)"
-          [disabled]="product.images.length < 2"
-          aria-label="Reorder images"
-          title="Reorder images"
-          i18n-aria-label
-          i18n-title
-        >
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 6h12" />
-            <path d="M4 6h.01" />
-            <path d="M8 12h12" />
-            <path d="M4 12h.01" />
-            <path d="M8 18h12" />
-            <path d="M4 18h.01" />
-          </svg>
-        </button>
-        <button
-          class="btn ghost icon-btn"
-          type="button"
-          *ngIf="editingId !== product.id"
-          (click)="startEdit(product)"
-          aria-label="Edit"
-          title="Edit"
-          i18n-aria-label
-          i18n-title
-        >
+        <button class="btn ghost icon-btn" type="button" (click)="openEdit(product)" aria-label="Edit" title="Edit" i18n-aria-label i18n-title>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 20h4l10-10-4-4L4 16v4z" />
             <path d="M12 6l4 4" />
           </svg>
         </button>
-        <button
-          class="btn ghost icon-btn"
-          type="button"
-          *ngIf="editingId === product.id"
-          (click)="saveEdit(product)"
-          aria-label="Save"
-          title="Save"
-          i18n-aria-label
-          i18n-title
-        >
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M5 13l4 4L19 7" />
-          </svg>
-        </button>
-        <button
-          class="btn ghost icon-btn"
-          type="button"
-          *ngIf="editingId === product.id"
-          (click)="cancelEdit()"
-          aria-label="Cancel"
-          title="Cancel"
-          i18n-aria-label
-          i18n-title
-        >
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M18 6L6 18" />
-            <path d="M6 6l12 12" />
-          </svg>
-        </button>
+
         <button
           class="btn ghost icon-btn danger"
           type="button"
-          *ngIf="editingId !== product.id && product.isActive"
+          *ngIf="product.isActive"
           (click)="toggleActive(product)"
           aria-label="Deactivate"
           title="Deactivate"
@@ -300,10 +293,11 @@
             <path d="M5 12h14" />
           </svg>
         </button>
+
         <button
           class="btn ghost icon-btn success"
           type="button"
-          *ngIf="editingId !== product.id && !product.isActive"
+          *ngIf="!product.isActive"
           (click)="toggleActive(product)"
           aria-label="Activate"
           title="Activate"
@@ -315,16 +309,8 @@
             <path d="M5 12h14" />
           </svg>
         </button>
-        <button
-          class="btn ghost danger icon-btn"
-          type="button"
-          *ngIf="editingId !== product.id"
-          (click)="deleteProduct(product)"
-          aria-label="Delete"
-          title="Delete"
-          i18n-aria-label
-          i18n-title
-        >
+
+        <button class="btn ghost danger icon-btn" type="button" (click)="deleteProduct(product)" aria-label="Delete" title="Delete" i18n-aria-label i18n-title>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 7h12" />
             <path d="M9 7V5h6v2" />
@@ -334,6 +320,6 @@
       </div>
     </div>
   </div>
+
   <p class="state-text" *ngIf="!isLoading && !errorMessage && products.length === 0" i18n>No products found.</p>
 </section>
-
