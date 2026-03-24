@@ -18,7 +18,7 @@ type MulterFile = {
   filename?: string;
 };
 
-const uploadDir = path.join(process.cwd(), "uploads");
+const uploadDir = env.UPLOAD_DIR || path.join(process.cwd(), "uploads");
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({

@@ -16,6 +16,7 @@ import userRouter from "./modules/users/user.routes";
 import uploadRouter from "./modules/uploads/upload.routes";
 
 const app = express();
+const uploadDir = env.UPLOAD_DIR || path.join(process.cwd(), "uploads");
 
 app.disable("x-powered-by");
 app.set("trust proxy", env.TRUST_PROXY);
@@ -30,7 +31,7 @@ app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(cookieParser());
 app.use(globalRateLimiter);
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(uploadDir));
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/content", contentRouter);
