@@ -157,6 +157,7 @@ export class AuthService {
     return new Observable<AuthUser>((observer) => {
       let handled = false;
       let popupClosedAt: number | null = null;
+      let recoveryStarted = false;
       const popupGraceMs = 5000;
       const isAbsoluteApiBase = API_BASE_URL.startsWith('http');
       const expectedOrigin = isAbsoluteApiBase
@@ -256,10 +257,36 @@ export class AuthService {
             popupClosedAt = Date.now();
           }
 
-          if (Date.now() - popupClosedAt >= popupGraceMs) {
-            handled = true;
-            cleanup();
-            observer.error(new Error('Login cancelled.'));
+          if (Date.now() - popupClosedAt >= popupGraceMs && !recoveryStarted) {
+            recoveryStarted = true;
+            this.refreshSession().subscribe({
+              next: (restored) => {
+                if (handled) {
+                  return;
+                }
+
+                if (restored && this.currentUser) {
+                  handled = true;
+                  cleanup();
+                  observer.next(this.currentUser);
+                  observer.complete();
+                  return;
+                }
+
+                handled = true;
+                cleanup();
+                observer.error(new Error('Login cancelled.'));
+              },
+              error: () => {
+                if (handled) {
+                  return;
+                }
+
+                handled = true;
+                cleanup();
+                observer.error(new Error('Login cancelled.'));
+              }
+            });
           }
         }
       }, 400);
