@@ -406,23 +406,25 @@
 
 .card-meta {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 0.4rem;
-  min-height: 1.6rem;
-  max-height: 1.6rem;
-  overflow: hidden;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  min-height: 0;
 }
 
 .meta-pill {
   display: inline-flex;
-  padding: 0.2rem 0.6rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.28rem 0.68rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  line-height: 1.1;
+  font-size: 0.74rem;
+  line-height: 1;
   background: rgba(255, 90, 107, 0.12);
   color: var(--accent);
   font-weight: 600;
   white-space: nowrap;
+  text-align: center;
 }
 
 .card-actions {

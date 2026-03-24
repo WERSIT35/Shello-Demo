@@ -1,5 +1,5 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 
@@ -15,6 +15,9 @@ import { ProductsService, type Product } from '../../../core/services/products.s
   styleUrl: './product-detail.component.scss'
 })
 export class ProductDetailComponent implements OnInit {
+  @ViewChild('suggestedSlider')
+  private readonly suggestedSliderRef?: ElementRef<HTMLDivElement>;
+
   private readonly route = inject(ActivatedRoute);
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
@@ -142,5 +145,18 @@ export class ProductDetailComponent implements OnInit {
     if (typeof model === 'string') tags.push(model);
 
     return tags.slice(0, 3);
+  }
+
+  protected scrollSuggestions(direction: 'left' | 'right'): void {
+    const slider = this.suggestedSliderRef?.nativeElement;
+    if (!slider) {
+      return;
+    }
+
+    const amount = Math.max(220, Math.round(slider.clientWidth * 0.8));
+    slider.scrollBy({
+      left: direction === 'left' ? -amount : amount,
+      behavior: 'smooth'
+    });
   }
 }

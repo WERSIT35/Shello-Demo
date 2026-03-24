@@ -38,12 +38,36 @@
       <h2 i18n>Suggested cases</h2>
       <p i18n>More drops that match this vibe.</p>
     </div>
+    <div class="slider-controls" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length > 1">
+      <button
+        class="btn ghost"
+        type="button"
+        (click)="scrollSuggestions('left')"
+        aria-label="Scroll left"
+        i18n-aria-label
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        class="btn ghost"
+        type="button"
+        (click)="scrollSuggestions('right')"
+        aria-label="Scroll right"
+        i18n-aria-label
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
   </div>
   <p class="state-text" *ngIf="isSuggestionsLoading" i18n>Loading suggestions...</p>
   <p class="state-text error" *ngIf="!isSuggestionsLoading && suggestionsErrorMessage">
     {{ suggestionsErrorMessage }}
   </p>
-  <div class="suggested-grid" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage">
+  <div class="suggested-grid" #suggestedSlider *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage">
     <article class="card" *ngFor="let suggestion of suggestedProducts">
       <a class="card-image" [routerLink]="['/products', suggestion.id]">
         <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
