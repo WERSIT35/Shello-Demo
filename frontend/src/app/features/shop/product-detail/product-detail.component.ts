@@ -1,11 +1,14 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
+import Splide from '@splidejs/splide';
 
 import { CartService } from '../../../core/services/cart.service';
 import { ContentService } from '../../../core/services/content.service';
 import { ProductsService, type Product } from '../../../core/services/products.service';
+
+declare const $localize: { locale?: string };
 
 @Component({
   selector: 'app-product-detail',
@@ -14,7 +17,11 @@ import { ProductsService, type Product } from '../../../core/services/products.s
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('gallerySplide')
+  private readonly gallerySplideRef?: ElementRef<HTMLDivElement>;
+  @ViewChild('galleryThumbsSplide')
+  private readonly galleryThumbsSplideRef?: ElementRef<HTMLDivElement>;
   @ViewChild('suggestedSlider')
   private readonly suggestedSliderRef?: ElementRef<HTMLDivElement>;
 
@@ -24,24 +31,26 @@ export class ProductDetailComponent implements OnInit {
   private readonly cartService = inject(CartService);
   private readonly contentService = inject(ContentService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly lang: 'ka' | 'en' = this.resolveLang();
 
   protected product: Product | null = null;
-  protected selectedImage: string | null = null;
   protected isLoading = true;
   protected errorMessage = '';
   protected suggestedProducts: Product[] = [];
   protected isSuggestionsLoading = true;
   protected suggestionsErrorMessage = '';
   protected cartEnabled = true;
-  private galleryDragStartX: number | null = null;
-  private galleryDragCurrentX: number | null = null;
-  private galleryDragPointerId: number | null = null;
+
+  private gallerySplide: Splide | null = null;
+  private galleryThumbsSplide: Splide | null = null;
+  private suggestionsSplide: Splide | null = null;
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
       this.cartEnabled = toggles.cart;
       this.cdr.detectChanges();
     });
+
     this.route.paramMap.pipe(distinctUntilChanged()).subscribe((params) => {
       const id = params.get('id');
 
@@ -56,6 +65,15 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.mountGallerySplide();
+    this.mountSuggestionsSplide();
+  }
+
+  ngOnDestroy(): void {
+    this.destroySliders();
+  }
+
   private loadProduct(id: string): void {
     this.isLoading = true;
     this.errorMessage = '';
@@ -63,9 +81,9 @@ export class ProductDetailComponent implements OnInit {
     this.productsService.getProduct(id).subscribe({
       next: (product) => {
         this.product = product;
-        this.selectedImage = product.images[0] ?? null;
         this.isLoading = false;
         this.cdr.detectChanges();
+        queueMicrotask(() => this.mountGallerySplide());
       },
       error: () => {
         this.errorMessage = 'Unable to load product.';
@@ -86,6 +104,7 @@ export class ProductDetailComponent implements OnInit {
           .slice(0, 3);
         this.isSuggestionsLoading = false;
         this.cdr.detectChanges();
+        queueMicrotask(() => this.mountSuggestionsSplide());
       },
       error: () => {
         this.suggestionsErrorMessage = 'Unable to load suggestions.';
@@ -109,97 +128,6 @@ export class ProductDetailComponent implements OnInit {
     void this.router.navigate(['/products', productId]);
   }
 
-  protected selectImage(url: string): void {
-    this.selectedImage = url;
-  }
-
-  protected onGalleryPointerDown(event: PointerEvent): void {
-    if (!this.product || this.product.images.length < 2) {
-      return;
-    }
-
-    const target = event.target as Element | null;
-    if (target?.closest('.gallery-nav, .thumbs')) {
-      return;
-    }
-
-    this.galleryDragPointerId = event.pointerId;
-    this.galleryDragStartX = event.clientX;
-    this.galleryDragCurrentX = event.clientX;
-  }
-
-  protected onGalleryPointerMove(event: PointerEvent): void {
-    if (this.galleryDragStartX === null) {
-      return;
-    }
-
-    if (this.galleryDragPointerId !== null && event.pointerId !== this.galleryDragPointerId) {
-      return;
-    }
-
-    this.galleryDragCurrentX = event.clientX;
-  }
-
-  protected onGalleryPointerEnd(event: PointerEvent): void {
-    if (this.galleryDragStartX === null || this.galleryDragCurrentX === null) {
-      this.resetGalleryDrag();
-      return;
-    }
-
-    if (this.galleryDragPointerId !== null && event.pointerId !== this.galleryDragPointerId) {
-      return;
-    }
-
-    const delta = this.galleryDragCurrentX - this.galleryDragStartX;
-    const threshold = 42;
-
-    if (Math.abs(delta) >= threshold) {
-      if (delta < 0) {
-        this.selectNextImage();
-      } else {
-        this.selectPrevImage();
-      }
-    }
-
-    this.resetGalleryDrag();
-  }
-
-  private resetGalleryDrag(): void {
-    this.galleryDragStartX = null;
-    this.galleryDragCurrentX = null;
-    this.galleryDragPointerId = null;
-  }
-
-  protected selectPrevImage(): void {
-    if (!this.product || this.product.images.length < 2 || !this.selectedImage) {
-      return;
-    }
-
-    const currentIndex = this.product.images.indexOf(this.selectedImage);
-    if (currentIndex < 0) {
-      this.selectedImage = this.product.images[0] ?? null;
-      return;
-    }
-
-    const prevIndex = (currentIndex - 1 + this.product.images.length) % this.product.images.length;
-    this.selectedImage = this.product.images[prevIndex] ?? this.selectedImage;
-  }
-
-  protected selectNextImage(): void {
-    if (!this.product || this.product.images.length < 2 || !this.selectedImage) {
-      return;
-    }
-
-    const currentIndex = this.product.images.indexOf(this.selectedImage);
-    if (currentIndex < 0) {
-      this.selectedImage = this.product.images[0] ?? null;
-      return;
-    }
-
-    const nextIndex = (currentIndex + 1) % this.product.images.length;
-    this.selectedImage = this.product.images[nextIndex] ?? this.selectedImage;
-  }
-
   protected getMeta(product: Product): string[] {
     const meta = product.metadata as Record<string, unknown> | null;
     if (!meta) {
@@ -207,10 +135,10 @@ export class ProductDetailComponent implements OnInit {
     }
 
     const tags = [] as string[];
-    const caseType = meta['caseType'];
-    const brand = meta['brand'];
-    const color = meta['color'];
-    const model = meta['model'];
+    const caseType = this.getLocalizedMetaValue(meta, 'caseType');
+    const brand = this.getLocalizedMetaValue(meta, 'brand');
+    const color = this.getLocalizedMetaValue(meta, 'color');
+    const model = this.getLocalizedMetaValue(meta, 'model');
 
     if (typeof caseType === 'string') tags.push(caseType);
     if (typeof brand === 'string') tags.push(brand);
@@ -227,11 +155,11 @@ export class ProductDetailComponent implements OnInit {
     }
 
     const tags = [] as string[];
-    const category = meta['category'];
-    const caseType = meta['caseType'];
-    const brand = meta['brand'];
-    const color = meta['color'];
-    const model = meta['model'];
+    const category = this.getLocalizedMetaValue(meta, 'category');
+    const caseType = this.getLocalizedMetaValue(meta, 'caseType');
+    const brand = this.getLocalizedMetaValue(meta, 'brand');
+    const color = this.getLocalizedMetaValue(meta, 'color');
+    const model = this.getLocalizedMetaValue(meta, 'model');
 
     if (typeof category === 'string') tags.push(category);
     if (typeof caseType === 'string') tags.push(caseType);
@@ -242,16 +170,109 @@ export class ProductDetailComponent implements OnInit {
     return tags.slice(0, 3);
   }
 
-  protected scrollSuggestions(direction: 'left' | 'right'): void {
-    const slider = this.suggestedSliderRef?.nativeElement;
-    if (!slider) {
+  private resolveLang(): 'ka' | 'en' {
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    if (locale.startsWith('ka')) {
+      return 'ka';
+    }
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/ka')) {
+      return 'ka';
+    }
+    return 'en';
+  }
+
+  private getLocalizedMetaValue(meta: Record<string, unknown>, key: string): unknown {
+    const localizedKey = this.lang === 'ka' ? `${key}Ka` : `${key}En`;
+    return meta[localizedKey] ?? meta[key];
+  }
+
+  private mountGallerySplide(): void {
+    const root = this.gallerySplideRef?.nativeElement;
+    if (!root || !this.product || this.product.images.length === 0 || this.isLoading) {
       return;
     }
 
-    const amount = Math.max(220, Math.round(slider.clientWidth * 0.8));
-    slider.scrollBy({
-      left: direction === 'left' ? -amount : amount,
-      behavior: 'smooth'
+    this.destroyGallerySplide();
+
+    const thumbsRoot = this.galleryThumbsSplideRef?.nativeElement;
+    if (thumbsRoot && this.product.images.length > 1) {
+      this.galleryThumbsSplide = new Splide(thumbsRoot, {
+        fixedWidth: 84,
+        fixedHeight: 84,
+        gap: '0.5rem',
+        rewind: true,
+        pagination: false,
+        isNavigation: true,
+        arrows: false,
+        focus: 'center',
+        dragMinThreshold: { mouse: 4, touch: 10 }
+      });
+    }
+
+    this.gallerySplide = new Splide(root, {
+      type: 'slide',
+      rewind: true,
+      arrows: this.product.images.length > 1,
+      pagination: false,
+      drag: this.product.images.length > 1,
+      speed: 420
     });
+
+    if (this.galleryThumbsSplide) {
+      this.gallerySplide.sync(this.galleryThumbsSplide);
+      this.galleryThumbsSplide.mount();
+    }
+
+    this.gallerySplide.mount();
+  }
+
+  private mountSuggestionsSplide(): void {
+    const root = this.suggestedSliderRef?.nativeElement;
+    if (!root || this.isSuggestionsLoading || this.suggestionsErrorMessage || this.suggestedProducts.length === 0) {
+      return;
+    }
+
+    this.destroySuggestionsSplide();
+
+    this.suggestionsSplide = new Splide(root, {
+      type: 'slide',
+      rewind: true,
+      arrows: true,
+      pagination: false,
+      drag: true,
+      gap: '1rem',
+      perPage: 3,
+      perMove: 1,
+      breakpoints: {
+        1100: { perPage: 2 },
+        900: { perPage: 1 }
+      }
+    });
+
+    this.suggestionsSplide.mount();
+  }
+
+  private destroyGallerySplide(): void {
+    if (this.gallerySplide) {
+      this.gallerySplide.destroy(true);
+      this.gallerySplide = null;
+    }
+
+    if (this.galleryThumbsSplide) {
+      this.galleryThumbsSplide.destroy(true);
+      this.galleryThumbsSplide = null;
+    }
+  }
+
+  private destroySuggestionsSplide(): void {
+    if (this.suggestionsSplide) {
+      this.suggestionsSplide.destroy(true);
+      this.suggestionsSplide = null;
+    }
+  }
+
+  private destroySliders(): void {
+    this.destroyGallerySplide();
+    this.destroySuggestionsSplide();
   }
 }

@@ -22,6 +22,11 @@
   align-items: center;
 }
 
+.create-grid textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
 .meta-pill {
   display: inline-flex;
   align-items: center;

@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 
-import { API_BASE_URL } from '../config/api.config';
+import { API_BASE_URL, resolveAssetUrl } from '../config/api.config';
 
 export type ProductMetadata = Record<string, unknown> | null;
+declare const $localize: { locale?: string };
 
 export type Product = {
   id: string;
@@ -51,16 +52,56 @@ export class ProductsService {
   }
 
   private mapProduct(product: ApiProduct): Product {
+    const metadata = product.metadata ?? null;
+    const lang = this.resolveLang();
+    const localizedTitle = this.getLocalizedMetadataValue(metadata, 'title', lang);
+    const localizedDescription = this.getLocalizedMetadataValue(metadata, 'description', lang);
+
     return {
       id: product._id,
-      title: product.title,
-      description: product.description ?? null,
+      title: localizedTitle ?? product.title,
+      description: localizedDescription ?? product.description ?? null,
       price: product.price,
       stock: product.stock,
-      images: product.images ?? [],
+      images: (product.images ?? []).map((image) => resolveAssetUrl(image)).filter((image): image is string => !!image),
       isActive: product.isActive,
-      metadata: product.metadata ?? null,
+      metadata,
       createdAt: product.createdAt
     };
+  }
+
+  private resolveLang(): 'ka' | 'en' {
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    if (locale.startsWith('ka')) {
+      return 'ka';
+    }
+    if (locale.startsWith('en')) {
+      return 'en';
+    }
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/ka')) {
+      return 'ka';
+    }
+    return 'en';
+  }
+
+  private getLocalizedMetadataValue(
+    metadata: ProductMetadata,
+    key: 'title' | 'description',
+    lang: 'ka' | 'en'
+  ): string | null {
+    if (!metadata) {
+      return null;
+    }
+
+    const meta = metadata as Record<string, unknown>;
+    const keyByLang = lang === 'ka' ? `${key}Ka` : `${key}En`;
+    const value = meta[keyByLang];
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      return trimmed.length > 0 ? trimmed : null;
+    }
+
+    return null;
   }
 }

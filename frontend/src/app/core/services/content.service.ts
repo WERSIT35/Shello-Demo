@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, map, of, switchMap } from 'rxjs';
 
-import { API_BASE_URL } from '../config/api.config';
+import { API_BASE_URL, resolveAssetUrl } from '../config/api.config';
 import type { Product } from './products.service';
 
 declare const $localize: { locale?: string };
@@ -225,7 +225,7 @@ export class ContentService {
       primaryCtaLink: hero.primaryCtaLink,
       secondaryCtaText: hero.secondaryCtaText,
       secondaryCtaLink: hero.secondaryCtaLink,
-      imageUrl: hero.imageUrl ?? null,
+      imageUrl: resolveAssetUrl(hero.imageUrl),
       highlights: hero.highlights ?? []
     };
   }
@@ -248,7 +248,7 @@ export class ContentService {
       description: product.description ?? null,
       price: product.price,
       stock: product.stock,
-      images: product.images ?? [],
+      images: (product.images ?? []).map((image) => resolveAssetUrl(image)).filter((image): image is string => !!image),
       isActive: product.isActive,
       metadata: product.metadata ?? null,
       createdAt: product.createdAt

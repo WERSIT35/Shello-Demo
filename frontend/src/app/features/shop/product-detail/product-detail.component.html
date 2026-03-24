@@ -6,51 +6,25 @@
 
   <div class="detail detail-main" *ngIf="!isLoading && product">
     <article class="detail-gallery">
-      <div
-        class="gallery"
-        (pointerdown)="onGalleryPointerDown($event)"
-        (pointermove)="onGalleryPointerMove($event)"
-        (pointerup)="onGalleryPointerEnd($event)"
-        (pointercancel)="onGalleryPointerEnd($event)"
-        (pointerleave)="onGalleryPointerEnd($event)"
-      >
-        <img *ngIf="selectedImage" [src]="selectedImage" alt="" draggable="false" />
-
-        <div class="gallery-nav" *ngIf="product.images.length > 1">
-          <button
-            class="btn ghost icon-btn gallery-nav-btn"
-            type="button"
-            (click)="selectPrevImage()"
-            aria-label="Previous image"
-            i18n-aria-label
-          >
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <button
-            class="btn ghost icon-btn gallery-nav-btn"
-            type="button"
-            (click)="selectNextImage()"
-            aria-label="Next image"
-            i18n-aria-label
-          >
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-          </button>
+      <div class="gallery" *ngIf="product.images.length > 0">
+        <div class="splide detail-gallery-splide" #gallerySplide>
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide" *ngFor="let image of product.images">
+                <img [src]="image" alt="" draggable="false" />
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div class="thumbs" *ngIf="product.images.length > 1">
-          <button
-            class="thumb"
-            type="button"
-            *ngFor="let image of product.images"
-            (click)="selectImage(image)"
-            [class.active]="image === selectedImage"
-          >
-            <img [src]="image" alt="" />
-          </button>
+        <div class="splide detail-gallery-thumbs" #galleryThumbsSplide *ngIf="product.images.length > 1">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide" *ngFor="let image of product.images">
+                <img [src]="image" alt="" />
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </article>
@@ -81,30 +55,6 @@
         <h2 i18n>Suggested cases</h2>
         <p i18n>More drops that match this vibe.</p>
       </div>
-      <div class="slider-controls" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length > 1">
-        <button
-          class="btn ghost"
-          type="button"
-          (click)="scrollSuggestions('left')"
-          aria-label="Scroll left"
-          i18n-aria-label
-        >
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <button
-          class="btn ghost"
-          type="button"
-          (click)="scrollSuggestions('right')"
-          aria-label="Scroll right"
-          i18n-aria-label
-        >
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
-      </div>
     </header>
 
     <p class="state-text" *ngIf="isSuggestionsLoading" i18n>Loading suggestions...</p>
@@ -112,35 +62,40 @@
       {{ suggestionsErrorMessage }}
     </p>
 
-    <div class="suggested-grid" #suggestedSlider *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage">
-      <article
-        class="card"
-        role="link"
-        tabindex="0"
-        *ngFor="let suggestion of suggestedProducts"
-        (click)="goToProduct(suggestion.id)"
-        (keydown.enter)="goToProduct(suggestion.id)"
-        (keydown.space)="goToProduct(suggestion.id); $event.preventDefault()"
-      >
-        <a class="card-image" [routerLink]="['/products', suggestion.id]">
-          <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
-        </a>
-        <div class="card-top">
-          <span>{{ suggestion.title }}</span>
-          <span class="card-price">
-            {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
-          </span>
-        </div>
-        <div class="card-meta" *ngIf="getSuggestedMeta(suggestion).length">
-          <span class="meta-pill" *ngFor="let tag of getSuggestedMeta(suggestion)">{{ tag }}</span>
-        </div>
-        <div class="card-actions">
-          <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
-          <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion); $event.stopPropagation()" i18n *ngIf="cartEnabled">
-            Add
-          </button>
-        </div>
-      </article>
+    <div class="splide detail-suggested-splide" #suggestedSlider *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length > 0">
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide" *ngFor="let suggestion of suggestedProducts">
+            <article
+              class="card"
+              role="link"
+              tabindex="0"
+              (click)="goToProduct(suggestion.id)"
+              (keydown.enter)="goToProduct(suggestion.id)"
+              (keydown.space)="goToProduct(suggestion.id); $event.preventDefault()"
+            >
+              <a class="card-image" [routerLink]="['/products', suggestion.id]">
+                <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
+              </a>
+              <div class="card-top">
+                <span>{{ suggestion.title }}</span>
+                <span class="card-price">
+                  {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
+                </span>
+              </div>
+              <div class="card-meta" *ngIf="getSuggestedMeta(suggestion).length">
+                <span class="meta-pill" *ngFor="let tag of getSuggestedMeta(suggestion)">{{ tag }}</span>
+              </div>
+              <div class="card-actions">
+                <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
+                <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion); $event.stopPropagation()" i18n *ngIf="cartEnabled">
+                  Add
+                </button>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <p class="state-text" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length === 0" i18n>No suggestions yet.</p>

@@ -35,7 +35,11 @@ export class AdminProductsComponent implements OnInit {
   protected createErrorMessage = '';
   protected createDraft = {
     title: '',
+    titleKa: '',
+    titleEn: '',
     description: '',
+    descriptionKa: '',
+    descriptionEn: '',
     price: 0,
     stock: 0,
     isActive: true,
@@ -45,7 +49,9 @@ export class AdminProductsComponent implements OnInit {
     caseType: 'Slim',
     brand: 'Apple',
     color: 'Black',
-    model: ''
+    model: '',
+    modelKa: '',
+    modelEn: ''
   };
   protected selectedFiles: File[] = [];
   protected reorderTarget: AdminProduct | null = null;
@@ -299,10 +305,16 @@ export class AdminProductsComponent implements OnInit {
 
     const title = this.createDraft.title.trim();
     const description = this.createDraft.description.trim();
+    const titleKa = this.createDraft.titleKa.trim();
+    const titleEn = this.createDraft.titleEn.trim();
+    const descriptionKa = this.createDraft.descriptionKa.trim();
+    const descriptionEn = this.createDraft.descriptionEn.trim();
     const price = this.createDraft.price;
     const stock = this.createDraft.stock;
     const category = this.createDraft.category.trim();
     const model = this.createDraft.model.trim();
+    const modelKa = this.createDraft.modelKa.trim();
+    const modelEn = this.createDraft.modelEn.trim();
     const caseType = this.createDraft.caseType;
     const brand = this.createDraft.brand;
     const color = this.createDraft.color;
@@ -355,7 +367,13 @@ export class AdminProductsComponent implements OnInit {
               caseType,
               brand,
               color,
-              model
+              model,
+              titleKa: titleKa || undefined,
+              titleEn: titleEn || undefined,
+              descriptionKa: descriptionKa || undefined,
+              descriptionEn: descriptionEn || undefined,
+              modelKa: modelKa || undefined,
+              modelEn: modelEn || undefined
             }
           })
         ),
@@ -367,7 +385,11 @@ export class AdminProductsComponent implements OnInit {
         next: () => {
           this.createDraft = {
             title: '',
+            titleKa: '',
+            titleEn: '',
             description: '',
+            descriptionKa: '',
+            descriptionEn: '',
             price: 0,
             stock: 0,
             isActive: true,
@@ -377,7 +399,9 @@ export class AdminProductsComponent implements OnInit {
             caseType: 'Slim',
             brand: 'Apple',
             color: 'Black',
-            model: ''
+            model: '',
+            modelKa: '',
+            modelEn: ''
           };
           this.selectedFiles = [];
           this.showCreate = false;

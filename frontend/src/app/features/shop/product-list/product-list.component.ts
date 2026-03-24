@@ -6,6 +6,8 @@ import { CartService } from '../../../core/services/cart.service';
 import { ContentService } from '../../../core/services/content.service';
 import { ProductsService, type Product } from '../../../core/services/products.service';
 
+declare const $localize: { locale?: string };
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -19,6 +21,7 @@ export class ProductListComponent implements OnInit {
   private readonly cartService = inject(CartService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly lang: 'ka' | 'en' = this.resolveLang();
 
   protected products: Product[] = [];
   protected isLoading = true;
@@ -59,11 +62,11 @@ export class ProductListComponent implements OnInit {
     }
 
     const tags = [] as string[];
-    const category = meta['category'];
-    const caseType = meta['caseType'];
-    const brand = meta['brand'];
-    const color = meta['color'];
-    const model = meta['model'];
+    const category = this.getLocalizedMetaValue(meta, 'category');
+    const caseType = this.getLocalizedMetaValue(meta, 'caseType');
+    const brand = this.getLocalizedMetaValue(meta, 'brand');
+    const color = this.getLocalizedMetaValue(meta, 'color');
+    const model = this.getLocalizedMetaValue(meta, 'model');
 
     if (typeof category === 'string') tags.push(category);
     if (typeof caseType === 'string') tags.push(caseType);
@@ -81,5 +84,21 @@ export class ProductListComponent implements OnInit {
 
     const first = product.images[0]?.trim();
     return first ? first : null;
+  }
+
+  private resolveLang(): 'ka' | 'en' {
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    if (locale.startsWith('ka')) {
+      return 'ka';
+    }
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/ka')) {
+      return 'ka';
+    }
+    return 'en';
+  }
+
+  private getLocalizedMetaValue(meta: Record<string, unknown>, key: string): unknown {
+    const localizedKey = this.lang === 'ka' ? `${key}Ka` : `${key}En`;
+    return meta[localizedKey] ?? meta[key];
   }
 }

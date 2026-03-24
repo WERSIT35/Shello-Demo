@@ -14,6 +14,8 @@
       <p class="state-text error" *ngIf="createErrorMessage">{{ createErrorMessage }}</p>
       <div class="create-grid">
         <input type="text" placeholder="Title" i18n-placeholder [(ngModel)]="createDraft.title" />
+        <input type="text" placeholder="Title (KA)" i18n-placeholder [(ngModel)]="createDraft.titleKa" />
+        <input type="text" placeholder="Title (EN)" i18n-placeholder [(ngModel)]="createDraft.titleEn" />
         <select [(ngModel)]="createDraft.category">
           <option *ngFor="let category of categories" [value]="category">
             {{ category }}
@@ -33,6 +35,18 @@
           placeholder="Model (e.g. iPhone 15 Pro)"
           i18n-placeholder
           [(ngModel)]="createDraft.model"
+        />
+        <input
+          type="text"
+          placeholder="Model (KA)"
+          i18n-placeholder
+          [(ngModel)]="createDraft.modelKa"
+        />
+        <input
+          type="text"
+          placeholder="Model (EN)"
+          i18n-placeholder
+          [(ngModel)]="createDraft.modelEn"
         />
         <div class="file-input">
           <label class="file-label">
@@ -59,6 +73,18 @@
           i18n-placeholder
           [(ngModel)]="createDraft.description"
         />
+        <textarea
+          rows="2"
+          placeholder="Description (KA)"
+          i18n-placeholder
+          [(ngModel)]="createDraft.descriptionKa"
+        ></textarea>
+        <textarea
+          rows="2"
+          placeholder="Description (EN)"
+          i18n-placeholder
+          [(ngModel)]="createDraft.descriptionEn"
+        ></textarea>
         <label class="status-toggle">
           <input type="checkbox" [(ngModel)]="createDraft.isActive" />
           <span i18n>Active</span>

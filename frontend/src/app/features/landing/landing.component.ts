@@ -1,7 +1,8 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { catchError, finalize, of, timeout } from 'rxjs';
+import Splide from '@splidejs/splide';
 
 import { CartService } from '../../core/services/cart.service';
 import { ContentService, type HeroContent } from '../../core/services/content.service';
@@ -16,14 +17,16 @@ declare const $localize: { locale?: string };
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
-export class LandingComponent implements OnInit {
-  @ViewChild('caseSlider')
-  protected caseSlider?: ElementRef<HTMLDivElement>;
+export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('caseSplide')
+  protected caseSplide?: ElementRef<HTMLDivElement>;
 
   private readonly contentService = inject(ContentService);
   private readonly cartService = inject(CartService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  private suggestedSplide: Splide | null = null;
+  private readonly lang: 'ka' | 'en' = this.resolveLang();
 
   protected isLoading = true;
   protected errorMessage = '';
@@ -69,15 +72,12 @@ export class LandingComponent implements OnInit {
     this.loadContent();
   }
 
-  protected scrollCases(direction: 'left' | 'right'): void {
-    const slider = this.caseSlider?.nativeElement;
+  ngAfterViewInit(): void {
+    this.mountSuggestedSplide();
+  }
 
-    if (!slider) {
-      return;
-    }
-
-    const shift = direction === 'left' ? -320 : 320;
-    slider.scrollBy({ left: shift, behavior: 'smooth' });
+  ngOnDestroy(): void {
+    this.destroySuggestedSplide();
   }
 
   protected addToCart(product: Product): void {
@@ -95,11 +95,11 @@ export class LandingComponent implements OnInit {
     }
 
     const tags = [] as string[];
-    const category = meta['category'];
-    const caseType = meta['caseType'];
-    const brand = meta['brand'];
-    const color = meta['color'];
-    const model = meta['model'];
+    const category = this.getLocalizedMetaValue(meta, 'category');
+    const caseType = this.getLocalizedMetaValue(meta, 'caseType');
+    const brand = this.getLocalizedMetaValue(meta, 'brand');
+    const color = this.getLocalizedMetaValue(meta, 'color');
+    const model = this.getLocalizedMetaValue(meta, 'model');
 
     if (typeof category === 'string') tags.push(category);
     if (typeof caseType === 'string') tags.push(caseType);
@@ -143,6 +143,8 @@ export class LandingComponent implements OnInit {
         this.suggestedProducts = content.suggestedProducts;
         this.panelProducts = content.heroProducts.slice(0, 4);
         this.pageToggles = { cart: content.pageToggles.cart };
+        this.cdr.detectChanges();
+        queueMicrotask(() => this.mountSuggestedSplide());
       });
   }
 
@@ -181,5 +183,54 @@ export class LandingComponent implements OnInit {
     }
 
     return `/uploads/${trimmed}`;
+  }
+
+  private resolveLang(): 'ka' | 'en' {
+    const locale = (typeof $localize !== 'undefined' && $localize.locale) || '';
+    if (locale.startsWith('ka')) {
+      return 'ka';
+    }
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/ka')) {
+      return 'ka';
+    }
+    return 'en';
+  }
+
+  private getLocalizedMetaValue(meta: Record<string, unknown>, key: string): unknown {
+    const localizedKey = this.lang === 'ka' ? `${key}Ka` : `${key}En`;
+    return meta[localizedKey] ?? meta[key];
+  }
+
+  private mountSuggestedSplide(): void {
+    const root = this.caseSplide?.nativeElement;
+    if (!root || this.isLoading || this.errorMessage || this.suggestedProducts.length === 0) {
+      return;
+    }
+
+    this.destroySuggestedSplide();
+
+    this.suggestedSplide = new Splide(root, {
+      type: 'slide',
+      rewind: true,
+      arrows: true,
+      pagination: false,
+      drag: true,
+      gap: '1rem',
+      perPage: 3,
+      perMove: 1,
+      breakpoints: {
+        1100: { perPage: 2 },
+        900: { perPage: 1 }
+      }
+    });
+
+    this.suggestedSplide.mount();
+  }
+
+  private destroySuggestedSplide(): void {
+    if (this.suggestedSplide) {
+      this.suggestedSplide.destroy(true);
+      this.suggestedSplide = null;
+    }
   }
 }

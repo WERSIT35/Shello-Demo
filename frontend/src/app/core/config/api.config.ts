@@ -24,3 +24,43 @@ function resolveApiBaseUrl(): string {
 }
 
 export const API_BASE_URL = resolveApiBaseUrl();
+
+function resolveApiOrigin(): string {
+  try {
+    const originBase = typeof window !== 'undefined' ? window.location.origin : REMOTE_API_ORIGIN;
+    return new URL(API_BASE_URL, originBase).origin;
+  } catch {
+    return REMOTE_API_ORIGIN;
+  }
+}
+
+const API_ORIGIN = resolveApiOrigin();
+
+export function resolveAssetUrl(value: string | null | undefined): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith('/uploads/')) {
+    return `${API_ORIGIN}${trimmed}`;
+  }
+
+  if (trimmed.startsWith('uploads/')) {
+    return `${API_ORIGIN}/${trimmed}`;
+  }
+
+  if (!trimmed.includes('/') && /\.[a-zA-Z0-9]{2,5}$/.test(trimmed)) {
+    return `${API_ORIGIN}/uploads/${trimmed}`;
+  }
+
+  return `${API_ORIGIN}/${trimmed.replace(/^\/+/, '')}`;
+}

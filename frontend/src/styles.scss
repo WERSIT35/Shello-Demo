@@ -1,3 +1,5 @@
+@import '@splidejs/splide/css';
+
 @font-face {
 	font-family: "BPG DejaVu Sans";
 	src: url("/assets/fonts/bpg_dejavu_sans.otf") format("opentype");
@@ -53,13 +55,13 @@ body {
 
 html {
 	background:
-		radial-gradient(1200px circle at 15% -10%, rgba(224, 71, 89, 0.2) 0%, transparent 60%),
-		radial-gradient(900px circle at 80% 110%, rgba(179, 139, 255, 0.1) 0%, transparent 70%),
+		radial-gradient(150vmax 110vmax at -12% -24%, rgba(224, 71, 89, 0.16) 0%, transparent 62%),
+		radial-gradient(130vmax 100vmax at 112% 120%, rgba(179, 139, 255, 0.09) 0%, transparent 66%),
 		linear-gradient(180deg, #141523 0%, #0c0d12 42%, #120f1c 100%);
 	background-color: var(--bg);
 	background-repeat: no-repeat;
-	background-position: 12% -180px, 85% 118%, center center;
-	background-size: 1360px 980px, 1080px 860px, 100vw 100vh;
+	background-position: center center, center center, center center;
+	background-size: 170vw 145vh, 160vw 140vh, 100% 100%;
 	background-attachment: fixed, fixed, fixed;
 }
 

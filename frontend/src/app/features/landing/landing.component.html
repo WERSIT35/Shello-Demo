@@ -40,30 +40,6 @@
       <h2 i18n>Suggested cases</h2>
       <p i18n>Scroll through the latest finishes and tap to view details.</p>
     </div>
-    <div class="slider-controls">
-      <button
-        class="btn ghost"
-        type="button"
-        (click)="scrollCases('left')"
-        aria-label="Scroll left"
-        i18n-aria-label
-      >
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-      </button>
-      <button
-        class="btn ghost"
-        type="button"
-        (click)="scrollCases('right')"
-        aria-label="Scroll right"
-        i18n-aria-label
-      >
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" />
-        </svg>
-      </button>
-    </div>
   </div>
   <div class="slider loading-slider" *ngIf="isLoading">
     <article class="card skeleton-card" *ngFor="let i of [1,2,3,4]">
@@ -74,36 +50,41 @@
     </article>
   </div>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
-  <div class="slider" #caseSlider *ngIf="!isLoading && !errorMessage">
-    <article
-      class="card"
-      role="link"
-      tabindex="0"
-      *ngFor="let product of suggestedProducts"
-      (click)="goToProduct(product.id)"
-      (keydown.enter)="goToProduct(product.id)"
-      (keydown.space)="goToProduct(product.id); $event.preventDefault()"
-    >
-      <a class="card-image" [routerLink]="['/products', product.id]">
-        <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
-        <ng-template #imageFallback>
-          <div class="image-fallback">
-            <span i18n>No image</span>
-          </div>
-        </ng-template>
-      </a>
-      <div class="card-top">
-        <span>{{ product.title }}</span>
-        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-      </div>
-      <div class="card-meta" *ngIf="getMeta(product).length">
-        <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
-      </div>
-      <div class="card-actions">
-        <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product); $event.stopPropagation()" i18n *ngIf="pageToggles?.cart !== false">Add</button>
-      </div>
-    </article>
+  <div class="splide landing-splide" #caseSplide *ngIf="!isLoading && !errorMessage && suggestedProducts.length > 0">
+    <div class="splide__track">
+      <ul class="splide__list">
+        <li class="splide__slide" *ngFor="let product of suggestedProducts">
+          <article
+            class="card"
+            role="link"
+            tabindex="0"
+            (click)="goToProduct(product.id)"
+            (keydown.enter)="goToProduct(product.id)"
+            (keydown.space)="goToProduct(product.id); $event.preventDefault()"
+          >
+            <a class="card-image" [routerLink]="['/products', product.id]">
+              <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
+              <ng-template #imageFallback>
+                <div class="image-fallback">
+                  <span i18n>No image</span>
+                </div>
+              </ng-template>
+            </a>
+            <div class="card-top">
+              <span>{{ product.title }}</span>
+              <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+            </div>
+            <div class="card-meta" *ngIf="getMeta(product).length">
+              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+            </div>
+            <div class="card-actions">
+              <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
+              <button class="btn ghost" type="button" (click)="addToCart(product); $event.stopPropagation()" i18n *ngIf="pageToggles?.cart !== false">Add</button>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </div>
   </div>
   <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0" i18n>No suggested cases yet.</p>
 </section>
