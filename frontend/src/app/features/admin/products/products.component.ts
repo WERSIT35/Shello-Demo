@@ -1,7 +1,7 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { finalize, retry, switchMap } from 'rxjs';
+import { finalize, of, retry, switchMap } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ContentService } from '../../../core/services/content.service';
@@ -50,6 +50,7 @@ export class AdminProductsComponent implements OnInit {
   protected selectedFiles: File[] = [];
   protected reorderTarget: AdminProduct | null = null;
   protected imageOrderDraft: string[] = [];
+  protected imageUpdateFiles: File[] = [];
   protected isSavingImageOrder = false;
   protected reorderErrorMessage = '';
 
@@ -211,6 +212,7 @@ export class AdminProductsComponent implements OnInit {
   protected closeImageReorder(): void {
     this.reorderTarget = null;
     this.imageOrderDraft = [];
+    this.imageUpdateFiles = [];
     this.isSavingImageOrder = false;
     this.reorderErrorMessage = '';
   }
@@ -226,22 +228,52 @@ export class AdminProductsComponent implements OnInit {
     this.imageOrderDraft = nextDraft;
   }
 
+  protected removeImage(index: number): void {
+    this.imageOrderDraft = this.imageOrderDraft.filter((_, i) => i !== index);
+  }
+
+  protected onUpdateFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    const maxTotalFiles = 8;
+    const availableSlots = Math.max(0, maxTotalFiles - this.imageOrderDraft.length);
+
+    if (files.length > availableSlots) {
+      this.reorderErrorMessage = `You can add up to ${availableSlots} more image(s).`;
+      this.imageUpdateFiles = files.slice(0, availableSlots);
+    } else {
+      this.reorderErrorMessage = '';
+      this.imageUpdateFiles = files;
+    }
+
+    input.value = '';
+  }
+
   protected saveImageOrder(): void {
     if (!this.reorderTarget || this.isSavingImageOrder) {
       return;
     }
 
-    if (this.imageOrderDraft.length === 0) {
+    if (this.imageOrderDraft.length === 0 && this.imageUpdateFiles.length === 0) {
       this.reorderErrorMessage = 'At least one image is required.';
       return;
     }
 
     this.isSavingImageOrder = true;
     this.reorderErrorMessage = '';
+    const filesToUpload = [...this.imageUpdateFiles];
+    const upload$ = filesToUpload.length > 0 ? this.productsService.uploadImages(filesToUpload) : of<string[]>([]);
 
-    this.productsService
-      .updateProduct(this.reorderTarget.id, { images: this.imageOrderDraft })
+    upload$
       .pipe(
+        switchMap((uploadedImages) => {
+          const nextImages = [...this.imageOrderDraft, ...uploadedImages];
+          if (nextImages.length === 0) {
+            throw new Error('At least one image is required.');
+          }
+
+          return this.productsService.updateProduct(this.reorderTarget!.id, { images: nextImages });
+        }),
         finalize(() => {
           this.isSavingImageOrder = false;
         })

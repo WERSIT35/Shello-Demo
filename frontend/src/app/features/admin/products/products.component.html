@@ -77,11 +77,19 @@
     <div class="modal-backdrop" (click)="closeImageReorder()"></div>
     <div class="modal-card image-reorder-modal">
       <div class="modal-header">
-        <h3 i18n>Reorder images</h3>
+        <h3 i18n>Manage images</h3>
         <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Close</button>
       </div>
-      <p class="state-text" *ngIf="reorderTarget" i18n>First image becomes primary.</p>
+      <p class="state-text" *ngIf="reorderTarget" i18n>First image is primary. You can reorder, remove, and add new images.</p>
       <p class="state-text error" *ngIf="reorderErrorMessage">{{ reorderErrorMessage }}</p>
+      <div class="file-input update-file-input">
+        <label class="file-label">
+          <input type="file" accept="image/*" multiple (change)="onUpdateFilesSelected($event)" />
+          <span *ngIf="imageUpdateFiles.length" i18n>{{ imageUpdateFiles.length }} new image(s) selected</span>
+          <span *ngIf="!imageUpdateFiles.length" i18n>Add new images</span>
+        </label>
+        <p class="hint" i18n>New images are appended at the end. Max 8 total images.</p>
+      </div>
       <div class="image-order-list" *ngIf="imageOrderDraft.length > 0; else noImages">
         <div class="image-order-item" *ngFor="let image of imageOrderDraft; let i = index">
           <span class="image-rank">{{ i + 1 }}</span>
@@ -100,6 +108,13 @@
                 <path d="M12 19l6-6" />
               </svg>
             </button>
+            <button class="btn ghost icon-btn danger" type="button" (click)="removeImage(i)" aria-label="Remove image" title="Remove image" i18n-aria-label i18n-title>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 7h12" />
+                <path d="M9 7V5h6v2" />
+                <path d="M8 7l1 12h6l1-12" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -108,7 +123,7 @@
       </ng-template>
       <div class="modal-actions">
         <button class="btn ghost" type="button" (click)="closeImageReorder()" i18n>Cancel</button>
-        <button class="btn primary" type="button" (click)="saveImageOrder()" [disabled]="isSavingImageOrder || imageOrderDraft.length < 2">
+        <button class="btn primary" type="button" (click)="saveImageOrder()" [disabled]="isSavingImageOrder || (imageOrderDraft.length === 0 && imageUpdateFiles.length === 0)">
           <span *ngIf="isSavingImageOrder" i18n>Saving...</span>
           <span *ngIf="!isSavingImageOrder" i18n>Save order</span>
         </button>
