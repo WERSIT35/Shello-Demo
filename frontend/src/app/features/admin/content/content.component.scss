@@ -127,12 +127,14 @@
 }
 
 .hero-preview {
-  width: 100%;
+  width: min(100%, 460px);
   aspect-ratio: 16 / 9;
+  max-height: 220px;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
+  justify-self: start;
 }
 
 .hero-preview img {
