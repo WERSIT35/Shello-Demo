@@ -120,6 +120,67 @@ function copyDir(from, to) {
   fs.cpSync(from, to, { recursive: true });
 }
 
+function findFileByBasename(rootDir, basename, maxDepth = 8) {
+  let found = null;
+
+  function walk(currentDir, depth) {
+    if (found || depth > maxDepth) {
+      return;
+    }
+
+    const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (found) {
+        return;
+      }
+
+      const fullPath = path.join(currentDir, entry.name);
+      if (entry.isFile() && entry.name === basename) {
+        found = fullPath;
+        return;
+      }
+
+      if (entry.isDirectory()) {
+        walk(fullPath, depth + 1);
+      }
+    }
+  }
+
+  if (exists(rootDir)) {
+    walk(rootDir, 0);
+  }
+
+  return found;
+}
+
+function ensureReferencedAssetsPresent() {
+  const indexPath = path.join(deployOut, "index.html");
+  if (!exists(indexPath)) {
+    return;
+  }
+
+  const html = fs.readFileSync(indexPath, "utf8");
+  const refs = extractAssetRefs(html);
+
+  for (const ref of refs) {
+    const clean = ref.split("?")[0].split("#")[0];
+    const relativePath = clean.startsWith("/") ? clean.slice(1) : clean;
+    const expectedPath = path.join(deployOut, relativePath);
+    if (exists(expectedPath)) {
+      continue;
+    }
+
+    const basename = path.basename(relativePath);
+    const source = findFileByBasename(buildBase, basename);
+    if (!source) {
+      continue;
+    }
+
+    ensureDir(path.dirname(expectedPath));
+    fs.copyFileSync(source, expectedPath);
+  }
+}
+
 function mergeBuildArtifacts() {
   if (!exists(buildBase)) {
     return;
@@ -157,6 +218,7 @@ function main() {
   ensureDir(path.dirname(deployOut));
   copyDir(englishRoot, deployOut);
   mergeBuildArtifacts();
+  ensureReferencedAssetsPresent();
 
   const kaSource = findKaSource();
   if (kaSource) {
