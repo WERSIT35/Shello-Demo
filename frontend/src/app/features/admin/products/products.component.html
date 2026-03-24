@@ -73,9 +73,29 @@
       </div>
     </div>
   </div>
-  <p class="state-text" *ngIf="isLoading" i18n>Loading products...</p>
+  <div class="table loading" *ngIf="isLoading">
+    <div class="row header">
+      <span i18n>Image</span>
+      <span i18n>Title</span>
+      <span i18n>Price</span>
+      <span i18n>Stock</span>
+      <span i18n>Status</span>
+      <span i18n>Action</span>
+    </div>
+    <div class="row skeleton-row" *ngFor="let i of [1,2,3,4]">
+      <div class="thumb skeleton"></div>
+      <span class="skeleton skeleton-line"></span>
+      <span class="skeleton skeleton-line small"></span>
+      <span class="skeleton skeleton-line tiny"></span>
+      <span class="skeleton skeleton-line small"></span>
+      <div class="row-actions">
+        <span class="skeleton skeleton-pill"></span>
+        <span class="skeleton skeleton-pill"></span>
+      </div>
+    </div>
+  </div>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
-  <div class="table">
+  <div class="table" *ngIf="!isLoading">
     <div class="row header">
       <span i18n>Image</span>
       <span i18n>Title</span>
@@ -129,7 +149,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">ED</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 20h4l10-10-4-4L4 16v4z" />
+            <path d="M12 6l4 4" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn"
@@ -141,7 +164,9 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">OK</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn"
@@ -153,7 +178,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">X</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6L6 18" />
+            <path d="M6 6l12 12" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn danger"
@@ -165,7 +193,9 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">-</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn success"
@@ -177,7 +207,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">+</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
         </button>
         <button
           class="btn ghost danger icon-btn"
@@ -189,7 +222,11 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">D</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 7h12" />
+            <path d="M9 7V5h6v2" />
+            <path d="M8 7l1 12h6l1-12" />
+          </svg>
         </button>
       </div>
     </div>

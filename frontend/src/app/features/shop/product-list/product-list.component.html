@@ -3,15 +3,27 @@
     <h2 i18n>Shop drops</h2>
     <p i18n>Browse the full lineup. Each case is tested, tuned, and limited.</p>
   </div>
-  <p class="state-text" *ngIf="isLoading" i18n>Loading products...</p>
+  <div class="grid-cards skeleton-grid" *ngIf="isLoading">
+    <article class="card skeleton-card" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="card-image skeleton"></div>
+      <div class="skeleton skeleton-line title"></div>
+      <div class="skeleton skeleton-line meta"></div>
+      <div class="skeleton skeleton-line action"></div>
+    </article>
+  </div>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
-  <div class="grid-cards">
+  <div class="grid-cards" *ngIf="!isLoading">
     <article class="card" *ngFor="let product of products">
       <a class="card-image" [routerLink]="['/products', product.id]">
-        <img *ngIf="product.images.length" [src]="product.images[0]" alt="" />
+        <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
+        <ng-template #imageFallback>
+          <div class="image-fallback">
+            <span i18n>No image</span>
+          </div>
+        </ng-template>
       </a>
       <div class="card-top">
-        <span>{{ product.title }}</span>
+        <span class="card-title">{{ product.title }}</span>
         <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
       <div class="card-meta" *ngIf="getMeta(product).length">

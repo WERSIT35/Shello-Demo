@@ -28,6 +28,7 @@ export class PublicLayoutComponent implements OnInit {
 
   protected readonly user$ = this.auth.currentUser$;
   protected pageToggles: PageToggles | null = null;
+  protected isMobileMenuOpen = false;
   ngOnInit(): void {
     this.auth.ensureSession().subscribe();
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -67,8 +68,17 @@ export class PublicLayoutComponent implements OnInit {
 
   protected logout(): void {
     this.auth.logout().subscribe(() => {
+      this.isMobileMenuOpen = false;
       this.router.navigate(['/login']);
     });
+  }
+
+  protected toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  protected closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 
   private buildLocaleUrl(target: 'ka' | 'en'): string {
@@ -169,6 +179,13 @@ export class PublicLayoutComponent implements OnInit {
 
   private getThumbWidth(): number {
     return this.dragThumbRef?.nativeElement.getBoundingClientRect().width ?? this.dragThumbWidth;
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (typeof window !== 'undefined' && window.innerWidth > 900) {
+      this.isMobileMenuOpen = false;
+    }
   }
 
 }

@@ -152,6 +152,15 @@ export class LandingComponent implements OnInit {
     return `${overlay}, url('${resolvedImageUrl}')`;
   }
 
+  protected getPrimaryImage(product: Product): string | null {
+    if (!product.images?.length) {
+      return null;
+    }
+
+    const first = product.images[0]?.trim();
+    return first ? first : null;
+  }
+
   private resolveHeroImageUrl(imageUrl: string | null): string | null {
     if (!imageUrl) {
       return null;

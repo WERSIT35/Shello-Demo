@@ -1,5 +1,6 @@
 .grid-header h2 {
   margin: 0 0 0.3rem;
+  font-size: clamp(1.5rem, 2vw, 2rem);
 }
 
 .grid-header p {
@@ -8,7 +9,7 @@
 }
 
 .state-text {
-  margin: 0 0 1.5rem;
+  margin: 0 0 24px;
   color: var(--text-muted);
 }
 
@@ -18,8 +19,32 @@
 
 .grid-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.skeleton-grid {
+  margin-bottom: 16px;
+}
+
+.skeleton-card {
+  gap: 12px;
+}
+
+.skeleton-line {
+  height: 12px;
+}
+
+.skeleton-line.title {
+  width: 72%;
+}
+
+.skeleton-line.meta {
+  width: 48%;
+}
+
+.skeleton-line.action {
+  width: 38%;
 }
 
 .card {
@@ -30,7 +55,7 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 12px;
   backdrop-filter: var(--glass-blur);
   overflow: hidden;
   transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
@@ -63,8 +88,8 @@
 
 .card-image {
   width: 100%;
-  aspect-ratio: 4 / 5;
-  max-height: 220px;
+  aspect-ratio: 3 / 4;
+  max-height: 248px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -87,13 +112,39 @@
   background: rgba(9, 10, 14, 0.7);
   border-radius: calc(var(--radius-sm) - 6px);
   box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.35s var(--ease);
+}
+
+.card:hover .card-image img {
+  transform: scale(1.04);
+}
+
+.image-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-sm) - 6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  color: var(--text-muted);
 }
 
 .card-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: color-mix(in srgb, var(--text) 95%, white);
 }
 
 .card-top span:first-child {
@@ -114,11 +165,9 @@
 
 .card-meta {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.4rem;
-  min-height: 1.6rem;
-  max-height: 1.6rem;
-  overflow: hidden;
+  min-height: 24px;
 }
 
 .meta-pill {
@@ -127,8 +176,8 @@
   border-radius: 999px;
   font-size: 0.75rem;
   line-height: 1.1;
-  background: rgba(122, 215, 255, 0.12);
-  color: var(--accent);
+  background: rgba(255, 255, 255, 0.06);
+  color: color-mix(in srgb, var(--text-muted) 90%, white);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -142,8 +191,8 @@
 }
 
 .card-link {
-  font-weight: 600;
-  color: var(--text);
+  font-weight: 700;
+  color: color-mix(in srgb, var(--text) 92%, white);
   transition: color 0.2s ease;
 }
 

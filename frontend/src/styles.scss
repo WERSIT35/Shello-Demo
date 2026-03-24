@@ -11,16 +11,29 @@
 	--font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-display: var(--font-body);
 	--font-brand: var(--font-body);
+	--line-body: 1.55;
+	--line-display: 1.18;
+	--tracking-display: -0.01em;
 	--bg: #0c0d12;
 	--surface: rgba(20, 22, 30, 0.72);
 	--surface-soft: rgba(255, 255, 255, 0.05);
+	--surface-strong: rgba(255, 255, 255, 0.09);
 	--text: #f4f5f7;
 	--text-muted: #a0a7b4;
 	--accent: #7ad7ff;
 	--accent-dark: #4bb5ff;
+	--success: #52d18e;
+	--success-soft: rgba(82, 209, 142, 0.18);
+	--warning: #f2c56a;
+	--warning-soft: rgba(242, 197, 106, 0.18);
+	--danger: #ff8f9d;
+	--danger-soft: rgba(255, 143, 157, 0.2);
+	--info: #8bb8ff;
+	--info-soft: rgba(139, 184, 255, 0.18);
 	--border: rgba(255, 255, 255, 0.08);
 	--shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
 	--shadow-md: 0 18px 40px rgba(0, 0, 0, 0.45);
+	--shadow-lg: 0 28px 72px rgba(0, 0, 0, 0.48);
 	--radius-lg: 26px;
 	--radius-md: 18px;
 	--radius-sm: 12px;
@@ -40,8 +53,11 @@ body {
 body {
 	margin: 0;
 	font-family: var(--font-body);
+	line-height: var(--line-body);
+	letter-spacing: 0.002em;
 	color: var(--text);
 	background: radial-gradient(1200px circle at 15% -10%, rgba(90, 140, 255, 0.22) 0%, transparent 60%),
+		radial-gradient(900px circle at 80% 110%, rgba(122, 215, 255, 0.1) 0%, transparent 70%),
 		var(--bg);
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -53,6 +69,8 @@ h3,
 h4 {
 	font-family: var(--font-display);
 	font-weight: 600;
+	line-height: var(--line-display);
+	letter-spacing: var(--tracking-display);
 }
 
 a {
@@ -134,12 +152,21 @@ select:focus {
 }
 
 .btn.ghost.success {
-	border-color: rgba(76, 210, 122, 0.45);
-	color: #8ee5b1;
+	border-color: color-mix(in srgb, var(--success) 45%, transparent);
+	color: color-mix(in srgb, var(--success) 85%, white);
 }
 
 .btn.ghost.success:hover {
-	background: rgba(76, 210, 122, 0.12);
+	background: var(--success-soft);
+}
+
+.btn.ghost.danger {
+	border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+	color: color-mix(in srgb, var(--danger) 85%, white);
+}
+
+.btn.ghost.danger:hover {
+	background: var(--danger-soft);
 }
 
 .icon-btn {
@@ -154,7 +181,7 @@ select:focus {
 	height: 18px;
 	stroke: currentColor;
 	fill: none;
-	stroke-width: 2;
+	stroke-width: 2.1;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
@@ -281,6 +308,22 @@ html[lang='ka'] .btn {
 	line-height: 1.15;
 }
 
+@keyframes shimmer {
+	0% {
+		background-position: 120% 0;
+	}
+	100% {
+		background-position: -120% 0;
+	}
+}
+
+.skeleton {
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.18) 37%, rgba(255, 255, 255, 0.08) 63%);
+	background-size: 300% 100%;
+	animation: shimmer 1.15s linear infinite;
+	border-radius: 10px;
+}
+
 html[lang='ka'] .pill {
 	font-size: 0.76rem;
 	padding: 0.32rem 0.72rem;
@@ -290,4 +333,11 @@ html[lang='ka'] {
 	--font-body: "BPG DejaVu Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-display: var(--font-body);
 	--font-brand: var(--font-body);
+	--line-body: 1.46;
+	--line-display: 1.26;
+	--tracking-display: 0;
+}
+
+html[lang='ka'] body {
+	letter-spacing: 0;
 }

@@ -242,7 +242,7 @@
 }
 
 .state-text.error {
-  color: #ff8e8e;
+  color: var(--danger);
 }
 
 .slider-controls {
@@ -336,6 +336,50 @@
   background: rgba(9, 10, 14, 0.7);
   border-radius: calc(var(--radius-sm) - 6px);
   box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.35s var(--ease);
+}
+
+.card:hover .card-image img {
+  transform: scale(1.04);
+}
+
+.image-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-sm) - 6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.loading-slider {
+  grid-auto-columns: minmax(240px, 1fr);
+}
+
+.skeleton-card {
+  gap: 12px;
+}
+
+.skeleton-line {
+  height: 12px;
+}
+
+.skeleton-line.title {
+  width: 72%;
+}
+
+.skeleton-line.meta {
+  width: 48%;
+}
+
+.skeleton-line.action {
+  width: 38%;
 }
 
 .card-top {

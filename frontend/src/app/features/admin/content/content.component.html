@@ -10,7 +10,11 @@
     </button>
   </div>
 
-  <p class="state-text" *ngIf="isLoading" i18n>Loading content...</p>
+  <div class="content-grid loading-grid" *ngIf="isLoading">
+    <div class="panel skeleton"></div>
+    <div class="panel skeleton"></div>
+    <div class="panel skeleton"></div>
+  </div>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <p class="state-text success" *ngIf="!isLoading && saveMessage">{{ saveMessage }}</p>
 

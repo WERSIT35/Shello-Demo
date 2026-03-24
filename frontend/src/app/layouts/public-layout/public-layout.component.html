@@ -1,43 +1,70 @@
 <div class="page-shell">
   <header class="site-header">
-    <a class="brand" routerLink="/">Shello</a>
-    <nav class="site-nav">
-      <a routerLink="/shop" routerLinkActive="active" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
-      <a class="cart-link" routerLink="/cart" routerLinkActive="active" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
-      <a routerLink="/orders" routerLinkActive="active" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
-    </nav>
-    <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
-      <div class="user-menu">
-        <button
-          class="user-button"
-          type="button"
-          aria-haspopup="true"
-          aria-label="Open user menu"
-          i18n-aria-label
-        >
-          <span class="user-initial">{{ user.name.charAt(0) }}</span>
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </button>
-        <div class="user-dropdown">
-          <div class="user-info">
-            <span class="user-name">{{ user.name }} {{ user.lastName }}</span>
-            <span class="user-email">{{ user.email }}</span>
+    <div class="header-primary">
+      <a class="brand" routerLink="/">Shello</a>
+      <button class="menu-toggle btn ghost icon-btn" type="button" (click)="toggleMobileMenu()" aria-label="Open menu" i18n-aria-label>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16" />
+          <path d="M4 12h16" />
+          <path d="M4 17h16" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mobile-overlay" *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+    <div class="header-content" [class.open]="isMobileMenuOpen">
+      <nav class="site-nav">
+        <a routerLink="/shop" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
+        <a class="cart-link" routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
+        <a routerLink="/orders" routerLinkActive="active" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
+      </nav>
+      <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
+        <div class="user-menu">
+          <button
+            class="user-button"
+            type="button"
+            aria-haspopup="true"
+            aria-label="Open user menu"
+            i18n-aria-label
+          >
+            <span class="user-initial">{{ user.name.charAt(0) }}</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+          <div class="user-dropdown">
+            <div class="user-info">
+              <span class="user-name">{{ user.name }} {{ user.lastName }}</span>
+              <span class="user-email">{{ user.email }}</span>
+            </div>
+            <a class="menu-item" routerLink="/profile" (click)="closeMobileMenu()" i18n>Profile</a>
+            <a class="menu-item" routerLink="/orders" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
+            <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" (click)="closeMobileMenu()" i18n>Admin</a>
+            <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
           </div>
-          <a class="menu-item" routerLink="/profile" i18n>Profile</a>
-          <a class="menu-item" routerLink="/orders" i18n *ngIf="pageToggles?.orders !== false">Orders</a>
-          <a class="menu-item" *ngIf="user.role === 'admin'" routerLink="/admin" i18n>Admin</a>
-          <button class="menu-item" type="button" (click)="logout()" i18n>Sign out</button>
+        </div>
+      </div>
+      <ng-template #guestActions>
+        <div class="header-actions">
+          <a class="btn ghost" routerLink="/login" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.login !== false">Login</a>
+          <a class="btn primary" routerLink="/register" (click)="closeMobileMenu()" i18n *ngIf="pageToggles?.register !== false">Get Started</a>
+        </div>
+      </ng-template>
+      <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
+        <div class="drag-track" #dragTrack (pointerdown)="startDrag($event)">
+          <span class="drag-label left">KA</span>
+          <span class="drag-label right">EN</span>
+          <div
+            class="drag-thumb"
+            #dragThumb
+            [style.left]="dragPosition"
+            [class.active]="dragging"
+          >
+            <span>{{ dragLocale === 'ka' ? 'KA' : 'EN' }}</span>
+          </div>
         </div>
       </div>
     </div>
-    <ng-template #guestActions>
-      <div class="header-actions">
-        <a class="btn ghost" routerLink="/login" i18n *ngIf="pageToggles?.login !== false">Login</a>
-        <a class="btn primary" routerLink="/register" i18n *ngIf="pageToggles?.register !== false">Get Started</a>
-      </div>
-    </ng-template>
   </header>
 
   <main class="site-main">
@@ -55,15 +82,10 @@
       <a *ngIf="(user$ | async)?.role === 'admin'" routerLink="/admin" i18n>Admin</a>
     </div>
     <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
-      <div class="drag-track" #dragTrack (pointerdown)="startDrag($event)">
+      <div class="drag-track" (pointerdown)="startDrag($event)">
         <span class="drag-label left">KA</span>
         <span class="drag-label right">EN</span>
-        <div
-          class="drag-thumb"
-          #dragThumb
-          [style.left]="dragPosition"
-          [class.active]="dragging"
-        >
+        <div class="drag-thumb" [style.left]="dragPosition" [class.active]="dragging">
           <span>{{ dragLocale === 'ka' ? 'KA' : 'EN' }}</span>
         </div>
       </div>

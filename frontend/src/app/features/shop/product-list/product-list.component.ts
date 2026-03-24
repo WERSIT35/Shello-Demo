@@ -68,4 +68,13 @@ export class ProductListComponent implements OnInit {
 
     return tags.slice(0, 3);
   }
+
+  protected getPrimaryImage(product: Product): string | null {
+    if (!product.images?.length) {
+      return null;
+    }
+
+    const first = product.images[0]?.trim();
+    return first ? first : null;
+  }
 }
