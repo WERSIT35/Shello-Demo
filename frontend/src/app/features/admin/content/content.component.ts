@@ -208,7 +208,14 @@ export class AdminContentComponent implements OnInit {
 
     this.productsService.uploadImages([file]).subscribe({
       next: (urls) => {
-        this.heroDraft.imageUrl = urls[0] ?? this.heroDraft.imageUrl;
+        const uploadedUrl = urls[0] ?? null;
+        if (uploadedUrl) {
+          this.heroDraft.imageUrl = uploadedUrl;
+          this.heroDrafts = {
+            ka: this.heroDrafts.ka ? { ...this.heroDrafts.ka, imageUrl: uploadedUrl } : this.heroDrafts.ka,
+            en: this.heroDrafts.en ? { ...this.heroDrafts.en, imageUrl: uploadedUrl } : this.heroDrafts.en
+          };
+        }
         this.isSaving = false;
         if (input) {
           input.value = '';
