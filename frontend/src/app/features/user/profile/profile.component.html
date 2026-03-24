@@ -13,7 +13,7 @@
       <span i18n>Pin</span>
       <span>{{ user.pinCode }}</span>
     </div>
-    <div class="profile-row">
+    <div class="profile-row" *ngIf="user.role === 'admin'">
       <span i18n>Role</span>
       <span>{{ user.role }}</span>
     </div>
