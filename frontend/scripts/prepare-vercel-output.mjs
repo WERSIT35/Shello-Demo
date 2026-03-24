@@ -9,37 +9,63 @@ function exists(filePath) {
   return fs.existsSync(filePath);
 }
 
-function findEnglishRoot() {
-  const candidates = [
-    buildBase,
-    path.join(buildBase, "browser"),
-    path.join(buildBase, "shellotech"),
-    path.join(buildBase, "en")
-  ];
+function collectIndexDirs(rootDir, maxDepth = 4) {
+  const results = [];
 
-  for (const candidate of candidates) {
-    if (exists(path.join(candidate, "index.html"))) {
-      return candidate;
+  function walk(currentDir, depth) {
+    if (depth > maxDepth) {
+      return;
+    }
+
+    if (exists(path.join(currentDir, "index.html"))) {
+      results.push(currentDir);
+      return;
+    }
+
+    const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+      walk(path.join(currentDir, entry.name), depth + 1);
     }
   }
 
-  return null;
+  if (exists(rootDir)) {
+    walk(rootDir, 0);
+  }
+
+  return results;
+}
+
+function rankEnglishCandidate(candidateDir) {
+  const rel = path.relative(buildBase, candidateDir).replace(/\\/g, "/");
+  if (!rel) return 100;
+  if (rel === "en") return 0;
+  if (rel.endsWith("/en")) return 1;
+  if (rel.includes("/ka") || rel === "ka") return 50;
+  return 10;
+}
+
+function findEnglishRoot() {
+  const discovered = collectIndexDirs(buildBase, 5);
+  if (discovered.length === 0) {
+    return null;
+  }
+
+  discovered.sort((a, b) => rankEnglishCandidate(a) - rankEnglishCandidate(b));
+  return discovered[0];
 }
 
 function findKaSource() {
-  const candidates = [
-    path.join(buildBase, "ka"),
-    path.join(buildBase, "browser", "ka"),
-    path.join(buildBase, "shellotech", "ka"),
-    path.join(buildBase, "en", "ka")
-  ];
-
-  for (const candidate of candidates) {
-    if (exists(path.join(candidate, "index.html"))) {
-      return candidate;
-    }
+  const discovered = collectIndexDirs(buildBase, 5);
+  const kaCandidate = discovered.find((dir) => {
+    const rel = path.relative(buildBase, dir).replace(/\\/g, "/");
+    return rel === "ka" || rel.endsWith("/ka") || rel.includes("/ka/");
+  });
+  if (kaCandidate) {
+    return kaCandidate;
   }
-
   return null;
 }
 
