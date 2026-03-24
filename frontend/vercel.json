@@ -1,5 +1,6 @@
 {
-  "outputDirectory": "dist/frontend/browser/browser",
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist/frontend/vercel",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://shello-demo-api.onrender.com/api/$1" },
     { "source": "/uploads/(.*)", "destination": "https://shello-demo-api.onrender.com/uploads/$1" },
