@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 
 import { CartService } from '../../../core/services/cart.service';
@@ -19,6 +19,7 @@ export class ProductDetailComponent implements OnInit {
   private readonly suggestedSliderRef?: ElementRef<HTMLDivElement>;
 
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
   private readonly contentService = inject(ContentService);
@@ -102,6 +103,10 @@ export class ProductDetailComponent implements OnInit {
 
   protected addSuggestedToCart(product: Product): void {
     this.cartService.addItem(product, 1);
+  }
+
+  protected goToProduct(productId: string): void {
+    void this.router.navigate(['/products', productId]);
   }
 
   protected selectImage(url: string): void {

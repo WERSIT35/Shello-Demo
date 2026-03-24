@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { catchError, finalize, of, timeout } from 'rxjs';
 
 import { CartService } from '../../core/services/cart.service';
@@ -22,6 +22,7 @@ export class LandingComponent implements OnInit {
 
   private readonly contentService = inject(ContentService);
   private readonly cartService = inject(CartService);
+  private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
 
   protected isLoading = true;
@@ -81,6 +82,10 @@ export class LandingComponent implements OnInit {
 
   protected addToCart(product: Product): void {
     this.cartService.addItem(product, 1);
+  }
+
+  protected goToProduct(productId: string): void {
+    void this.router.navigate(['/products', productId]);
   }
 
   protected getMeta(product: Product): string[] {

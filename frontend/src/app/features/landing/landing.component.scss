@@ -192,11 +192,19 @@
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.panel-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, white);
+  outline-offset: 2px;
 }
 
 .panel-dot {
   width: 12px;
   height: 12px;
+  flex: 0 0 12px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--accent);
 }
@@ -331,6 +339,12 @@
   min-height: 220px;
   overflow: hidden;
   transition: box-shadow 0.25s var(--ease);
+  cursor: pointer;
+}
+
+.card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, white);
+  outline-offset: 3px;
 }
 
 .card::before {

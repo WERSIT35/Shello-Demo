@@ -113,7 +113,15 @@
     </p>
 
     <div class="suggested-grid" #suggestedSlider *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage">
-      <article class="card" *ngFor="let suggestion of suggestedProducts">
+      <article
+        class="card"
+        role="link"
+        tabindex="0"
+        *ngFor="let suggestion of suggestedProducts"
+        (click)="goToProduct(suggestion.id)"
+        (keydown.enter)="goToProduct(suggestion.id)"
+        (keydown.space)="goToProduct(suggestion.id); $event.preventDefault()"
+      >
         <a class="card-image" [routerLink]="['/products', suggestion.id]">
           <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
         </a>
@@ -128,7 +136,7 @@
         </div>
         <div class="card-actions">
           <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
-          <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion)" i18n *ngIf="cartEnabled">
+          <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion); $event.stopPropagation()" i18n *ngIf="cartEnabled">
             Add
           </button>
         </div>

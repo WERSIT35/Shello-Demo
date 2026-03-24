@@ -56,24 +56,16 @@ body {
 	line-height: var(--line-body);
 	letter-spacing: 0.002em;
 	color: var(--text);
-	background-color: var(--bg);
-	min-height: 100vh;
-	position: relative;
-	isolation: isolate;
-}
-
-body::before {
-	content: "";
-	position: fixed;
-	inset: 0;
-	z-index: -1;
-	pointer-events: none;
 	background:
 		radial-gradient(1200px circle at 15% -10%, rgba(224, 71, 89, 0.2) 0%, transparent 60%),
 		radial-gradient(900px circle at 80% 110%, rgba(179, 139, 255, 0.1) 0%, transparent 70%),
 		linear-gradient(180deg, #141523 0%, #0c0d12 42%, #120f1c 100%);
+	background-color: var(--bg);
 	background-repeat: no-repeat;
-	background-size: 1300px 900px, 1000px 820px, 100% 100%;
+	background-position: 12% -180px, 85% 118%, 0 0;
+	background-size: 1360px 980px, 1080px 860px, 100% 100%;
+	background-attachment: scroll;
+	min-height: 100dvh;
 }
 
 h1,

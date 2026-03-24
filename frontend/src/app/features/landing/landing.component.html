@@ -15,7 +15,15 @@
     </div>
   </div>
   <div class="hero-panel">
-    <div class="panel-card" *ngFor="let product of panelProducts">
+    <div
+      class="panel-card"
+      role="link"
+      tabindex="0"
+      *ngFor="let product of panelProducts"
+      (click)="goToProduct(product.id)"
+      (keydown.enter)="goToProduct(product.id)"
+      (keydown.space)="goToProduct(product.id); $event.preventDefault()"
+    >
       <div class="panel-dot"></div>
       <div>
         <p class="panel-title">{{ product.title }}</p>
@@ -67,7 +75,15 @@
   </div>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <div class="slider" #caseSlider *ngIf="!isLoading && !errorMessage">
-    <article class="card" *ngFor="let product of suggestedProducts">
+    <article
+      class="card"
+      role="link"
+      tabindex="0"
+      *ngFor="let product of suggestedProducts"
+      (click)="goToProduct(product.id)"
+      (keydown.enter)="goToProduct(product.id)"
+      (keydown.space)="goToProduct(product.id); $event.preventDefault()"
+    >
       <a class="card-image" [routerLink]="['/products', product.id]">
         <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
         <ng-template #imageFallback>
@@ -85,7 +101,7 @@
       </div>
       <div class="card-actions">
         <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product)" i18n *ngIf="pageToggles?.cart !== false">Add</button>
+        <button class="btn ghost" type="button" (click)="addToCart(product); $event.stopPropagation()" i18n *ngIf="pageToggles?.cart !== false">Add</button>
       </div>
     </article>
   </div>

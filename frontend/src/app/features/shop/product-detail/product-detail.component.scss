@@ -251,6 +251,12 @@
   overflow: hidden;
   transition: box-shadow 0.25s var(--ease);
   scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 72%, white);
+  outline-offset: 3px;
 }
 
 .card::before {
