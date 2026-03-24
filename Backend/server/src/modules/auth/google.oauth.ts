@@ -26,6 +26,7 @@ type GoogleConfig = {
   clientSecret: string;
   redirectUri: string;
   allowedOrigin: string;
+  allowedOrigins: string[];
 };
 
 export function generateOAuthState(): string {
@@ -36,13 +37,25 @@ export function getGoogleConfig(): GoogleConfig {
   const clientId = env.GOOGLE_CLIENT_ID;
   const clientSecret = env.GOOGLE_CLIENT_SECRET;
   const redirectUri = env.GOOGLE_REDIRECT_URI;
-  const allowedOrigin = env.GOOGLE_ALLOWED_ORIGIN ?? env.FRONTEND_URL.split(",")[0]?.trim();
+  const configuredOrigins = `${env.GOOGLE_ALLOWED_ORIGIN ?? ""},${env.FRONTEND_URL}`
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .map((value) => {
+      try {
+        return new URL(value).origin;
+      } catch {
+        return value.replace(/\/+$/, "");
+      }
+    });
+  const allowedOrigins = Array.from(new Set(configuredOrigins));
+  const allowedOrigin = allowedOrigins[0];
 
   if (!clientId || !clientSecret || !redirectUri || !allowedOrigin) {
     throw new HttpError(500, "GOOGLE_CONFIG_MISSING", "Google OAuth is not configured");
   }
 
-  return { clientId, clientSecret, redirectUri, allowedOrigin };
+  return { clientId, clientSecret, redirectUri, allowedOrigin, allowedOrigins };
 }
 
 export function buildGoogleAuthUrl(state: string): string {

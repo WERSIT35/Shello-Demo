@@ -229,7 +229,7 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
           throw error;
         }
 
-        const { allowedOrigin } = getGoogleConfig();
+        const { allowedOrigins } = getGoogleConfig();
         const payload = {
           type: "google-auth",
           data: {
@@ -251,7 +251,10 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
               } catch (err) {
               }
               if (window.opener) {
-                window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
+                var allowedOrigins = ${JSON.stringify(allowedOrigins)};
+                for (var i = 0; i < allowedOrigins.length; i++) {
+                  window.opener.postMessage(payload, allowedOrigins[i]);
+                }
               }
               window.close();
             })();
@@ -275,7 +278,7 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
       expires: result.refreshTokenExpiresAt
     });
 
-    const { allowedOrigin } = getGoogleConfig();
+    const { allowedOrigins } = getGoogleConfig();
     const payloadData: Record<string, unknown> = {
       accessToken: result.accessToken,
       expiresIn: result.expiresIn,
@@ -299,7 +302,10 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
           } catch (err) {
           }
           if (window.opener) {
-            window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
+            var allowedOrigins = ${JSON.stringify(allowedOrigins)};
+            for (var i = 0; i < allowedOrigins.length; i++) {
+              window.opener.postMessage(payload, allowedOrigins[i]);
+            }
           }
           window.close();
         })();
@@ -312,7 +318,7 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
     return res.status(200).send(html);
   } catch (error) {
     try {
-      const { allowedOrigin } = getGoogleConfig();
+      const { allowedOrigins } = getGoogleConfig();
       const payload = {
         type: "google-auth",
         error: "Unable to sign in with Google."
@@ -329,7 +335,10 @@ export const googleCallback: RequestHandler = async (req, res, next) => {
             } catch (err) {
             }
             if (window.opener) {
-              window.opener.postMessage(payload, ${JSON.stringify(allowedOrigin)});
+              var allowedOrigins = ${JSON.stringify(allowedOrigins)};
+              for (var i = 0; i < allowedOrigins.length; i++) {
+                window.opener.postMessage(payload, allowedOrigins[i]);
+              }
             }
             window.close();
           })();
