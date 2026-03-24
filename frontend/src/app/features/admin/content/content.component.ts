@@ -90,6 +90,25 @@ export class AdminContentComponent implements OnInit {
     }
   ];
 
+  protected getGroupEnabledCount(group: { items: Array<{ key: string }> }): number {
+    return group.items.reduce((count, item) => count + (this.pageToggles[item.key] ? 1 : 0), 0);
+  }
+
+  protected setGroupState(group: { items: Array<{ key: string }> }, enabled: boolean): void {
+    for (const item of group.items) {
+      this.pageToggles[item.key] = enabled;
+    }
+    this.saveMessage = '';
+  }
+
+  protected get totalPageToggleCount(): number {
+    return this.pageToggleGroups.reduce((count, group) => count + group.items.length, 0);
+  }
+
+  protected get enabledPageToggleCount(): number {
+    return this.pageToggleGroups.reduce((count, group) => count + this.getGroupEnabledCount(group), 0);
+  }
+
   ngOnInit(): void {
     this.loadContent();
   }

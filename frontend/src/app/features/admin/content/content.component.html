@@ -231,13 +231,30 @@
           <span class="fold-chip fold-closed" i18n>Collapsed</span>
         </summary>
         <div class="fold-body">
-          <div class="toggle-groups compact">
+          <div class="visibility-toolbar">
+            <span class="visibility-summary" i18n>
+              Active {{ enabledPageToggleCount }}/{{ totalPageToggleCount }} toggles
+            </span>
+          </div>
+          <div class="toggle-groups compact visibility-groups">
             <div class="toggle-group" *ngFor="let group of pageToggleGroups">
-              <div class="toggle-group-title">{{ group.title }}</div>
+              <div class="toggle-group-head">
+                <div class="toggle-group-title">{{ group.title }}</div>
+                <span class="group-count">
+                  {{ getGroupEnabledCount(group) }}/{{ group.items.length }}
+                </span>
+              </div>
+              <div class="group-actions">
+                <button class="btn ghost" type="button" (click)="setGroupState(group, true)" i18n>Enable all</button>
+                <button class="btn ghost danger" type="button" (click)="setGroupState(group, false)" i18n>Disable all</button>
+              </div>
               <div class="toggle-grid">
                 <label class="toggle-row" *ngFor="let item of group.items">
                   <span>{{ item.label }}</span>
-                  <input type="checkbox" [(ngModel)]="pageToggles[item.key]" />
+                  <span class="toggle-switch">
+                    <input type="checkbox" [(ngModel)]="pageToggles[item.key]" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
             </div>
