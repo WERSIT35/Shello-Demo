@@ -32,10 +32,15 @@ function isAdminTraffic(req: Request): boolean {
   return false;
 }
 
+function isReadOnlyTraffic(req: Request): boolean {
+  return req.method === "GET" || req.method === "HEAD" || req.method === "OPTIONS";
+}
+
 export const globalRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
   max: env.RATE_LIMIT_MAX,
   skip: (req) =>
+    isReadOnlyTraffic(req) ||
     req.path === "/health" ||
     req.path.startsWith("/api/v1/auth") ||
     isAdminTraffic(req),

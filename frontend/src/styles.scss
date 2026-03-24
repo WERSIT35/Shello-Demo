@@ -285,6 +285,32 @@ select:focus {
 	font-weight: 600;
 }
 
+/* Apply consistent glass blur to transparent UI surfaces. */
+.site-header,
+.site-footer,
+.header-content,
+.mobile-section,
+.hero,
+.hero-panel,
+.panel-card,
+.card,
+.profile-header,
+.profile-card,
+.stat-card,
+.activity-item,
+.row,
+.modal-card,
+.file-label,
+.drag-switch,
+.user-button,
+.user-dropdown,
+.thumb,
+.chip,
+.pill {
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+}
+
 @keyframes rise {
 	from {
 		opacity: 0;

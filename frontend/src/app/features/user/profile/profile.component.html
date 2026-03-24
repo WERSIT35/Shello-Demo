@@ -1,21 +1,92 @@
 <section class="profile">
-  <h1 i18n>Profile</h1>
-  <div class="profile-card" *ngIf="user$ | async as user">
-    <div class="profile-row">
-      <span i18n>Full name</span>
-      <span>{{ user.name }} {{ user.lastName }}</span>
+  <div class="profile-shell" *ngIf="user$ | async as user">
+    <header class="profile-header">
+      <div class="identity">
+        <div class="avatar">{{ initials }}</div>
+        <div>
+          <p class="eyebrow" i18n>Account profile</p>
+          <h1>{{ user.name }} {{ user.lastName }}</h1>
+          <p class="identity-meta">{{ user.email }}</p>
+        </div>
+      </div>
+      <a class="btn ghost" routerLink="/orders" i18n>View orders</a>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <p class="stat-label" i18n>Total orders</p>
+        <p class="stat-value">{{ totalOrders }}</p>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label" i18n>Total spent</p>
+        <p class="stat-value">{{ totalSpent | currency:'GEL':'symbol-narrow':'1.2-2' }}</p>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label" i18n>Role</p>
+        <p class="stat-value">{{ user.role | titlecase }}</p>
+      </article>
+    </section>
+
+    <div class="profile-grid">
+      <article class="profile-card">
+        <h2 i18n>Account details</h2>
+        <div class="profile-row">
+          <span i18n>Full name</span>
+          <span>{{ user.name }} {{ user.lastName }}</span>
+        </div>
+        <div class="profile-row">
+          <span i18n>Email</span>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="profile-row">
+          <span i18n>Pin code</span>
+          <span>{{ user.pinCode }}</span>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <h2 i18n>Security</h2>
+        <div class="profile-row">
+          <span i18n>Authentication</span>
+          <span i18n>Password + Refresh token</span>
+        </div>
+        <div class="profile-row">
+          <span i18n>Session</span>
+          <span i18n>Managed automatically</span>
+        </div>
+        <div class="profile-row">
+          <span i18n>2FA</span>
+          <span i18n>Contact admin to enable</span>
+        </div>
+      </article>
+
+      <article class="profile-card activity-card">
+        <h2 i18n>Recent activity</h2>
+        <p class="state-text" *ngIf="isOrdersLoading" i18n>Loading orders...</p>
+        <p class="state-text error" *ngIf="!isOrdersLoading && ordersErrorMessage">
+          {{ ordersErrorMessage }}
+        </p>
+        <div class="activity-list" *ngIf="!isOrdersLoading && !ordersErrorMessage && recentOrders.length">
+          <div class="activity-item" *ngFor="let order of recentOrders">
+            <div>
+              <p class="order-id">#{{ order.id.slice(-8) }}</p>
+              <p class="order-date">{{ order.createdAt | date:'mediumDate' }}</p>
+            </div>
+            <div class="activity-end">
+              <span class="status-pill">{{ order.status | titlecase }}</span>
+              <span class="order-total">{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+        <p class="state-text" *ngIf="!isOrdersLoading && !ordersErrorMessage && !recentOrders.length" i18n>
+          No order activity yet.
+        </p>
+      </article>
     </div>
-    <div class="profile-row">
-      <span i18n>Email</span>
-      <span>{{ user.email }}</span>
-    </div>
-    <div class="profile-row">
-      <span i18n>Pin</span>
-      <span>{{ user.pinCode }}</span>
-    </div>
-    <div class="profile-row" *ngIf="user.role === 'admin'">
-      <span i18n>Role</span>
-      <span>{{ user.role }}</span>
+
+    <div class="quick-actions">
+      <a class="btn primary" routerLink="/shop" i18n>Continue shopping</a>
+      <a class="btn ghost" routerLink="/orders" i18n>Track my orders</a>
     </div>
   </div>
 </section>

@@ -18,11 +18,32 @@
   position: absolute;
   inset: -30% -15% auto;
   height: 180%;
-  background: radial-gradient(500px circle at 20% 20%, rgba(255, 90, 107, 0.35), transparent 60%),
-    radial-gradient(420px circle at 80% 10%, rgba(179, 139, 255, 0.24), transparent 65%);
-  filter: blur(40px);
-  opacity: 0.7;
+  filter: blur(36px);
+  opacity: 0.9;
   pointer-events: none;
+}
+
+.hero-ambient::before,
+.hero-ambient::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hero-ambient::before {
+  width: 380px;
+  height: 380px;
+  left: 8%;
+  top: 12%;
+  background: rgba(255, 90, 107, 0.34);
+}
+
+.hero-ambient::after {
+  width: 320px;
+  height: 320px;
+  right: 6%;
+  top: 4%;
+  background: rgba(179, 139, 255, 0.2);
 }
 
 .hero-image {
