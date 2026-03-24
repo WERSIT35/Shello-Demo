@@ -2,8 +2,15 @@
   <p class="state-text" *ngIf="isLoading" i18n>Loading product...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <ng-container *ngIf="!isLoading && product">
-    <div class="gallery">
-      <img *ngIf="selectedImage" [src]="selectedImage" alt="" />
+    <div
+      class="gallery"
+      (pointerdown)="onGalleryPointerDown($event)"
+      (pointermove)="onGalleryPointerMove($event)"
+      (pointerup)="onGalleryPointerEnd($event)"
+      (pointercancel)="onGalleryPointerEnd($event)"
+      (pointerleave)="onGalleryPointerEnd($event)"
+    >
+      <img *ngIf="selectedImage" [src]="selectedImage" alt="" draggable="false" />
       <div class="gallery-nav" *ngIf="product.images.length > 1">
         <button
           class="btn ghost icon-btn gallery-nav-btn"

@@ -32,6 +32,9 @@ export class ProductDetailComponent implements OnInit {
   protected isSuggestionsLoading = true;
   protected suggestionsErrorMessage = '';
   protected cartEnabled = true;
+  private galleryDragStartX: number | null = null;
+  private galleryDragCurrentX: number | null = null;
+  private galleryDragPointerId: number | null = null;
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -103,6 +106,63 @@ export class ProductDetailComponent implements OnInit {
 
   protected selectImage(url: string): void {
     this.selectedImage = url;
+  }
+
+  protected onGalleryPointerDown(event: PointerEvent): void {
+    if (!this.product || this.product.images.length < 2) {
+      return;
+    }
+
+    const target = event.target as Element | null;
+    if (target?.closest('.gallery-nav, .thumbs')) {
+      return;
+    }
+
+    this.galleryDragPointerId = event.pointerId;
+    this.galleryDragStartX = event.clientX;
+    this.galleryDragCurrentX = event.clientX;
+  }
+
+  protected onGalleryPointerMove(event: PointerEvent): void {
+    if (this.galleryDragStartX === null) {
+      return;
+    }
+
+    if (this.galleryDragPointerId !== null && event.pointerId !== this.galleryDragPointerId) {
+      return;
+    }
+
+    this.galleryDragCurrentX = event.clientX;
+  }
+
+  protected onGalleryPointerEnd(event: PointerEvent): void {
+    if (this.galleryDragStartX === null || this.galleryDragCurrentX === null) {
+      this.resetGalleryDrag();
+      return;
+    }
+
+    if (this.galleryDragPointerId !== null && event.pointerId !== this.galleryDragPointerId) {
+      return;
+    }
+
+    const delta = this.galleryDragCurrentX - this.galleryDragStartX;
+    const threshold = 42;
+
+    if (Math.abs(delta) >= threshold) {
+      if (delta < 0) {
+        this.selectNextImage();
+      } else {
+        this.selectPrevImage();
+      }
+    }
+
+    this.resetGalleryDrag();
+  }
+
+  private resetGalleryDrag(): void {
+    this.galleryDragStartX = null;
+    this.galleryDragCurrentX = null;
+    this.galleryDragPointerId = null;
   }
 
   protected selectPrevImage(): void {
