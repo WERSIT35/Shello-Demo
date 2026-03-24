@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, switchMap } from 'rxjs';
 
 import { API_BASE_URL } from '../config/api.config';
 import type { Product } from './products.service';
@@ -140,6 +140,12 @@ export class ContentService {
         suggestedProducts: response.suggestedProducts.map((product) => this.mapProduct(product)),
         pageToggles: this.mergePageToggles(response.pageToggles)
       })),
+      catchError(() => {
+        const fallback = this.buildFallbackPublicContent(params.lang);
+        this.pageTogglesSubject.next(fallback.pageToggles);
+        this.togglesLoaded = true;
+        return of(fallback);
+      }),
       map((content) => {
         this.pageTogglesSubject.next(content.pageToggles);
         this.togglesLoaded = true;
@@ -242,5 +248,36 @@ export class ContentService {
 
   private mergePageToggles(toggles?: PageToggles): PageToggles {
     return { ...defaultPageToggles, ...(toggles ?? {}) };
+  }
+
+  private buildFallbackPublicContent(lang: string): PublicContent {
+    const heroEn: HeroContent = {
+      title: 'Cases that feel tailored, not templated.',
+      subtitle: 'The API is coming online soon. You can still browse the storefront preview now.',
+      primaryCtaText: 'Explore cases',
+      primaryCtaLink: '/shop',
+      secondaryCtaText: 'Join the drop',
+      secondaryCtaLink: '/register',
+      imageUrl: null,
+      highlights: ['Drop tested', 'Grip textured', '3-layer shell', 'Matte finish']
+    };
+
+    const heroKa: HeroContent = {
+      title: 'ქეისები, რომლებიც შენს სტილს ერგება და არა შაბლონს.',
+      subtitle: 'API მალე ჩაირთვება. მანამდე შეგიძლია ვიტრინის პრევიუ ნახო.',
+      primaryCtaText: 'ქეისების დათვალიერება',
+      primaryCtaLink: '/shop',
+      secondaryCtaText: 'დროპს შემოუერთდი',
+      secondaryCtaLink: '/register',
+      imageUrl: null,
+      highlights: ['დროპ-ტესტით დადასტურებული', 'არასრიალა მოჭიდება', '3-ფენიანი დაცვა', 'მატე ზედაპირი']
+    };
+
+    return {
+      hero: lang === 'en' ? heroEn : heroKa,
+      heroProducts: [],
+      suggestedProducts: [],
+      pageToggles: defaultPageToggles
+    };
   }
 }
