@@ -5,27 +5,27 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://shellotech.eu.org/api/:splat"
+  to = "https://shello-demo-api.onrender.com/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/uploads/*"
-  to = "https://shellotech.eu.org/uploads/:splat"
+  to = "https://shello-demo-api.onrender.com/uploads/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/ka/*"
-  to = "/ka/index.html"
+  to = "/shellotech/ka/index.html"
   status = 200
 
 [[redirects]]
   from = "/en/*"
-  to = "/index.html"
+  to = "/shellotech/index.html"
   status = 200
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/shellotech/index.html"
   status = 200
