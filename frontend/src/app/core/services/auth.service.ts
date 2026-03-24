@@ -193,10 +193,6 @@ export class AuthService {
       };
 
       const handleMessage = (event: MessageEvent) => {
-        if (event.source && event.source !== popup) {
-          return;
-        }
-
         if (isAbsoluteApiBase && event.origin !== expectedOrigin && event.origin !== window.location.origin) {
           return;
         }
