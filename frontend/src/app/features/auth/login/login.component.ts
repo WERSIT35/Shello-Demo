@@ -282,12 +282,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private finishGoogleLogin(): void {
-    if (typeof window !== 'undefined') {
-      // Force full reload so cookie/session state is rehydrated immediately.
-      window.location.assign('/');
-      return;
-    }
-
     this.router.navigate(['/']);
   }
 
