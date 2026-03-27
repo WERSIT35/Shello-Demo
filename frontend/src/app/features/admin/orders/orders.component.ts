@@ -1,6 +1,7 @@
 import { CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { retry, switchMap } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
@@ -9,7 +10,7 @@ import { AdminOrdersService, type AdminOrder } from '../../../core/services/admi
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, FormsModule, NgFor, NgIf],
+  imports: [CurrencyPipe, DatePipe, FormsModule, NgFor, NgIf, RouterLink],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
@@ -127,5 +128,9 @@ export class AdminOrdersComponent implements OnInit {
     }
 
     return 'Captured';
+  }
+
+  protected orderItemCount(order: AdminOrder): number {
+    return order.items.reduce((total, item) => total + item.quantity, 0);
   }
 }

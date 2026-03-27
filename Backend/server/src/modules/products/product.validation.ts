@@ -3,6 +3,14 @@ import { z } from "zod";
 const imageSchema = z.string().trim().min(1);
 
 export const createProductSchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .min(3)
+    .max(40)
+    .regex(/^[A-Za-z0-9_-]+$/)
+    .optional()
+    .nullable(),
   title: z.string().trim().min(1).max(200),
   description: z.string().trim().max(2000).optional().nullable(),
   price: z.number().min(0),

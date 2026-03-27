@@ -19,6 +19,10 @@
           <h4 i18n>Basic info</h4>
           <div class="create-grid">
             <label class="field">
+              <span class="field-label" i18n>Product code</span>
+              <input type="text" [(ngModel)]="createDraft.code" placeholder="PRD-001" i18n-placeholder />
+            </label>
+            <label class="field">
               <span class="field-label" i18n>Title</span>
               <input type="text" [(ngModel)]="createDraft.title" />
             </label>
@@ -139,6 +143,7 @@
       </div>
       <p class="state-text error" *ngIf="editErrorMessage">{{ editErrorMessage }}</p>
       <div class="create-grid">
+        <input type="text" placeholder="Product code" i18n-placeholder [(ngModel)]="editDraft.code" />
         <input type="text" placeholder="Title" i18n-placeholder [(ngModel)]="editDraft.title" />
         <input type="text" placeholder="Title (KA)" i18n-placeholder [(ngModel)]="editDraft.titleKa" />
         <input type="text" placeholder="Title (EN)" i18n-placeholder [(ngModel)]="editDraft.titleEn" />
@@ -232,6 +237,7 @@
   <div class="table loading" *ngIf="isLoading">
     <div class="row header">
       <span i18n>Image</span>
+      <span i18n>Code</span>
       <span i18n>Title</span>
       <span i18n>Price</span>
       <span i18n>Stock</span>
@@ -256,6 +262,7 @@
   <div class="table" *ngIf="!isLoading">
     <div class="row header">
       <span i18n>Image</span>
+      <span i18n>Code</span>
       <span i18n>Title</span>
       <span i18n>Price</span>
       <span i18n>Stock</span>
@@ -269,6 +276,7 @@
         <span *ngIf="!product.images.length">&mdash;</span>
       </div>
 
+      <span class="code-pill">{{ product.code }}</span>
       <span>{{ product.title }}</span>
       <span>{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       <span>{{ product.stock }}</span>

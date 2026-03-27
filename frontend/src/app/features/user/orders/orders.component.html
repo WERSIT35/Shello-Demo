@@ -1,19 +1,38 @@
-﻿<section class="orders">
+<section class="orders">
   <div class="orders-header">
     <h1 i18n>Your orders</h1>
     <p i18n>Track every drop with status snapshots.</p>
   </div>
   <p class="state-text" *ngIf="isLoading" i18n>Loading orders...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+
   <div class="orders-grid">
     <div class="order-card" *ngFor="let order of orders">
-      <div>
-        <p class="order-id">{{ order.id }}</p>
-        <p class="order-status">{{ order.status }}</p>
+      <div class="order-head">
+        <div>
+          <p class="order-id">{{ order.id }}</p>
+          <p class="order-meta">{{ order.createdAt | date:'medium' }}</p>
+          <p class="order-meta" i18n>{{ orderItemCount(order) }} item(s)</p>
+        </div>
+        <div class="order-head-right">
+          <p class="order-status">{{ order.status }}</p>
+          <span class="order-total">{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+        </div>
       </div>
-      <span class="order-total">{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+
+      <div class="order-items">
+        <div class="order-item" *ngFor="let item of order.items">
+          <a class="item-title" [routerLink]="['/products', item.productId]">{{ item.title }}</a>
+          <span class="item-meta">
+            <span class="item-code">{{ item.code }}</span>
+            <span i18n>Qty: {{ item.quantity }}</span>
+            <span>{{ item.priceAtPurchase | currency:'GEL':'symbol-narrow':'1.2-2' }} each</span>
+            <strong>{{ (item.quantity * item.priceAtPurchase) | currency:'GEL':'symbol-narrow':'1.2-2' }}</strong>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
+
   <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0" i18n>No orders yet.</p>
 </section>
-

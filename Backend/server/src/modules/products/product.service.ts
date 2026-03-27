@@ -7,6 +7,7 @@ import type { ProductDocument } from "./product.model";
 
 export type ProductResponse = {
   _id: string;
+  code: string;
   title: string;
   description: string | null;
   price: number;
@@ -21,6 +22,7 @@ export type ProductResponse = {
 function toProductResponse(doc: ProductDocument): ProductResponse {
   return {
     _id: doc._id.toString(),
+    code: resolveProductCode(doc.code, doc._id.toString()),
     title: doc.title,
     description: doc.description ?? null,
     price: doc.price,
@@ -33,8 +35,43 @@ function toProductResponse(doc: ProductDocument): ProductResponse {
   };
 }
 
+function sanitizeProductCode(code: string | null | undefined): string | null {
+  if (!code) {
+    return null;
+  }
+
+  const normalized = code.trim().toUpperCase();
+  if (!normalized) {
+    return null;
+  }
+
+  return normalized;
+}
+
+function resolveProductCode(code: string | null | undefined, id: string): string {
+  const normalized = sanitizeProductCode(code);
+  if (normalized) {
+    return normalized;
+  }
+
+  return `PRD-${id.slice(-6).toUpperCase()}`;
+}
+
+async function assertUniqueProductCode(code: string, excludeProductId?: string): Promise<void> {
+  const conflict = await ProductModel.findOne({
+    code,
+    ...(excludeProductId ? { _id: { $ne: excludeProductId } } : {})
+  })
+    .select("_id")
+    .lean();
+
+  if (conflict) {
+    throw new HttpError(409, "DUPLICATE_PRODUCT_CODE", "Product code already exists");
+  }
+}
+
 export async function createProduct(input: CreateProductInput): Promise<ProductResponse> {
-  const product = await ProductModel.create({
+  const product = new ProductModel({
     title: input.title,
     description: input.description ?? null,
     price: input.price,
@@ -43,6 +80,11 @@ export async function createProduct(input: CreateProductInput): Promise<ProductR
     isActive: input.isActive ?? true,
     metadata: input.metadata ?? null
   });
+
+  const code = resolveProductCode(input.code ?? null, product._id.toString());
+  await assertUniqueProductCode(code);
+  product.code = code;
+  await product.save();
 
   return toProductResponse(product);
 }
@@ -83,6 +125,11 @@ export async function updateProduct(id: string, input: UpdateProductInput): Prom
   }
 
   if (input.title !== undefined) product.title = input.title;
+  if (input.code !== undefined) {
+    const nextCode = resolveProductCode(input.code ?? null, product._id.toString());
+    await assertUniqueProductCode(nextCode, product._id.toString());
+    product.code = nextCode;
+  }
   if (input.description !== undefined) product.description = input.description ?? null;
   if (input.price !== undefined) product.price = input.price;
   if (input.stock !== undefined) product.stock = input.stock;

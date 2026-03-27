@@ -1,12 +1,13 @@
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { OrdersService, type Order } from '../../../core/services/orders.service';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf],
+  imports: [CurrencyPipe, DatePipe, NgFor, NgIf, RouterLink],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
@@ -31,5 +32,9 @@ export class OrdersComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  protected orderItemCount(order: Order): number {
+    return order.items.reduce((total, item) => total + item.quantity, 0);
   }
 }

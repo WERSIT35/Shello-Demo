@@ -3,6 +3,7 @@ import { Schema, model, type HydratedDocument, type InferSchemaType } from "mong
 const orderItemSchema = new Schema(
   {
     productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+    itemCode: { type: String, trim: true, uppercase: true, default: null },
     quantity: { type: Number, required: true, min: 1 },
     priceAtPurchase: { type: Number, required: true, min: 0 }
   },

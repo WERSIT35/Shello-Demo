@@ -15,6 +15,7 @@ export type AdminOrder = {
   } | null;
   items: Array<{
     productId: string;
+    code: string;
     title: string;
     quantity: number;
     priceAtPurchase: number;
@@ -45,11 +46,13 @@ type ApiOrder = {
   } | null;
   items: Array<{
     productId: string;
+    itemCode: string;
     quantity: number;
     priceAtPurchase: number;
     product: {
       _id: string;
       title: string;
+      code: string;
     } | null;
   }>;
   totalPrice: number;
@@ -91,6 +94,7 @@ export class AdminOrdersService {
             : null,
           items: order.items.map((item) => ({
             productId: item.productId,
+            code: item.product?.code ?? item.itemCode,
             title: item.product?.title ?? `Product ${item.productId}`,
             quantity: item.quantity,
             priceAtPurchase: item.priceAtPurchase

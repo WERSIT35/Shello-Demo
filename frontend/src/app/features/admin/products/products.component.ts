@@ -8,6 +8,7 @@ import { ContentService } from '../../../core/services/content.service';
 import { AdminProductsService, type AdminProduct } from '../../../core/services/admin-products.service';
 
 type ProductFormDraft = {
+  code: string;
   title: string;
   titleKa: string;
   titleEn: string;
@@ -70,6 +71,7 @@ export class AdminProductsComponent implements OnInit {
 
   private buildEmptyDraft(): ProductFormDraft {
     return {
+      code: '',
       title: '',
       titleKa: '',
       titleEn: '',
@@ -169,6 +171,7 @@ export class AdminProductsComponent implements OnInit {
 
   private buildDraftFromProduct(product: AdminProduct): ProductFormDraft {
     return {
+      code: product.code ?? '',
       title: product.title,
       titleKa: this.getMetadataValue(product, 'titleKa'),
       titleEn: this.getMetadataValue(product, 'titleEn'),
@@ -263,6 +266,7 @@ export class AdminProductsComponent implements OnInit {
     this.editErrorMessage = '';
 
     const title = this.editDraft.title.trim();
+    const code = this.editDraft.code.trim().toUpperCase();
     const description = this.editDraft.description.trim();
     const price = this.editDraft.price;
     const stock = this.editDraft.stock;
@@ -308,6 +312,7 @@ export class AdminProductsComponent implements OnInit {
         switchMap((uploadedImages) => {
           const nextImages = [...this.editImageOrderDraft, ...uploadedImages];
           return this.productsService.updateProduct(this.editingProduct!.id, {
+            code: code.length > 0 ? code : null,
             title,
             description: description.length > 0 ? description : null,
             price,
@@ -382,6 +387,7 @@ export class AdminProductsComponent implements OnInit {
     this.createErrorMessage = '';
 
     const title = this.createDraft.title.trim();
+    const code = this.createDraft.code.trim().toUpperCase();
     const description = this.createDraft.description.trim();
     const price = this.createDraft.price;
     const stock = this.createDraft.stock;
@@ -425,6 +431,7 @@ export class AdminProductsComponent implements OnInit {
       .pipe(
         switchMap((images) =>
           this.productsService.createProduct({
+            code: code.length > 0 ? code : null,
             title,
             description: description.length > 0 ? description : null,
             price,

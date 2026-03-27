@@ -325,7 +325,11 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
         isNavigation: true,
         arrows: false,
         focus: 'center',
-        dragMinThreshold: { mouse: 4, touch: 10 }
+        dragMinThreshold: { mouse: 4, touch: 10 },
+        breakpoints: {
+          900: { fixedWidth: 68, fixedHeight: 68, gap: '0.4rem' },
+          560: { fixedWidth: 56, fixedHeight: 56, gap: '0.35rem' }
+        }
       });
     }
 
@@ -364,8 +368,21 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       perPage: 3,
       perMove: 1,
       breakpoints: {
-        1100: { perPage: 2 },
-        900: { perPage: 1 }
+        1100: { perPage: 2, gap: '0.85rem' },
+        900: {
+          perPage: 1,
+          gap: '0.7rem',
+          arrows: false,
+          pagination: true,
+          padding: { left: '0.25rem', right: '0.25rem' }
+        },
+        640: {
+          perPage: 1,
+          gap: '0.6rem',
+          arrows: false,
+          pagination: true,
+          padding: { left: '0', right: '0' }
+        }
       }
     });
 

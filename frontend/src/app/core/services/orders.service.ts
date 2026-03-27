@@ -8,6 +8,13 @@ export type OrderStatus = 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancel
 
 export type Order = {
   id: string;
+  items: Array<{
+    productId: string;
+    title: string;
+    code: string;
+    quantity: number;
+    priceAtPurchase: number;
+  }>;
   totalPrice: number;
   status: OrderStatus;
   createdAt: string;
@@ -15,6 +22,17 @@ export type Order = {
 
 type ApiOrder = {
   _id: string;
+  items: Array<{
+    productId: string;
+    itemCode: string;
+    quantity: number;
+    priceAtPurchase: number;
+    product: {
+      _id: string;
+      title: string;
+      code: string;
+    } | null;
+  }>;
   totalPrice: number;
   status: OrderStatus;
   createdAt: string;
@@ -68,6 +86,13 @@ export class OrdersService {
   private mapOrder(order: ApiOrder): Order {
     return {
       id: order._id,
+      items: order.items.map((item) => ({
+        productId: item.product?._id ?? item.productId,
+        title: item.product?.title ?? `Product ${item.productId}`,
+        code: item.product?.code ?? item.itemCode,
+        quantity: item.quantity,
+        priceAtPurchase: item.priceAtPurchase
+      })),
       totalPrice: order.totalPrice,
       status: order.status,
       createdAt: order.createdAt

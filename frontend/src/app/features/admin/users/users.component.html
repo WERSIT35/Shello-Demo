@@ -24,7 +24,7 @@
         </select>
         <label class="status-toggle">
           <input type="checkbox" [(ngModel)]="createDraft.isActive" />
-          <span i18n>Enabled</span>
+          <span i18n>Active</span>
         </label>
       </div>
       <div class="modal-actions">
@@ -43,7 +43,7 @@
       <span i18n>Name</span>
       <span i18n>Email</span>
       <span i18n>Pin</span>
-      <span i18n>Account</span>
+      <span i18n>Status</span>
       <span i18n>Role</span>
       <span i18n>Action</span>
     </div>
@@ -63,12 +63,12 @@
       <input *ngIf="editingId === user.id" type="text" maxlength="6" [(ngModel)]="draft.pinCode" />
       <span *ngIf="editingId !== user.id" class="status-chip">
         <span class="status-dot" [class.offline]="!user.isActive"></span>
-        <span *ngIf="user.isActive" i18n>Enabled</span>
-        <span *ngIf="!user.isActive" i18n>Disabled</span>
+        <span *ngIf="user.isActive" i18n>Active</span>
+        <span *ngIf="!user.isActive" i18n>Offline</span>
       </span>
       <label class="status-toggle" *ngIf="editingId === user.id">
         <input type="checkbox" [(ngModel)]="draft.isActive" />
-        <span i18n>Enabled</span>
+        <span i18n>Active</span>
       </label>
       <span *ngIf="editingId !== user.id">{{ user.role }}</span>
       <select *ngIf="editingId === user.id" [(ngModel)]="draft.role">
@@ -86,7 +86,9 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">OK</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn"
@@ -97,7 +99,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">X</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6l-12 12" />
+          </svg>
         </button>
       </div>
       <div class="row-actions" *ngIf="editingId !== user.id">
@@ -111,7 +116,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">ED</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 20h4l10-10-4-4L4 16v4z" />
+            <path d="M12 6l4 4" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn danger"
@@ -124,7 +132,9 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">-</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn success"
@@ -137,7 +147,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">+</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
         </button>
         <button
           class="btn ghost icon-btn"
@@ -149,7 +162,10 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">R</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+            <path d="M21 3v6h-6" />
+          </svg>
         </button>
         <button
           class="btn ghost danger icon-btn"
@@ -161,7 +177,11 @@
           i18n-aria-label
           i18n-title
         >
-          <span class="icon-fallback" aria-hidden="true">D</span>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 7h12" />
+            <path d="M9 7V5h6v2" />
+            <path d="M8 7l1 12h6l1-12" />
+          </svg>
         </button>
       </div>
     </div>

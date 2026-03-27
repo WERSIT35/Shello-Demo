@@ -27,26 +27,112 @@
 .order-card {
   background: var(--surface);
   border-radius: var(--radius-md);
-  padding: 1.2rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 1rem 1.1rem;
+  display: grid;
+  gap: 0.8rem;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   backdrop-filter: var(--glass-blur);
 }
 
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .order-id {
-  margin: 0 0 0.2rem;
-  font-weight: 600;
+  margin: 0 0 0.22rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.order-meta {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.order-head-right {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  gap: 0.2rem;
 }
 
 .order-status {
   margin: 0;
+  text-transform: capitalize;
   color: var(--text-muted);
+  font-size: 0.88rem;
 }
 
 .order-total {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.order-items {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.order-item {
+  display: grid;
+  gap: 0.18rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.09);
+  padding-top: 0.45rem;
+}
+
+.item-title {
   font-weight: 600;
   color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.26);
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.item-title:hover {
+  color: var(--accent);
+}
+
+.item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.45rem;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.item-meta strong {
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.item-code {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 90, 107, 0.3);
+  background: rgba(255, 90, 107, 0.12);
+  color: color-mix(in srgb, var(--accent) 86%, white);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 700px) {
+  .order-card {
+    padding: 0.9rem;
+  }
+
+  .order-head {
+    flex-direction: column;
+  }
+
+  .order-head-right {
+    justify-items: start;
+  }
 }

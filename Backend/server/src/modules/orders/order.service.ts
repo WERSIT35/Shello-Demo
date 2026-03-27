@@ -11,8 +11,14 @@ export type OrderResponse = {
   userId: string;
   items: Array<{
     productId: string;
+    itemCode: string;
     quantity: number;
     priceAtPurchase: number;
+    product: {
+      _id: string;
+      title: string;
+      code: string;
+    } | null;
   }>;
   totalPrice: number;
   shippingAddress: {
@@ -29,6 +35,17 @@ export type OrderResponse = {
   updatedAt: Date;
 };
 
+export type AdminOrderResponse = OrderResponse & {
+  user: {
+    _id: string;
+    name: string;
+    lastName: string;
+    email: string;
+    pinCode: string;
+  } | null;
+  items: OrderResponse["items"];
+};
+
 export type CreateOrderResult = {
   orderId: string;
   status: OrderResponse["status"];
@@ -42,8 +59,10 @@ function toOrderResponse(doc: OrderDocument): OrderResponse {
     userId: doc.userId.toString(),
     items: doc.items.map((item) => ({
       productId: item.productId.toString(),
+      itemCode: resolveOrderItemCode(item.itemCode, item.productId.toString()),
       quantity: item.quantity,
-      priceAtPurchase: item.priceAtPurchase
+      priceAtPurchase: item.priceAtPurchase,
+      product: null
     })),
     totalPrice: doc.totalPrice,
     shippingAddress: {
@@ -59,6 +78,59 @@ function toOrderResponse(doc: OrderDocument): OrderResponse {
     createdAt: doc.createdAt,
     updatedAt: doc.updatedAt
   };
+}
+
+function fallbackProductCodeFromId(productId: string): string {
+  return `PRD-${productId.slice(-6).toUpperCase()}`;
+}
+
+function resolveProductCodeFromMetadata(metadata: unknown): string | null {
+  if (!metadata || typeof metadata !== "object") {
+    return null;
+  }
+
+  const record = metadata as Record<string, unknown>;
+  const rawCode = record["code"] ?? record["sku"] ?? null;
+  if (typeof rawCode !== "string") {
+    return null;
+  }
+
+  const normalized = rawCode.trim().toUpperCase();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function resolveProductCode(product: {
+  _id?: unknown;
+  code?: unknown;
+  metadata?: unknown;
+}): string | null {
+  const directCode =
+    typeof product.code === "string" && product.code.trim().length > 0
+      ? product.code.trim().toUpperCase()
+      : null;
+
+  if (directCode) {
+    return directCode;
+  }
+
+  const metadataCode = resolveProductCodeFromMetadata(product.metadata);
+  if (metadataCode) {
+    return metadataCode;
+  }
+
+  if (product._id) {
+    return fallbackProductCodeFromId(String(product._id));
+  }
+
+  return null;
+}
+
+function resolveOrderItemCode(itemCode: unknown, productId: string): string {
+  if (typeof itemCode === "string" && itemCode.trim().length > 0) {
+    return itemCode.trim().toUpperCase();
+  }
+
+  return fallbackProductCodeFromId(productId);
 }
 
 function isTransactionsNotSupported(error: unknown): boolean {
@@ -81,6 +153,7 @@ async function createOrderInternal(
 
   const items: Array<{
     productId: Types.ObjectId;
+    itemCode: string;
     quantity: number;
     priceAtPurchase: number;
   }> = [];
@@ -124,6 +197,11 @@ async function createOrderInternal(
 
     items.push({
       productId: product._id,
+      itemCode: resolveProductCode({
+        _id: product._id,
+        code: (product as unknown as { code?: unknown }).code,
+        metadata: product.metadata
+      }) ?? fallbackProductCodeFromId(product._id.toString()),
       quantity: item.quantity,
       priceAtPurchase: product.price
     });
@@ -184,13 +262,137 @@ export async function createOrder(userId: string, input: CreateOrderInput): Prom
 }
 
 export async function listOrdersForUser(userId: string): Promise<OrderResponse[]> {
-  const orders = await OrderModel.find({ userId }).sort({ createdAt: -1 });
-  return orders.map(toOrderResponse);
+  const orders = await OrderModel.find({ userId })
+    .populate("items.productId", "title code metadata")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return orders.map((order) => ({
+    _id: order._id.toString(),
+    userId: order.userId.toString(),
+    items: order.items.map((item) => {
+      const productDoc = item.productId as unknown;
+      const productData = productDoc as {
+        _id?: unknown;
+        title?: unknown;
+        code?: unknown;
+        metadata?: unknown;
+      };
+
+      const product =
+        typeof productData?.title === "string" && productData._id
+          ? {
+              _id: String(productData._id),
+              title: productData.title,
+              code: resolveProductCode(productData) ?? fallbackProductCodeFromId(String(productData._id))
+            }
+          : null;
+
+      const productId = product?._id ?? item.productId.toString();
+
+      return {
+        productId,
+        itemCode: resolveOrderItemCode(item.itemCode, productId),
+        quantity: item.quantity,
+        priceAtPurchase: item.priceAtPurchase,
+        product
+      };
+    }),
+    totalPrice: order.totalPrice,
+    shippingAddress: {
+      fullName: order.shippingAddress.fullName,
+      phone: order.shippingAddress.phone,
+      addressLine: order.shippingAddress.addressLine,
+      city: order.shippingAddress.city,
+      postalCode: order.shippingAddress.postalCode,
+      country: order.shippingAddress.country
+    },
+    status: order.status,
+    paymentInfo: (order.paymentInfo as Record<string, unknown> | null) ?? null,
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt
+  }));
 }
 
-export async function listAllOrders(): Promise<OrderResponse[]> {
-  const orders = await OrderModel.find().sort({ createdAt: -1 });
-  return orders.map(toOrderResponse);
+export async function listAllOrders(): Promise<AdminOrderResponse[]> {
+  const orders = await OrderModel.find()
+    .populate("userId", "name lastName email pinCode")
+    .populate("items.productId", "title code metadata")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return orders.map((order) => {
+    const userDoc = order.userId as unknown;
+    const userData = userDoc as {
+      _id?: unknown;
+      name?: unknown;
+      lastName?: unknown;
+      email?: unknown;
+      pinCode?: unknown;
+    };
+
+    const user =
+      typeof userData?.name === "string" &&
+      typeof userData?.lastName === "string" &&
+      typeof userData?.email === "string" &&
+      typeof userData?.pinCode === "string" &&
+      userData._id
+        ? {
+            _id: String(userData._id),
+            name: userData.name,
+            lastName: userData.lastName,
+            email: userData.email,
+            pinCode: userData.pinCode
+          }
+        : null;
+
+    return {
+      _id: order._id.toString(),
+      userId: user?._id ?? order.userId.toString(),
+      items: order.items.map((item) => {
+        const productDoc = item.productId as unknown;
+        const productData = productDoc as {
+          _id?: unknown;
+          title?: unknown;
+          code?: unknown;
+          metadata?: unknown;
+        };
+
+        const product =
+          typeof productData?.title === "string" && productData._id
+            ? {
+                _id: String(productData._id),
+                title: productData.title,
+                code: resolveProductCode(productData) ?? fallbackProductCodeFromId(String(productData._id))
+              }
+            : null;
+
+        const productId = product?._id ?? item.productId.toString();
+
+        return {
+          productId,
+          itemCode: resolveOrderItemCode(item.itemCode, productId),
+          quantity: item.quantity,
+          priceAtPurchase: item.priceAtPurchase,
+          product
+        };
+      }),
+      totalPrice: order.totalPrice,
+      shippingAddress: {
+        fullName: order.shippingAddress.fullName,
+        phone: order.shippingAddress.phone,
+        addressLine: order.shippingAddress.addressLine,
+        city: order.shippingAddress.city,
+        postalCode: order.shippingAddress.postalCode,
+        country: order.shippingAddress.country
+      },
+      status: order.status,
+      paymentInfo: (order.paymentInfo as Record<string, unknown> | null) ?? null,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      user
+    } satisfies AdminOrderResponse;
+  });
 }
 
 export async function getOrderById(id: string): Promise<OrderResponse> {
@@ -238,4 +440,18 @@ export async function updateOrderStatus(
   await order.save();
 
   return toOrderResponse(order);
+}
+
+export async function deleteOrderByAdmin(id: string): Promise<void> {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new HttpError(404, "NOT_FOUND", "Order not found");
+  }
+
+  const order = await OrderModel.findById(id);
+
+  if (!order) {
+    throw new HttpError(404, "NOT_FOUND", "Order not found");
+  }
+
+  await OrderModel.deleteOne({ _id: order._id });
 }

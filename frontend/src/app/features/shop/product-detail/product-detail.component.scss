@@ -474,7 +474,7 @@
   }
 
   .gallery {
-    min-height: clamp(420px, 64vh, 620px);
+    min-height: clamp(320px, 56vh, 520px);
   }
 
   .detail-info {
@@ -492,7 +492,7 @@
   }
 
   .detail-gallery-splide .splide__slide img {
-    height: clamp(300px, 52vh, 500px);
+    height: clamp(240px, 46vh, 420px);
   }
 
   .detail-gallery-splide .splide__arrow {
@@ -502,6 +502,30 @@
   .detail-gallery-thumbs .splide__slide img {
     width: 68px;
     height: 68px;
+  }
+
+  .card {
+    padding: 0.85rem;
+  }
+
+  .card-image {
+    max-height: 200px;
+  }
+
+  .card-meta {
+    min-height: 0;
+    max-height: none;
+    flex-wrap: wrap;
+  }
+
+  .card-actions {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .card-actions .btn {
+    min-height: 2.15rem;
+    padding-inline: 0.8rem;
   }
 
   .image-lightbox-toolbar {
@@ -516,6 +540,57 @@
 
   .lightbox-nav {
     justify-self: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-detail-page {
+    gap: 1.1rem;
+  }
+
+  .gallery {
+    min-height: clamp(260px, 48vh, 400px);
+    padding: 0.75rem;
+    gap: 0.55rem;
+  }
+
+  .detail-gallery-splide .splide__slide img {
+    height: clamp(210px, 40vh, 320px);
+  }
+
+  .detail-gallery-thumbs .splide__slide img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+  }
+
+  .suggested-section {
+    padding: 0.85rem;
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+    border-radius: 14px;
+  }
+
+  .card-image {
+    max-height: 176px;
+    padding: 0.3rem;
+  }
+
+  .card-top {
+    gap: 0.45rem;
+  }
+
+  .card-price {
+    font-size: 0.76rem;
+    padding-inline: 0.4rem;
+  }
+
+  .meta-pill {
+    font-size: 0.7rem;
+    padding: 0.24rem 0.55rem;
   }
 }
 

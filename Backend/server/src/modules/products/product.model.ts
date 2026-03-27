@@ -2,6 +2,7 @@ import { Schema, model, type HydratedDocument, type InferSchemaType } from "mong
 
 const productSchema = new Schema(
   {
+    code: { type: String, trim: true, uppercase: true, default: null },
     title: { type: String, required: true, trim: true },
     description: { type: String, default: null },
     price: { type: Number, required: true, min: 0 },
@@ -17,6 +18,7 @@ const productSchema = new Schema(
 
 productSchema.index({ title: "text" });
 productSchema.index({ isActive: 1 });
+productSchema.index({ code: 1 }, { unique: true, sparse: true });
 
 export type Product = InferSchemaType<typeof productSchema>;
 export type ProductDocument = HydratedDocument<Product> & {

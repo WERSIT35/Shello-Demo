@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 
 import {
   createOrder,
+  deleteOrderByAdmin,
   getOrderForUser,
   listAllOrders,
   listOrdersForUser,
@@ -51,6 +52,15 @@ export const updateOrderStatusHandler: RequestHandler = async (req, res, next) =
   try {
     const order = await updateOrderStatus(req.params.id, req.body);
     return res.status(200).json(order);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const deleteOrderHandler: RequestHandler = async (req, res, next) => {
+  try {
+    await deleteOrderByAdmin(req.params.id);
+    return res.status(204).send();
   } catch (error) {
     return next(error);
   }

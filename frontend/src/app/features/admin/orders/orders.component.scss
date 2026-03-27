@@ -60,12 +60,55 @@
 }
 
 .order-item-line {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.86rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.order-item-line:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.order-item-title {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.24);
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.order-item-title:hover {
+  color: var(--accent);
+}
+
+.order-item-meta {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.45rem;
   align-items: center;
-  font-size: 0.88rem;
-  padding: 0.2rem 0;
+  color: var(--text-muted);
+  font-size: 0.77rem;
+}
+
+.order-item-meta strong {
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.item-code {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.14rem 0.48rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 90, 107, 0.3);
+  background: rgba(255, 90, 107, 0.12);
+  color: color-mix(in srgb, var(--accent) 86%, white);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .order-item-line small {

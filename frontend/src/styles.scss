@@ -112,10 +112,23 @@ select {
 	background-color: rgba(12, 13, 18, 0.9);
 	color: var(--text);
 	color-scheme: dark;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, color-mix(in srgb, var(--text-muted) 88%, white) 50%),
+		linear-gradient(135deg, color-mix(in srgb, var(--text-muted) 88%, white) 50%, transparent 50%);
+	background-position:
+		calc(100% - 18px) calc(50% - 3px),
+		calc(100% - 12px) calc(50% - 3px);
+	background-size: 6px 6px, 6px 6px;
+	background-repeat: no-repeat;
+	padding-right: 2.25rem;
+	border-color: color-mix(in srgb, var(--border) 82%, var(--accent) 18%);
 }
 
 select option {
-	background-color: #0c0d12;
+	background-color: #131624;
 	color: var(--text);
 }
 
@@ -435,4 +448,18 @@ html[lang='ka'] body {
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	stroke-width: 2.35;
+}
+
+.splide .splide__pagination {
+	gap: 0.4rem;
+}
+
+.splide .splide__pagination__page {
+	background: rgba(255, 255, 255, 0.28);
+	opacity: 1;
+}
+
+.splide .splide__pagination__page.is-active {
+	background: var(--accent);
+	transform: scale(1.1);
 }

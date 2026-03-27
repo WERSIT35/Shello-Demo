@@ -219,8 +219,21 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
       perPage: 3,
       perMove: 1,
       breakpoints: {
-        1100: { perPage: 2 },
-        900: { perPage: 1 }
+        1100: { perPage: 2, gap: '0.85rem' },
+        900: {
+          perPage: 1,
+          gap: '0.7rem',
+          arrows: false,
+          pagination: true,
+          padding: { left: '0.25rem', right: '0.25rem' }
+        },
+        640: {
+          perPage: 1,
+          gap: '0.6rem',
+          arrows: false,
+          pagination: true,
+          padding: { left: '0', right: '0' }
+        }
       }
     });
 

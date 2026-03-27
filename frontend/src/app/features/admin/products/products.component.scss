@@ -263,7 +263,7 @@
   padding: 12px 16px;
   border-radius: var(--radius-md);
   display: grid;
-  grid-template-columns: 0.7fr 2fr 1fr 1fr 1fr 2fr;
+  grid-template-columns: 0.7fr 0.95fr 2fr 1fr 0.85fr 0.95fr 2fr;
   align-items: center;
   gap: 1rem;
   box-shadow: var(--shadow-sm);
@@ -311,6 +311,20 @@
   object-fit: contain;
   object-position: center;
   display: block;
+}
+
+.code-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 90, 107, 0.3);
+  background: rgba(255, 90, 107, 0.12);
+  color: color-mix(in srgb, var(--accent) 86%, white);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .file-input {

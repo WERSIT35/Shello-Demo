@@ -16,6 +16,7 @@
         <strong class="detail-title">{{ order.id }}</strong>
         <span class="detail-meta">{{ order.createdAt | date:'medium' }}</span>
         <span class="detail-meta" i18n>Payment: {{ paymentSummary(order) }}</span>
+        <span class="detail-meta" i18n>{{ orderItemCount(order) }} item(s)</span>
       </div>
 
       <div class="detail-block">
@@ -27,10 +28,15 @@
       </div>
 
       <div class="detail-block">
-        <span class="order-item-line" *ngFor="let item of order.items">
-          {{ item.title }} × {{ item.quantity }}
-          <small>{{ (item.quantity * item.priceAtPurchase) | currency:'GEL':'symbol-narrow':'1.2-2' }}</small>
-        </span>
+        <div class="order-item-line" *ngFor="let item of order.items">
+          <a class="order-item-title" [routerLink]="['/products', item.productId]">{{ item.title }}</a>
+          <span class="order-item-meta">
+            <span class="item-code">{{ item.code }}</span>
+            <span i18n>Qty: {{ item.quantity }}</span>
+            <span>{{ item.priceAtPurchase | currency:'GEL':'symbol-narrow':'1.2-2' }} each</span>
+            <strong>{{ (item.quantity * item.priceAtPurchase) | currency:'GEL':'symbol-narrow':'1.2-2' }}</strong>
+          </span>
+        </div>
       </div>
 
       <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>

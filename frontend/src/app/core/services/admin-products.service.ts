@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../config/api.config';
 
 export type AdminProduct = {
   id: string;
+  code: string;
   title: string;
   description: string | null;
   price: number;
@@ -18,6 +19,7 @@ export type AdminProduct = {
 
 type ApiProduct = {
   _id: string;
+  code: string;
   title: string;
   description: string | null;
   price: number;
@@ -37,6 +39,7 @@ type UploadResponse = {
 };
 
 type CreateProductPayload = {
+  code?: string | null;
   title: string;
   description?: string | null;
   price: number;
@@ -47,6 +50,7 @@ type CreateProductPayload = {
 };
 
 type UpdateProductPayload = {
+  code?: string | null;
   title?: string;
   description?: string | null;
   price?: number;
@@ -65,6 +69,7 @@ export class AdminProductsService {
       map((response) =>
         response.data.map((product) => ({
           id: product._id,
+          code: product.code,
           title: product.title,
           description: product.description ?? null,
           price: product.price,
@@ -82,6 +87,7 @@ export class AdminProductsService {
     return this.http.patch<ApiProduct>(`${API_BASE_URL}/products/${id}`, payload).pipe(
       map((product) => ({
         id: product._id,
+        code: product.code,
         title: product.title,
         description: product.description ?? null,
         price: product.price,
@@ -98,6 +104,7 @@ export class AdminProductsService {
     return this.http.post<ApiProduct>(`${API_BASE_URL}/products`, payload).pipe(
       map((product) => ({
         id: product._id,
+        code: product.code,
         title: product.title,
         description: product.description ?? null,
         price: product.price,

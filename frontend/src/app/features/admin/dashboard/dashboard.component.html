@@ -1,19 +1,92 @@
 <section class="admin-dashboard">
-  <h1 i18n>Admin overview</h1>
-  <p class="state-text" *ngIf="isLoading" i18n>Loading stats...</p>
-  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
-  <div class="stats" *ngIf="!isLoading && !errorMessage">
-    <div class="stat-card">
-      <p i18n>Active products</p>
-      <h2>{{ activeProducts }}</h2>
+  <div class="dashboard-head">
+    <div>
+      <h1 i18n>Admin overview</h1>
+      <p i18n>Live snapshot of orders, products, users, and revenue.</p>
     </div>
-    <div class="stat-card">
-      <p i18n>Orders today</p>
-      <h2>{{ ordersToday }}</h2>
-    </div>
-    <div class="stat-card">
-      <p i18n>Pending shipments</p>
-      <h2>{{ pendingShipments }}</h2>
+    <div class="quick-links">
+      <a class="btn ghost" routerLink="/admin/orders" i18n>Manage orders</a>
+      <a class="btn ghost" routerLink="/admin/products" i18n>Manage products</a>
+      <a class="btn ghost" routerLink="/admin/users" i18n>Manage users</a>
     </div>
   </div>
+
+  <p class="state-text" *ngIf="isLoading" i18n>Loading stats...</p>
+  <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+
+  <div class="stats" *ngIf="!isLoading && !errorMessage">
+    <article class="stat-card">
+      <p i18n>Total revenue</p>
+      <h2>{{ totalRevenue | currency:'GEL':'symbol-narrow':'1.2-2' }}</h2>
+      <span class="stat-sub" i18n>Today: {{ revenueToday | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+    </article>
+    <article class="stat-card">
+      <p i18n>Total orders</p>
+      <h2>{{ totalOrders }}</h2>
+      <span class="stat-sub" i18n>Today: {{ ordersToday }}</span>
+    </article>
+    <article class="stat-card">
+      <p i18n>Pending shipments</p>
+      <h2>{{ pendingShipments }}</h2>
+      <span class="stat-sub" i18n>Pending + paid</span>
+    </article>
+    <article class="stat-card">
+      <p i18n>Active products</p>
+      <h2>{{ activeProducts }} / {{ totalProducts }}</h2>
+      <span class="stat-sub" i18n>{{ outOfStockProducts }} out of stock</span>
+    </article>
+    <article class="stat-card">
+      <p i18n>Users online</p>
+      <h2>{{ activeUsers }} / {{ totalUsers }}</h2>
+      <span class="stat-sub" i18n>{{ offlineUsers }} offline</span>
+    </article>
+    <article class="stat-card">
+      <p i18n>Admin users</p>
+      <h2>{{ adminUsers }}</h2>
+      <span class="stat-sub" i18n>Current team access</span>
+    </article>
+  </div>
+
+  <div class="insights" *ngIf="!isLoading && !errorMessage">
+    <article class="panel">
+      <h3 i18n>Order status</h3>
+      <div class="status-grid">
+        <div><span i18n>Paid</span><strong>{{ paidOrders }}</strong></div>
+        <div><span i18n>Shipped</span><strong>{{ shippedOrders }}</strong></div>
+        <div><span i18n>Delivered</span><strong>{{ deliveredOrders }}</strong></div>
+        <div><span i18n>Cancelled</span><strong>{{ cancelledOrders }}</strong></div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <h3 i18n>Product health</h3>
+      <div class="status-grid">
+        <div><span i18n>Low stock (<=5)</span><strong>{{ lowStockProducts }}</strong></div>
+        <div><span i18n>Out of stock</span><strong>{{ outOfStockProducts }}</strong></div>
+      </div>
+    </article>
+  </div>
+
+  <article class="panel recent-panel" *ngIf="!isLoading && !errorMessage">
+    <div class="panel-head">
+      <h3 i18n>Recent orders</h3>
+      <a class="panel-link" routerLink="/admin/orders" i18n>View all</a>
+    </div>
+    <div class="recent-list" *ngIf="recentOrders.length > 0; else noRecentOrders">
+      <div class="recent-row" *ngFor="let order of recentOrders">
+        <div class="recent-main">
+          <strong>{{ order.id }}</strong>
+          <span>{{ order.user?.fullName || order.shippingAddress.fullName }}</span>
+          <span>{{ order.createdAt | date:'medium' }}</span>
+        </div>
+        <div class="recent-side">
+          <span class="recent-status">{{ order.status }}</span>
+          <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRecentOrders>
+      <p class="state-text" i18n>No recent orders yet.</p>
+    </ng-template>
+  </article>
 </section>

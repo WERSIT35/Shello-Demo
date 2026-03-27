@@ -129,12 +129,13 @@
           ‹
         </button>
 
-        <div class="image-lightbox-media">
+        <div class="image-lightbox-media" (click)="closeImageLightbox()">
           <img
             [src]="getLightboxImage()"
             alt=""
             draggable="false"
             [style.transform]="'scale(' + lightboxZoom + ')'"
+            (click)="$event.stopPropagation()"
             (dblclick)="onLightboxDoubleClick($event)"
           />
         </div>

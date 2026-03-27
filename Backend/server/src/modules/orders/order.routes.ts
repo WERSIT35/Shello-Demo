@@ -5,6 +5,7 @@ import { requireAdmin } from "../../middleware/role.middleware";
 import { validateBody } from "../../middleware/validate.middleware";
 import {
   createOrderHandler,
+  deleteOrderHandler,
   getOrderHandler,
   listAllOrdersHandler,
   listMyOrders,
@@ -25,5 +26,6 @@ router.patch(
   validateBody(updateOrderStatusSchema),
   updateOrderStatusHandler
 );
+router.delete("/:id", requireAuth, requireAdmin, deleteOrderHandler);
 
 export default router;
