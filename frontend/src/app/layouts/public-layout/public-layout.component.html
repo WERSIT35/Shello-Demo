@@ -12,7 +12,17 @@
     </div>
 
     <div class="header-content" [class.open]="isMobileMenuOpen" (click)="closeMobileMenu()">
-      <div class="mobile-sheet" (click)="$event.stopPropagation()">
+      <div
+        class="mobile-sheet"
+        #mobileSheet
+        [class.dragging]="mobileSheetDragging"
+        [style.--sheet-drag-x]="mobileSheetSwipeOffset + 'px'"
+        (click)="$event.stopPropagation()"
+        (touchstart)="onMobileSheetTouchStart($event)"
+        (touchmove)="onMobileSheetTouchMove($event)"
+        (touchend)="onMobileSheetTouchEnd()"
+        (touchcancel)="onMobileSheetTouchEnd()"
+      >
       <div class="mobile-sheet-head">
         <p class="mobile-sheet-title" i18n>Menu</p>
         <button class="btn ghost icon-btn" type="button" (click)="closeMobileMenu()" aria-label="Close menu" i18n-aria-label>

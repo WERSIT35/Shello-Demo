@@ -26,6 +26,8 @@ export class PublicLayoutComponent implements OnInit {
 
   @ViewChild('userMenu')
   private readonly userMenuRef?: ElementRef<HTMLDivElement>;
+  @ViewChild('mobileSheet')
+  private readonly mobileSheetRef?: ElementRef<HTMLDivElement>;
 
   private readonly auth = inject(AuthService);
   private readonly cart = inject(CartService);
@@ -42,6 +44,12 @@ export class PublicLayoutComponent implements OnInit {
   protected pageToggles: PageToggles | null = null;
   protected isMobileMenuOpen = false;
   protected isUserMenuOpen = false;
+  protected mobileSheetSwipeOffset = 0;
+  protected mobileSheetDragging = false;
+
+  private mobileSheetTouchActive = false;
+  private mobileSheetStartX = 0;
+  private mobileSheetStartY = 0;
   ngOnInit(): void {
     this.auth.ensureSession().subscribe();
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -109,6 +117,65 @@ export class PublicLayoutComponent implements OnInit {
 
   protected closeMobileMenu(): void {
     this.setMobileMenuState(false);
+  }
+
+  protected onMobileSheetTouchStart(event: TouchEvent): void {
+    if (!this.isMobileMenuOpen || event.touches.length !== 1) {
+      return;
+    }
+
+    const touch = event.touches[0];
+    this.mobileSheetTouchActive = true;
+    this.mobileSheetDragging = false;
+    this.mobileSheetStartX = touch.clientX;
+    this.mobileSheetStartY = touch.clientY;
+    this.mobileSheetSwipeOffset = 0;
+  }
+
+  protected onMobileSheetTouchMove(event: TouchEvent): void {
+    if (!this.mobileSheetTouchActive || event.touches.length !== 1) {
+      return;
+    }
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - this.mobileSheetStartX;
+    const deltaY = touch.clientY - this.mobileSheetStartY;
+
+    if (!this.mobileSheetDragging) {
+      if (Math.abs(deltaX) < 10) {
+        return;
+      }
+
+      if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+        this.mobileSheetDragging = true;
+      } else {
+        this.mobileSheetTouchActive = false;
+        this.mobileSheetDragging = false;
+        this.mobileSheetSwipeOffset = 0;
+        return;
+      }
+    }
+
+    const sheetWidth = this.mobileSheetRef?.nativeElement.getBoundingClientRect().width ?? 320;
+    this.mobileSheetSwipeOffset = Math.max(0, Math.min(deltaX, sheetWidth));
+    event.preventDefault();
+  }
+
+  protected onMobileSheetTouchEnd(): void {
+    if (!this.mobileSheetTouchActive) {
+      return;
+    }
+
+    const sheetWidth = this.mobileSheetRef?.nativeElement.getBoundingClientRect().width ?? 320;
+    const shouldClose = this.mobileSheetSwipeOffset > Math.max(72, sheetWidth * 0.28);
+
+    this.mobileSheetTouchActive = false;
+    this.mobileSheetDragging = false;
+    this.mobileSheetSwipeOffset = 0;
+
+    if (shouldClose) {
+      this.setMobileMenuState(false);
+    }
   }
 
   private buildLocaleUrl(target: 'ka' | 'en'): string {
@@ -239,6 +306,9 @@ export class PublicLayoutComponent implements OnInit {
 
   private setMobileMenuState(next: boolean): void {
     this.isMobileMenuOpen = next;
+    this.mobileSheetTouchActive = false;
+    this.mobileSheetDragging = false;
+    this.mobileSheetSwipeOffset = 0;
     if (!next) {
       this.isUserMenuOpen = false;
     }

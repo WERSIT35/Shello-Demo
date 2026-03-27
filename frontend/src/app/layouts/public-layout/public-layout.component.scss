@@ -372,6 +372,7 @@
   }
 
   .mobile-sheet {
+    --sheet-drag-x: 0px;
     display: grid;
     align-content: start;
     gap: 12px;
@@ -384,12 +385,17 @@
     border-left: 1px solid color-mix(in srgb, var(--border) 68%, var(--accent) 32%);
     box-shadow: -16px 0 36px rgba(0, 0, 0, 0.38);
     padding: calc(14px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
-    transform: translateX(102%);
+    transform: translateX(calc(102% + var(--sheet-drag-x)));
     transition: transform 0.24s var(--ease);
+    touch-action: pan-y;
   }
 
   .header-content.open .mobile-sheet {
-    transform: translateX(0);
+    transform: translateX(var(--sheet-drag-x));
+  }
+
+  .mobile-sheet.dragging {
+    transition: none;
   }
 
   .mobile-sheet-head {
@@ -433,15 +439,20 @@
     padding-inline: 12px;
     border: 1px solid color-mix(in srgb, var(--border) 72%, var(--accent) 28%);
     border-radius: 10px;
+    justify-content: center;
+    text-align: center;
   }
 
   .cart-link {
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .cart-badge {
-    position: static;
-    margin-left: auto;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    margin-left: 0;
     min-width: 20px;
     height: 20px;
     line-height: 20px;
