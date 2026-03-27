@@ -507,6 +507,77 @@ html[lang='ka'] body {
 	background: linear-gradient(135deg, rgba(255, 90, 107, 0.2), rgba(255, 255, 255, 0.05));
 }
 
+.auth-card,
+.cart-items,
+.cart-summary,
+.checkout-form,
+.checkout-summary,
+.detail-info,
+.suggested-section,
+.order-card,
+.profile-card,
+.stat-card,
+.activity-item {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid color-mix(in srgb, var(--border) 80%, var(--accent) 20%);
+	box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
+	transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease), transform 0.24s var(--ease);
+}
+
+.auth-card::before,
+.cart-items::before,
+.cart-summary::before,
+.checkout-form::before,
+.checkout-summary::before,
+.detail-info::before,
+.suggested-section::before,
+.order-card::before,
+.profile-card::before,
+.stat-card::before,
+.activity-item::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: radial-gradient(420px circle at 6% -14%, rgba(255, 90, 107, 0.15), transparent 62%);
+	opacity: 0.75;
+}
+
+.auth-card:hover,
+.cart-items:hover,
+.cart-summary:hover,
+.checkout-form:hover,
+.checkout-summary:hover,
+.detail-info:hover,
+.suggested-section:hover,
+.order-card:hover,
+.profile-card:hover,
+.stat-card:hover,
+.activity-item:hover {
+	transform: translateY(-1px);
+	border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+	box-shadow: 0 22px 42px rgba(0, 0, 0, 0.36);
+}
+
+.auth h1,
+.orders-header h1,
+.profile-header h1,
+.grid-header h2 {
+	letter-spacing: 0.01em;
+	text-wrap: balance;
+}
+
+.item-title,
+.card-link {
+	transition: color 0.22s var(--ease), text-decoration-color 0.22s var(--ease);
+}
+
+.item-title:hover,
+.card-link:hover {
+	text-decoration-color: color-mix(in srgb, var(--accent) 68%, transparent);
+}
+
 .site-nav > a,
 .admin-nav nav > a,
 .footer-links a {

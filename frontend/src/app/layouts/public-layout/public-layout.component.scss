@@ -304,6 +304,12 @@
   backdrop-filter: var(--glass-blur);
 }
 
+.site-footer .lang-switch {
+  width: auto;
+  justify-self: end;
+  align-self: center;
+}
+
 .footer-title {
   font-weight: 600;
   margin: 0 0 0.4rem;
@@ -485,7 +491,7 @@
     pointer-events: auto;
   }
 
-  .lang-switch {
+  .header-content .lang-switch {
     width: 100%;
     justify-content: center;
   }
@@ -503,6 +509,10 @@
 
   .drag-switch {
     justify-self: start;
+  }
+
+  .site-footer .lang-switch {
+    width: auto;
   }
 }
 
