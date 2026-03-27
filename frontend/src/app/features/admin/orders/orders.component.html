@@ -1,39 +1,81 @@
-﻿<section class="admin-section">
+<section class="admin-section">
   <h1 i18n>Orders</h1>
   <p class="state-text" *ngIf="isLoading" i18n>Loading orders...</p>
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   <div class="table">
     <div class="row header">
-      <span i18n>Order</span>
-      <span i18n>User</span>
+      <span i18n>Order Details</span>
+      <span i18n>Customer</span>
+      <span i18n>Items</span>
       <span i18n>Total</span>
       <span i18n>Status</span>
-      <span i18n>Action</span>
+      <span i18n>Actions</span>
     </div>
     <div class="row" *ngFor="let order of orders">
-      <span>{{ order.id }}</span>
-      <span>{{ order.userId }}</span>
+      <div class="detail-block">
+        <strong class="detail-title">{{ order.id }}</strong>
+        <span class="detail-meta">{{ order.createdAt | date:'medium' }}</span>
+        <span class="detail-meta" i18n>Payment: {{ paymentSummary(order) }}</span>
+      </div>
+
+      <div class="detail-block">
+        <strong class="detail-title">{{ order.user?.fullName || order.shippingAddress.fullName }}</strong>
+        <span class="detail-meta">{{ order.user?.email || ('User ID: ' + order.userId) }}</span>
+        <span class="detail-meta" *ngIf="order.user?.pinCode">PIN: {{ order.user?.pinCode }}</span>
+        <span class="detail-meta">{{ order.shippingAddress.phone }}</span>
+        <span class="detail-meta">{{ formatAddress(order) }}</span>
+      </div>
+
+      <div class="detail-block">
+        <span class="order-item-line" *ngFor="let item of order.items">
+          {{ item.title }} × {{ item.quantity }}
+          <small>{{ (item.quantity * item.priceAtPurchase) | currency:'GEL':'symbol-narrow':'1.2-2' }}</small>
+        </span>
+      </div>
+
       <span>{{ order.totalPrice | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-      <select [(ngModel)]="statusSelections[order.id]">
-        <option *ngFor="let option of statusOptions" [ngValue]="option">
-          {{ option }}
-        </option>
-      </select>
-      <button
-        class="btn ghost icon-btn"
-        type="button"
-        (click)="updateStatus(order)"
-        aria-label="Update status"
-        title="Update status"
-        i18n-aria-label
-        i18n-title
-      >
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20 6L9 17l-5-5" />
-        </svg>
-      </button>
+
+      <div class="status-select-wrap">
+        <select class="status-select" [(ngModel)]="statusSelections[order.id]">
+          <option *ngFor="let option of statusOptions" [ngValue]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div class="row-actions">
+        <button
+          class="btn ghost icon-btn success"
+          type="button"
+          (click)="updateStatus(order)"
+          aria-label="Update status"
+          title="Update status"
+          i18n-aria-label
+          i18n-title
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </button>
+
+        <button
+          class="btn ghost icon-btn danger"
+          type="button"
+          (click)="deleteOrder(order)"
+          [disabled]="deletingOrderIds.has(order.id)"
+          aria-label="Delete order"
+          title="Delete order"
+          i18n-aria-label
+          i18n-title
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 7h12" />
+            <path d="M9 7V5h6v2" />
+            <path d="M8 7l1 12h6l1-12" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
   <p class="state-text" *ngIf="!isLoading && !errorMessage && orders.length === 0" i18n>No orders found.</p>
 </section>
-
