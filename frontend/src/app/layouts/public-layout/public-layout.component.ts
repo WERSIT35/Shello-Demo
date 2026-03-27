@@ -111,12 +111,6 @@ export class PublicLayoutComponent implements OnInit {
     this.setMobileMenuState(false);
   }
 
-  protected onMobileSheetBackgroundClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
-      this.setMobileMenuState(false);
-    }
-  }
-
   private buildLocaleUrl(target: 'ka' | 'en'): string {
     const url = new URL(window.location.href);
     const stripped = url.pathname.replace(/^\/(en|ka)(?=\/|$)/, '') || '/';

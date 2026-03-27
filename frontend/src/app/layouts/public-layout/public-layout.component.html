@@ -11,9 +11,9 @@
       </button>
     </div>
 
-    <div class="mobile-overlay" *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
-    <div class="header-content" [class.open]="isMobileMenuOpen" (click)="onMobileSheetBackgroundClick($event)">
-      <div class="mobile-sheet-head" (click)="$event.stopPropagation()">
+    <div class="header-content" [class.open]="isMobileMenuOpen" (click)="closeMobileMenu()">
+      <div class="mobile-sheet" (click)="$event.stopPropagation()">
+      <div class="mobile-sheet-head">
         <p class="mobile-sheet-title" i18n>Menu</p>
         <button class="btn ghost icon-btn" type="button" (click)="closeMobileMenu()" aria-label="Close menu" i18n-aria-label>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -128,6 +128,7 @@
           <span>Facebook</span>
         </a>
       </section>
+      </div>
     </div>
   </header>
 
