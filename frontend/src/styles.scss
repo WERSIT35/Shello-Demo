@@ -502,7 +502,6 @@ html[lang='ka'] body {
 }
 
 .social-link:hover {
-	transform: translateY(-1px);
 	border-color: color-mix(in srgb, var(--accent) 62%, transparent);
 	background: linear-gradient(135deg, rgba(255, 90, 107, 0.2), rgba(255, 255, 255, 0.05));
 }
@@ -522,7 +521,7 @@ html[lang='ka'] body {
 	overflow: hidden;
 	border: 1px solid color-mix(in srgb, var(--border) 80%, var(--accent) 20%);
 	box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
-	transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease), transform 0.24s var(--ease);
+	transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
 }
 
 .auth-card::before,
@@ -555,7 +554,6 @@ html[lang='ka'] body {
 .profile-card:hover,
 .stat-card:hover,
 .activity-item:hover {
-	transform: translateY(-1px);
 	border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
 	box-shadow: 0 22px 42px rgba(0, 0, 0, 0.36);
 }
@@ -593,8 +591,7 @@ html[lang='ka'] body {
 	transition:
 		color 0.24s var(--ease),
 		border-color 0.24s var(--ease),
-		box-shadow 0.24s var(--ease),
-		transform 0.24s var(--ease);
+		box-shadow 0.24s var(--ease);
 }
 
 .site-nav > a::before,
@@ -606,8 +603,7 @@ html[lang='ka'] body {
 	border-radius: inherit;
 	background: linear-gradient(120deg, rgba(255, 90, 107, 0.15), rgba(179, 139, 255, 0.08));
 	opacity: 0;
-	transform: translateX(-14px);
-	transition: opacity 0.24s var(--ease), transform 0.24s var(--ease);
+	transition: opacity 0.24s var(--ease);
 	pointer-events: none;
 }
 
@@ -615,7 +611,6 @@ html[lang='ka'] body {
 .admin-nav nav > a:hover,
 .footer-links a:hover {
 	color: var(--text);
-	transform: translateY(-1px);
 	border-color: color-mix(in srgb, var(--accent) 46%, transparent);
 	box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
 }
@@ -624,7 +619,6 @@ html[lang='ka'] body {
 .admin-nav nav > a:hover::before,
 .footer-links a:hover::before {
 	opacity: 1;
-	transform: translateX(0);
 }
 
 .site-nav > a.active,
@@ -642,11 +636,5 @@ html[lang='ka'] body {
 	transition:
 		color 0.2s var(--ease),
 		border-color 0.2s var(--ease),
-		background 0.2s var(--ease),
-		transform 0.2s var(--ease);
-}
-
-.top-back-link:hover,
-.menu-item:hover {
-	transform: translateY(-1px);
+		background 0.2s var(--ease);
 }

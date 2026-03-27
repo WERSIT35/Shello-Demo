@@ -234,9 +234,8 @@
   display: grid;
   gap: 0.35rem;
   opacity: 0;
-  transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease;
   z-index: 20;
 }
 
@@ -244,7 +243,6 @@
 .user-menu:hover .user-dropdown,
 .user-menu.open .user-dropdown {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 
