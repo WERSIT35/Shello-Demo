@@ -98,28 +98,27 @@ function buildGoogleBridgeHtml(payload: Record<string, unknown>, allowedOrigins:
         } catch (err) {
         }
 
-        var delivered = false;
-        if (window.opener && !window.opener.closed) {
-          try {
-            var allowedOrigins = ${JSON.stringify(allowedOrigins)};
-            for (var i = 0; i < allowedOrigins.length; i++) {
+        var hasOpener = !!(window.opener && !window.opener.closed);
+        if (hasOpener) {
+          var allowedOrigins = ${JSON.stringify(allowedOrigins)};
+          for (var i = 0; i < allowedOrigins.length; i++) {
+            try {
               window.opener.postMessage(payload, allowedOrigins[i]);
+            } catch (err) {
             }
-            delivered = true;
-          } catch (err) {
           }
+          window.close();
+          return;
         }
 
-        if (!delivered) {
-          try {
-            if (returnTo) {
-              var target = new URL(returnTo);
-              target.hash = "google-auth=" + encodeURIComponent(JSON.stringify(payload));
-              window.location.replace(target.toString());
-              return;
-            }
-          } catch (err) {
+        try {
+          if (returnTo) {
+            var target = new URL(returnTo);
+            target.hash = "google-auth=" + encodeURIComponent(JSON.stringify(payload));
+            window.location.replace(target.toString());
+            return;
           }
+        } catch (err) {
         }
 
         window.close();
