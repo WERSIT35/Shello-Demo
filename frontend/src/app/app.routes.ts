@@ -16,13 +16,13 @@ export const routes: Routes = [
 			{
 				path: '',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'home' },
+				data: { pageKey: 'home', seoKey: 'home' },
 				component: LandingComponent
 			},
 			{
 				path: 'shop',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'shop' },
+				data: { pageKey: 'shop', seoKey: 'shop' },
 				loadComponent: () =>
 					import('./features/shop/product-list/product-list.component').then(
 						(m) => m.ProductListComponent
@@ -31,7 +31,7 @@ export const routes: Routes = [
 			{
 				path: 'products/:id',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'product' },
+				data: { pageKey: 'product', seoKey: 'productDetail' },
 				loadComponent: () =>
 					import('./features/shop/product-detail/product-detail.component').then(
 						(m) => m.ProductDetailComponent
@@ -40,14 +40,14 @@ export const routes: Routes = [
 			{
 				path: 'cart',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'cart' },
+				data: { pageKey: 'cart', seoKey: 'cart' },
 				loadComponent: () =>
 					import('./features/shop/cart/cart.component').then((m) => m.CartComponent)
 			},
 			{
 				path: 'checkout',
 				canActivate: [authGuard, pageToggleGuard],
-				data: { pageKey: 'checkout' },
+				data: { pageKey: 'checkout', seoKey: 'checkout' },
 				loadComponent: () =>
 					import('./features/shop/checkout/checkout.component').then(
 						(m) => m.CheckoutComponent
@@ -56,14 +56,14 @@ export const routes: Routes = [
 			{
 				path: 'login',
 				canActivate: [guestGuard, pageToggleGuard],
-				data: { pageKey: 'login' },
+				data: { pageKey: 'login', seoKey: 'login' },
 				loadComponent: () =>
 					import('./features/auth/login/login.component').then((m) => m.LoginComponent)
 			},
 			{
 				path: 'register',
 				canActivate: [guestGuard, pageToggleGuard],
-				data: { pageKey: 'register' },
+				data: { pageKey: 'register', seoKey: 'register' },
 				loadComponent: () =>
 					import('./features/auth/register/register.component').then(
 						(m) => m.RegisterComponent
@@ -72,14 +72,14 @@ export const routes: Routes = [
 			{
 				path: 'orders',
 				canActivate: [authGuard, pageToggleGuard],
-				data: { pageKey: 'orders' },
+				data: { pageKey: 'orders', seoKey: 'orders' },
 				loadComponent: () =>
 					import('./features/user/orders/orders.component').then((m) => m.OrdersComponent)
 			},
 			{
 				path: 'profile',
 				canActivate: [authGuard, pageToggleGuard],
-				data: { pageKey: 'profile' },
+				data: { pageKey: 'profile', seoKey: 'profile' },
 				loadComponent: () =>
 					import('./features/user/profile/profile.component').then((m) => m.ProfileComponent)
 			}
@@ -93,7 +93,7 @@ export const routes: Routes = [
 			{
 				path: '',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'admin' },
+				data: { pageKey: 'admin', seoKey: 'adminDashboard' },
 				loadComponent: () =>
 					import('./features/admin/dashboard/dashboard.component').then(
 						(m) => m.AdminDashboardComponent
@@ -102,7 +102,7 @@ export const routes: Routes = [
 			{
 				path: 'products',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'adminProducts' },
+				data: { pageKey: 'adminProducts', seoKey: 'adminProducts' },
 				loadComponent: () =>
 					import('./features/admin/products/products.component').then(
 						(m) => m.AdminProductsComponent
@@ -111,7 +111,7 @@ export const routes: Routes = [
 			{
 				path: 'content',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'adminContent' },
+				data: { pageKey: 'adminContent', seoKey: 'adminContent' },
 				loadComponent: () =>
 					import('./features/admin/content/content.component').then(
 						(m) => m.AdminContentComponent
@@ -120,7 +120,7 @@ export const routes: Routes = [
 			{
 				path: 'orders',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'adminOrders' },
+				data: { pageKey: 'adminOrders', seoKey: 'adminOrders' },
 				loadComponent: () =>
 					import('./features/admin/orders/orders.component').then(
 						(m) => m.AdminOrdersComponent
@@ -129,14 +129,14 @@ export const routes: Routes = [
 			{
 				path: 'users',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'adminUsers' },
+				data: { pageKey: 'adminUsers', seoKey: 'adminUsers' },
 				loadComponent: () =>
 					import('./features/admin/users/users.component').then((m) => m.AdminUsersComponent)
 			},
 			{
 				path: 'security',
 				canActivate: [pageToggleGuard],
-				data: { pageKey: 'adminSecurity' },
+				data: { pageKey: 'adminSecurity', seoKey: 'adminSecurity' },
 				loadComponent: () =>
 					import('./features/admin/security/security.component').then(
 						(m) => m.AdminSecurityComponent

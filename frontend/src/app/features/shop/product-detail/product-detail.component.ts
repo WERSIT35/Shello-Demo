@@ -7,6 +7,7 @@ import Splide from '@splidejs/splide';
 import { CartService } from '../../../core/services/cart.service';
 import { ContentService } from '../../../core/services/content.service';
 import { ProductsService, type Product } from '../../../core/services/products.service';
+import { SeoService } from '../../../core/services/seo.service';
 
 declare const $localize: { locale?: string };
 
@@ -30,6 +31,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
   private readonly contentService = inject(ContentService);
+  private readonly seoService = inject(SeoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly lang: 'ka' | 'en' = this.resolveLang();
 
@@ -87,6 +89,11 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.productsService.getProduct(id).subscribe({
       next: (product) => {
         this.product = product;
+        this.seoService.setProductSeo({
+          title: product.title,
+          description: product.description,
+          images: product.images
+        });
         this.isLoading = false;
         this.cdr.detectChanges();
         queueMicrotask(() => this.mountGallerySplide());

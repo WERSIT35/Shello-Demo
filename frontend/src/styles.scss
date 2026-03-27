@@ -12,7 +12,7 @@
 	color-scheme: dark;
 	--font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-display: var(--font-body);
-	--font-brand: var(--font-body);
+	--font-brand: "Permanent Marker", var(--font-body);
 	--line-body: 1.55;
 	--line-display: 1.18;
 	--tracking-display: -0.01em;
@@ -388,7 +388,7 @@ html[lang='ka'] .pill {
 html[lang='ka'] {
 	--font-body: "BPG DejaVu Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-display: var(--font-body);
-	--font-brand: var(--font-body);
+	--font-brand: "Permanent Marker", var(--font-body);
 	--line-body: 1.46;
 	--line-display: 1.26;
 	--tracking-display: 0;
