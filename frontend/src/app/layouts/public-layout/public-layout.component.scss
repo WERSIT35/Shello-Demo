@@ -30,10 +30,6 @@
   justify-content: flex-end;
   gap: 16px;
   justify-self: end;
-  width: auto;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 .mobile-sheet-head {
@@ -363,7 +359,6 @@
 .footer-links {
   display: flex;
   gap: 1.5rem;
-  font-weight: 500;
   justify-self: center;
 }
 
@@ -395,7 +390,6 @@
     position: fixed;
     inset: 0;
     background: rgba(6, 7, 10, 0.7);
-    backdrop-filter: blur(5px);
     z-index: 9;
   }
 
@@ -413,7 +407,6 @@
       rgba(11, 12, 18, 0.98);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: var(--shadow-lg);
     padding: calc(12px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
     z-index: 12;
     overflow-y: auto;
@@ -469,7 +462,6 @@
     padding-inline: 12px;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.03);
   }
 
   .cart-link {
@@ -548,7 +540,6 @@
   .footer-links {
     justify-self: start;
     flex-wrap: wrap;
-    gap: 0.9rem 1.1rem;
   }
 
   .drag-switch {
