@@ -10,8 +10,10 @@
         <div class="splide detail-gallery-splide" #gallerySplide>
           <div class="splide__track">
             <ul class="splide__list">
-              <li class="splide__slide" *ngFor="let image of product.images">
-                <img [src]="image" alt="" draggable="false" />
+              <li class="splide__slide" *ngFor="let image of product.images; let i = index">
+                <button class="gallery-image-trigger" type="button" (click)="openImageLightbox(i)" i18n-aria-label aria-label="Open image in fullscreen">
+                  <img [src]="image" alt="" draggable="false" />
+                </button>
               </li>
             </ul>
           </div>
@@ -100,4 +102,54 @@
 
     <p class="state-text" *ngIf="!isSuggestionsLoading && !suggestionsErrorMessage && suggestedProducts.length === 0" i18n>No suggestions yet.</p>
   </section>
+
+  <div class="image-lightbox" *ngIf="isImageLightboxOpen" role="dialog" aria-modal="true" (click)="closeImageLightbox()">
+    <div class="image-lightbox-inner" (click)="$event.stopPropagation()">
+      <div class="image-lightbox-toolbar">
+        <span class="lightbox-count">
+          {{ lightboxImageIndex + 1 }} / {{ product?.images?.length ?? 0 }}
+        </span>
+        <div class="lightbox-actions">
+          <button class="btn ghost" type="button" (click)="zoomOutLightbox()" [disabled]="lightboxZoom <= 1" i18n>Zoom out</button>
+          <button class="btn ghost" type="button" (click)="resetLightboxZoom()" [disabled]="lightboxZoom === 1" i18n>Reset</button>
+          <button class="btn ghost" type="button" (click)="zoomInLightbox()" [disabled]="lightboxZoom >= 4" i18n>Zoom in</button>
+          <button class="btn primary" type="button" (click)="closeImageLightbox()" i18n>Close</button>
+        </div>
+      </div>
+
+      <div class="image-lightbox-stage" (wheel)="onLightboxWheel($event)">
+        <button
+          class="lightbox-nav lightbox-nav-prev"
+          type="button"
+          (click)="showPreviousLightboxImage()"
+          [disabled]="(product?.images?.length ?? 0) <= 1"
+          i18n-aria-label
+          aria-label="Previous image"
+        >
+          ‹
+        </button>
+
+        <div class="image-lightbox-media">
+          <img
+            [src]="getLightboxImage()"
+            alt=""
+            draggable="false"
+            [style.transform]="'scale(' + lightboxZoom + ')'"
+            (dblclick)="onLightboxDoubleClick($event)"
+          />
+        </div>
+
+        <button
+          class="lightbox-nav lightbox-nav-next"
+          type="button"
+          (click)="showNextLightboxImage()"
+          [disabled]="(product?.images?.length ?? 0) <= 1"
+          i18n-aria-label
+          aria-label="Next image"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </div>
 </section>

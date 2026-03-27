@@ -322,9 +322,13 @@ export class AdminProductsComponent implements OnInit {
         })
       )
       .subscribe({
-        next: () => {
-          this.closeEdit();
+        next: (updatedProduct) => {
+          this.editingProduct = updatedProduct;
+          this.editDraft = this.buildDraftFromProduct(updatedProduct);
+          this.editImageOrderDraft = [...(updatedProduct.images ?? [])];
+          this.selectedEditFiles = [];
           this.refreshProducts();
+          this.cdr.detectChanges();
         },
         error: (error: unknown) => {
           this.editErrorMessage = this.resolveError(error);

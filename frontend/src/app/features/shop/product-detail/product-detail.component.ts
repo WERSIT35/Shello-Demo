@@ -1,5 +1,5 @@
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 import Splide from '@splidejs/splide';
@@ -40,10 +40,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected isSuggestionsLoading = true;
   protected suggestionsErrorMessage = '';
   protected cartEnabled = true;
+  protected isImageLightboxOpen = false;
+  protected lightboxImageIndex = 0;
+  protected lightboxZoom = 1;
 
   private gallerySplide: Splide | null = null;
   private galleryThumbsSplide: Splide | null = null;
   private suggestionsSplide: Splide | null = null;
+  private readonly minLightboxZoom = 1;
+  private readonly maxLightboxZoom = 4;
+  private readonly lightboxZoomStep = 0.25;
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -128,6 +134,116 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     void this.router.navigate(['/products', productId]);
   }
 
+  protected openImageLightbox(index: number): void {
+    if (!this.product || this.product.images.length === 0) {
+      return;
+    }
+    this.lightboxImageIndex = Math.max(0, Math.min(index, this.product.images.length - 1));
+    this.lightboxZoom = 1;
+    this.isImageLightboxOpen = true;
+    this.cdr.detectChanges();
+  }
+
+  protected closeImageLightbox(): void {
+    this.isImageLightboxOpen = false;
+    this.lightboxZoom = 1;
+  }
+
+  protected showPreviousLightboxImage(): void {
+    if (!this.product || this.product.images.length <= 1) {
+      return;
+    }
+    this.lightboxImageIndex =
+      (this.lightboxImageIndex - 1 + this.product.images.length) % this.product.images.length;
+    this.lightboxZoom = 1;
+  }
+
+  protected showNextLightboxImage(): void {
+    if (!this.product || this.product.images.length <= 1) {
+      return;
+    }
+    this.lightboxImageIndex = (this.lightboxImageIndex + 1) % this.product.images.length;
+    this.lightboxZoom = 1;
+  }
+
+  protected zoomInLightbox(): void {
+    this.lightboxZoom = this.clampLightboxZoom(this.lightboxZoom + this.lightboxZoomStep);
+  }
+
+  protected zoomOutLightbox(): void {
+    this.lightboxZoom = this.clampLightboxZoom(this.lightboxZoom - this.lightboxZoomStep);
+  }
+
+  protected resetLightboxZoom(): void {
+    this.lightboxZoom = 1;
+  }
+
+  protected onLightboxWheel(event: WheelEvent): void {
+    if (!this.isImageLightboxOpen) {
+      return;
+    }
+    event.preventDefault();
+    if (event.deltaY < 0) {
+      this.zoomInLightbox();
+      return;
+    }
+    this.zoomOutLightbox();
+  }
+
+  protected onLightboxDoubleClick(event: MouseEvent): void {
+    event.preventDefault();
+    this.lightboxZoom = this.lightboxZoom === 1 ? 2 : 1;
+  }
+
+  protected getLightboxImage(): string {
+    if (!this.product || this.product.images.length === 0) {
+      return '';
+    }
+    return this.product.images[this.lightboxImageIndex] ?? this.product.images[0];
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  protected onDocumentKeydown(event: KeyboardEvent): void {
+    if (!this.isImageLightboxOpen) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.closeImageLightbox();
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+      this.showPreviousLightboxImage();
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === 'ArrowRight') {
+      this.showNextLightboxImage();
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === '+' || event.key === '=') {
+      this.zoomInLightbox();
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === '-') {
+      this.zoomOutLightbox();
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === '0') {
+      this.resetLightboxZoom();
+      event.preventDefault();
+    }
+  }
+
   protected getMeta(product: Product): string[] {
     const meta = product.metadata as Record<string, unknown> | null;
     if (!meta) {
@@ -184,6 +300,10 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private getLocalizedMetaValue(meta: Record<string, unknown>, key: string): unknown {
     const localizedKey = this.lang === 'ka' ? `${key}Ka` : `${key}En`;
     return meta[localizedKey] ?? meta[key];
+  }
+
+  private clampLightboxZoom(next: number): number {
+    return Math.max(this.minLightboxZoom, Math.min(next, this.maxLightboxZoom));
   }
 
   private mountGallerySplide(): void {
