@@ -428,8 +428,20 @@ html[lang='ka'] body {
 	backdrop-filter: var(--glass-blur);
 	-webkit-backdrop-filter: var(--glass-blur);
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		opacity 0.18s var(--ease),
+		border-color 0.2s var(--ease),
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		box-shadow 0.2s var(--ease);
+}
+
+.splide:hover .splide__arrow,
+.splide:focus-within .splide__arrow {
 	opacity: 1;
-	transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+	pointer-events: auto;
 }
 
 .splide .splide__arrow:hover:not(:disabled) {
@@ -469,6 +481,13 @@ html[lang='ka'] body {
 .splide .splide__pagination__page.is-active {
 	background: var(--accent);
 	transform: scale(1.1);
+}
+
+@media (hover: none) {
+	.splide .splide__arrow {
+		opacity: 1;
+		pointer-events: auto;
+	}
 }
 
 .social-link {

@@ -25,6 +25,8 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly galleryThumbsSplideRef?: ElementRef<HTMLDivElement>;
   @ViewChild('suggestedSlider')
   private readonly suggestedSliderRef?: ElementRef<HTMLDivElement>;
+  @ViewChild('lightboxSplide')
+  private readonly lightboxSplideRef?: ElementRef<HTMLDivElement>;
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -49,6 +51,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private gallerySplide: Splide | null = null;
   private galleryThumbsSplide: Splide | null = null;
   private suggestionsSplide: Splide | null = null;
+  private lightboxSplide: Splide | null = null;
   private readonly minLightboxZoom = 1;
   private readonly maxLightboxZoom = 4;
   private readonly lightboxZoomStep = 0.25;
@@ -149,19 +152,20 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.lightboxZoom = 1;
     this.isImageLightboxOpen = true;
     this.cdr.detectChanges();
+    queueMicrotask(() => this.mountLightboxSplide(this.lightboxImageIndex));
   }
 
   protected closeImageLightbox(): void {
     this.isImageLightboxOpen = false;
     this.lightboxZoom = 1;
+    this.destroyLightboxSplide();
   }
 
   protected showPreviousLightboxImage(): void {
     if (!this.product || this.product.images.length <= 1) {
       return;
     }
-    this.lightboxImageIndex =
-      (this.lightboxImageIndex - 1 + this.product.images.length) % this.product.images.length;
+    this.lightboxSplide?.go('<');
     this.lightboxZoom = 1;
   }
 
@@ -169,7 +173,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     if (!this.product || this.product.images.length <= 1) {
       return;
     }
-    this.lightboxImageIndex = (this.lightboxImageIndex + 1) % this.product.images.length;
+    this.lightboxSplide?.go('>');
     this.lightboxZoom = 1;
   }
 
@@ -200,13 +204,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected onLightboxDoubleClick(event: MouseEvent): void {
     event.preventDefault();
     this.lightboxZoom = this.lightboxZoom === 1 ? 2 : 1;
-  }
-
-  protected getLightboxImage(): string {
-    if (!this.product || this.product.images.length === 0) {
-      return '';
-    }
-    return this.product.images[this.lightboxImageIndex] ?? this.product.images[0];
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -396,6 +393,39 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.suggestionsSplide.mount();
   }
 
+  private mountLightboxSplide(startAt: number): void {
+    const root = this.lightboxSplideRef?.nativeElement;
+    if (!root || !this.product || this.product.images.length === 0 || !this.isImageLightboxOpen) {
+      return;
+    }
+
+    this.destroyLightboxSplide();
+
+    this.lightboxSplide = new Splide(root, {
+      type: 'slide',
+      start: startAt,
+      rewind: true,
+      arrows: this.product.images.length > 1,
+      pagination: false,
+      drag: this.product.images.length > 1,
+      speed: 380
+    });
+
+    this.lightboxSplide.on('mounted', () => {
+      this.lightboxImageIndex = this.lightboxSplide?.index ?? startAt;
+      this.lightboxZoom = 1;
+      this.cdr.detectChanges();
+    });
+
+    this.lightboxSplide.on('move', (newIndex) => {
+      this.lightboxImageIndex = newIndex;
+      this.lightboxZoom = 1;
+      this.cdr.detectChanges();
+    });
+
+    this.lightboxSplide.mount();
+  }
+
   private destroyGallerySplide(): void {
     if (this.gallerySplide) {
       this.gallerySplide.destroy(true);
@@ -415,8 +445,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  private destroyLightboxSplide(): void {
+    if (this.lightboxSplide) {
+      this.lightboxSplide.destroy(true);
+      this.lightboxSplide = null;
+    }
+  }
+
   private destroySliders(): void {
     this.destroyGallerySplide();
     this.destroySuggestionsSplide();
+    this.destroyLightboxSplide();
   }
 }

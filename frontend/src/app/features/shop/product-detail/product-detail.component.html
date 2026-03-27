@@ -118,38 +118,24 @@
       </div>
 
       <div class="image-lightbox-stage" (wheel)="onLightboxWheel($event)">
-        <button
-          class="lightbox-nav lightbox-nav-prev"
-          type="button"
-          (click)="showPreviousLightboxImage()"
-          [disabled]="(product?.images?.length ?? 0) <= 1"
-          i18n-aria-label
-          aria-label="Previous image"
-        >
-          ‹
-        </button>
-
-        <div class="image-lightbox-media" (click)="closeImageLightbox()">
-          <img
-            [src]="getLightboxImage()"
-            alt=""
-            draggable="false"
-            [style.transform]="'scale(' + lightboxZoom + ')'"
-            (click)="$event.stopPropagation()"
-            (dblclick)="onLightboxDoubleClick($event)"
-          />
+        <div class="splide image-lightbox-splide" #lightboxSplide>
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide" *ngFor="let image of product?.images ?? []">
+                <div class="image-lightbox-media">
+                  <img
+                    [src]="image"
+                    alt=""
+                    draggable="false"
+                    [style.transform]="'scale(' + lightboxZoom + ')'"
+                    (click)="$event.stopPropagation()"
+                    (dblclick)="onLightboxDoubleClick($event)"
+                  />
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-
-        <button
-          class="lightbox-nav lightbox-nav-next"
-          type="button"
-          (click)="showNextLightboxImage()"
-          [disabled]="(product?.images?.length ?? 0) <= 1"
-          i18n-aria-label
-          aria-label="Next image"
-        >
-          ›
-        </button>
       </div>
     </div>
   </div>
