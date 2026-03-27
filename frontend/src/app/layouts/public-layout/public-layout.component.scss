@@ -472,12 +472,6 @@
     background: rgba(255, 255, 255, 0.03);
   }
 
-  .site-nav a::after {
-    left: 12px;
-    right: 12px;
-    bottom: 8px;
-  }
-
   .cart-link {
     justify-content: space-between;
   }
@@ -557,23 +551,8 @@
     gap: 0.9rem 1.1rem;
   }
 
-  .footer-social {
-    justify-self: start;
-  }
-
   .drag-switch {
     justify-self: start;
-  }
-
-  .social-mobile {
-    grid-template-columns: 1fr;
-    gap: 0.55rem;
-  }
-
-  .social-mobile .social-link {
-    width: 100%;
-    justify-content: center;
-    min-height: 46px;
   }
 }
 
