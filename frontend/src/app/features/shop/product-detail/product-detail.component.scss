@@ -544,10 +544,6 @@
 }
 
 @media (max-width: 640px) {
-  .product-detail-page {
-    gap: 1.1rem;
-  }
-
   .gallery {
     min-height: clamp(260px, 48vh, 400px);
     padding: 0.75rem;

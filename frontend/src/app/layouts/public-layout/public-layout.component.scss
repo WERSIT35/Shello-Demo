@@ -374,42 +374,6 @@
   flex-wrap: wrap;
 }
 
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.38rem;
-  min-height: 36px;
-  padding: 0.35rem 0.68rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--border) 78%, var(--accent) 22%);
-  background: linear-gradient(135deg, rgba(255, 90, 107, 0.12), rgba(255, 255, 255, 0.03));
-  color: var(--text);
-  font-size: 0.82rem;
-  font-weight: 600;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-}
-
-.social-link svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.social-link svg path {
-  fill: currentColor;
-  stroke: none;
-}
-
-.social-link:hover {
-  transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--accent) 62%, transparent);
-  background: linear-gradient(135deg, rgba(255, 90, 107, 0.2), rgba(255, 255, 255, 0.05));
-}
-
 @media (max-width: 900px) {
   .site-header {
     grid-template-columns: 1fr;
