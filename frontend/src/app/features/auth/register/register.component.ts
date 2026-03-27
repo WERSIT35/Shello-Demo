@@ -36,6 +36,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
+    const googleOutcome = this.auth.consumeGoogleStoragePayload();
+    if (googleOutcome.status === 'authenticated') {
+      this.router.navigate(['/']);
+      return;
+    }
+
+    if (googleOutcome.status === 'two-factor-required') {
+      this.startTwoFactorChallenge({ token: googleOutcome.token, user: googleOutcome.user });
+      return;
+    }
+
+    if (googleOutcome.status === 'error') {
+      this.errorMessage = googleOutcome.message;
+    }
+
     this.auth.ensureSession().subscribe(() => {
       if (this.auth.isAuthenticated()) {
         this.router.navigate(['/']);
@@ -221,6 +236,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.stopGoogleStoragePoll();
         this.isSubmitting = false;
         this.startTwoFactorChallenge({ token: outcome.token, user: outcome.user });
+      }
+
+      if (outcome.status === 'error') {
+        this.stopGoogleStoragePoll();
+        this.isSubmitting = false;
+        this.errorMessage = outcome.message;
       }
     }, 500);
   }

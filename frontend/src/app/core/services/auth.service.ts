@@ -79,13 +79,16 @@ type TwoFactorLoginPayload = {
 type GoogleStorageOutcome =
   | { status: 'none' }
   | { status: 'authenticated'; user: AuthUser }
-  | { status: 'two-factor-required'; user: AuthUser; token: string };
+  | { status: 'two-factor-required'; user: AuthUser; token: string }
+  | { status: 'error'; message: string };
 
 type GoogleAuthMessage = {
   type: 'google-auth';
   data?: GoogleAuthPayload;
   error?: string;
 };
+
+type GoogleBridgePayload = GoogleAuthPayload | { error: string };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -96,6 +99,7 @@ export class AuthService {
   private accessTokenExpiresAt: number | null = null;
   private restoreSession$?: ReturnType<AuthService['refreshSession']>;
   private readonly googleAuthStorageKey = 'shello_google_auth';
+  private readonly googleAuthHashKey = 'google-auth';
 
   readonly currentUser$ = this.currentUserSubject.asObservable();
 
@@ -142,14 +146,16 @@ export class AuthService {
 
     window.localStorage.removeItem(this.googleAuthStorageKey);
 
+    const oauthUrl = `${API_BASE_URL}/auth/google?returnTo=${encodeURIComponent(window.location.href)}`;
     const popup = window.open(
-      `${API_BASE_URL}/auth/google`,
+      oauthUrl,
       'google-auth',
       'width=520,height=640,menubar=no,location=no,resizable=yes,scrollbars=yes,status=no'
     );
 
     if (!popup) {
-      return throwError(() => new Error('Popup blocked. Please allow popups and try again.'));
+      window.location.assign(oauthUrl);
+      return new Observable<AuthUser>(() => undefined);
     }
 
     popup.focus();
@@ -235,6 +241,13 @@ export class AuthService {
           return;
         }
 
+        if (this.isGoogleBridgeErrorPayload(storedPayload)) {
+          handled = true;
+          cleanup();
+          observer.error(new Error(storedPayload.error));
+          return;
+        }
+
         handlePayload(storedPayload);
       };
 
@@ -248,6 +261,14 @@ export class AuthService {
           if (!popup.closed) {
             popup.close();
           }
+
+          if (this.isGoogleBridgeErrorPayload(storedPayload)) {
+            handled = true;
+            cleanup();
+            observer.error(new Error(storedPayload.error));
+            return;
+          }
+
           handlePayload(storedPayload);
           return;
         }
@@ -302,6 +323,13 @@ export class AuthService {
 
       const immediatePayload = this.readGoogleAuthPayload();
       if (immediatePayload) {
+        if (this.isGoogleBridgeErrorPayload(immediatePayload)) {
+          handled = true;
+          cleanup();
+          observer.error(new Error(immediatePayload.error));
+          return;
+        }
+
         handlePayload(immediatePayload);
       }
 
@@ -368,26 +396,37 @@ export class AuthService {
   }
 
   consumeGoogleStoragePayload(): GoogleStorageOutcome {
+    const hashPayload = this.readGoogleAuthPayloadFromHash();
+    if (hashPayload) {
+      this.persistGoogleBridgePayload(hashPayload);
+    }
+
     const payload = this.readGoogleAuthPayload();
     if (!payload) {
       return { status: 'none' };
     }
 
-    if (payload.twoFactorRequired && payload.twoFactorToken) {
+    if (this.isGoogleBridgeErrorPayload(payload)) {
+      return { status: 'error', message: payload.error };
+    }
+
+    const authPayload = payload;
+
+    if (authPayload.twoFactorRequired && authPayload.twoFactorToken) {
       return {
         status: 'two-factor-required',
-        token: payload.twoFactorToken,
-        user: this.mapUser(payload.user)
+        token: authPayload.twoFactorToken,
+        user: this.mapUser(authPayload.user)
       };
     }
 
-    if (!payload.accessToken) {
+    if (!authPayload.accessToken) {
       return { status: 'none' };
     }
 
-    this.setSession(payload.accessToken, payload.user, payload.expiresIn);
+    this.setSession(authPayload.accessToken, authPayload.user, authPayload.expiresIn);
     this.sessionReadySubject.next(true);
-    return { status: 'authenticated', user: this.mapUser(payload.user) };
+    return { status: 'authenticated', user: this.mapUser(authPayload.user) };
   }
 
   private refreshSession() {
@@ -434,7 +473,60 @@ export class AuthService {
     return Date.now() < this.accessTokenExpiresAt - skewMs;
   }
 
-  private readGoogleAuthPayload(): GoogleAuthPayload | null {
+  private readGoogleAuthPayloadFromHash(): GoogleAuthMessage | null {
+    if (!this.isBrowser) {
+      return null;
+    }
+
+    const rawHash = window.location.hash?.replace(/^#/, '');
+    if (!rawHash) {
+      return null;
+    }
+
+    const params = new URLSearchParams(rawHash);
+    const rawPayload = params.get(this.googleAuthHashKey);
+    if (!rawPayload) {
+      return null;
+    }
+
+    try {
+      const parsed = JSON.parse(decodeURIComponent(rawPayload)) as unknown;
+      if (!parsed || typeof parsed !== 'object') {
+        return null;
+      }
+
+      const message = parsed as GoogleAuthMessage;
+      if (message.type !== 'google-auth') {
+        return null;
+      }
+
+      params.delete(this.googleAuthHashKey);
+      const nextHash = params.toString();
+      if (typeof window.history?.replaceState === 'function') {
+        const nextUrl = `${window.location.pathname}${window.location.search}${nextHash ? `#${nextHash}` : ''}`;
+        window.history.replaceState(window.history.state, '', nextUrl);
+      }
+
+      return message;
+    } catch {
+      return null;
+    }
+  }
+
+  private persistGoogleBridgePayload(payload: GoogleAuthMessage): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      const store = { type: payload.type, data: payload.data, error: payload.error, createdAt: Date.now() };
+      window.localStorage.setItem(this.googleAuthStorageKey, JSON.stringify(store));
+    } catch {
+      // Ignore storage failures and let message flow continue.
+    }
+  }
+
+  private readGoogleAuthPayload(): GoogleBridgePayload | null {
     if (!this.isBrowser) {
       return null;
     }
@@ -456,7 +548,11 @@ export class AuthService {
         return null;
       }
 
-      const wrapper = parsed as { data?: unknown; createdAt?: number };
+      const wrapper = parsed as { data?: unknown; error?: unknown; createdAt?: number };
+      if (typeof wrapper.error === 'string') {
+        return { error: wrapper.error };
+      }
+
       if (!this.isGoogleAuthPayload(wrapper.data)) {
         return null;
       }
@@ -483,6 +579,10 @@ export class AuthService {
     const hasTwoFactor = payload.twoFactorRequired === true && typeof payload.twoFactorToken === 'string';
 
     return hasUser && (hasAccessToken || hasTwoFactor);
+  }
+
+  private isGoogleBridgeErrorPayload(value: GoogleBridgePayload): value is { error: string } {
+    return 'error' in value && typeof value.error === 'string';
   }
 
   private mapUser(user: ApiUser): AuthUser {
