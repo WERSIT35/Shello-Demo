@@ -186,13 +186,18 @@
 .panel-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
   padding: 1rem;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   border: 1px solid rgba(255, 255, 255, 0.06);
   cursor: pointer;
+}
+
+.panel-card > div {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .panel-card:focus-visible {
@@ -221,6 +226,9 @@
 }
 
 .panel-price {
+  margin-left: auto;
+  white-space: nowrap;
+  flex: 0 0 auto;
   font-weight: 600;
   color: var(--text);
 }
