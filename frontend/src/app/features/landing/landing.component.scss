@@ -195,11 +195,6 @@
   cursor: pointer;
 }
 
-.panel-card > div {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
 .panel-card:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--accent) 72%, white);
   outline-offset: 2px;
@@ -227,8 +222,6 @@
 
 .panel-price {
   margin-left: auto;
-  white-space: nowrap;
-  flex: 0 0 auto;
   font-weight: 600;
   color: var(--text);
 }
