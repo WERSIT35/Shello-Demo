@@ -319,8 +319,7 @@
   height: 100%;
   display: grid;
   place-items: center;
-  overflow: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   background: rgba(9, 11, 16, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
