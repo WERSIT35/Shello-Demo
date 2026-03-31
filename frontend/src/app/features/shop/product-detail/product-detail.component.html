@@ -80,7 +80,7 @@
                 <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
               </a>
               <div class="card-top">
-                <span>{{ suggestion.title }}</span>
+                <span>{{ suggestion.title.trim() }}</span>
                 <span class="card-price">
                   {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
                 </span>

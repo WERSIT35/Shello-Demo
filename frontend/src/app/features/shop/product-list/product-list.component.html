@@ -31,7 +31,7 @@
         </ng-template>
       </a>
       <div class="card-top">
-        <span class="card-title">{{ product.title }}</span>
+        <span class="card-title">{{ product.title.trim() }}</span>
         <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
       <div class="card-meta" *ngIf="getMeta(product).length">

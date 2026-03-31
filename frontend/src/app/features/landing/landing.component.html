@@ -26,7 +26,7 @@
     >
       <div class="panel-dot"></div>
       <div>
-        <p class="panel-title">{{ product.title }}</p>
+        <p class="panel-title">{{ product.title.trim() }}</p>
         <p class="panel-sub">{{ getPanelSub(product) }}</p>
       </div>
       <span class="panel-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
@@ -71,7 +71,7 @@
               </ng-template>
             </a>
             <div class="card-top">
-              <span>{{ product.title }}</span>
+              <span>{{ product.title.trim() }}</span>
               <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
             </div>
             <div class="card-meta" *ngIf="getMeta(product).length">
