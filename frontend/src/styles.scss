@@ -75,6 +75,11 @@ body {
 	min-height: 100%;
 }
 
+html.lightbox-open,
+body.lightbox-open {
+	overflow: hidden;
+}
+
 h1,
 h2,
 h3,

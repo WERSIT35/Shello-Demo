@@ -55,6 +55,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly minLightboxZoom = 1;
   private readonly maxLightboxZoom = 4;
   private readonly lightboxZoomStep = 0.25;
+  private readonly lightboxOpenClass = 'lightbox-open';
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -82,6 +83,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy(): void {
+    this.syncLightboxScrollLock(false);
     this.destroySliders();
   }
 
@@ -151,6 +153,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.lightboxImageIndex = Math.max(0, Math.min(index, this.product.images.length - 1));
     this.lightboxZoom = 1;
     this.isImageLightboxOpen = true;
+    this.syncLightboxScrollLock(true);
     this.cdr.detectChanges();
     queueMicrotask(() => this.mountLightboxSplide(this.lightboxImageIndex));
   }
@@ -158,6 +161,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected closeImageLightbox(): void {
     this.isImageLightboxOpen = false;
     this.lightboxZoom = 1;
+    this.syncLightboxScrollLock(false);
     this.destroyLightboxSplide();
   }
 
@@ -308,6 +312,15 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private clampLightboxZoom(next: number): number {
     return Math.max(this.minLightboxZoom, Math.min(next, this.maxLightboxZoom));
+  }
+
+  private syncLightboxScrollLock(isOpen: boolean): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.classList.toggle(this.lightboxOpenClass, isOpen);
+    document.body.classList.toggle(this.lightboxOpenClass, isOpen);
   }
 
   private mountGallerySplide(): void {
