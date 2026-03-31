@@ -126,6 +126,7 @@
                   class="image-lightbox-media"
                   [class.zoomed]="lightboxZoom > 1"
                   [class.panning]="isLightboxPanning"
+                  (click)="closeImageLightbox()"
                   (pointerdown)="onLightboxPointerDown($event)"
                   (pointermove)="onLightboxPointerMove($event)"
                   (pointerup)="onLightboxPointerUp()"
