@@ -59,10 +59,12 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly maxLightboxZoom = 4;
   private readonly lightboxZoomStep = 0.25;
   private readonly lightboxOpenClass = 'lightbox-open';
+  private readonly lightboxPanThreshold = 4;
   private lightboxPanStartX = 0;
   private lightboxPanStartY = 0;
   private lightboxPanOriginX = 0;
   private lightboxPanOriginY = 0;
+  private lightboxDidPan = false;
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -243,6 +245,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.lightboxPanStartY = event.clientY;
     this.lightboxPanOriginX = this.lightboxPanX;
     this.lightboxPanOriginY = this.lightboxPanY;
+    this.lightboxDidPan = false;
     this.updateLightboxSlideDrag();
 
     (event.currentTarget as HTMLElement | null)?.setPointerCapture(event.pointerId);
@@ -254,8 +257,13 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     event.preventDefault();
-    this.lightboxPanX = this.lightboxPanOriginX + (event.clientX - this.lightboxPanStartX);
-    this.lightboxPanY = this.lightboxPanOriginY + (event.clientY - this.lightboxPanStartY);
+    const deltaX = event.clientX - this.lightboxPanStartX;
+    const deltaY = event.clientY - this.lightboxPanStartY;
+    if (Math.abs(deltaX) > this.lightboxPanThreshold || Math.abs(deltaY) > this.lightboxPanThreshold) {
+      this.lightboxDidPan = true;
+    }
+    this.lightboxPanX = this.lightboxPanOriginX + deltaX;
+    this.lightboxPanY = this.lightboxPanOriginY + deltaY;
   }
 
   protected onLightboxPointerUp(): void {
@@ -265,6 +273,19 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.isLightboxPanning = false;
     this.updateLightboxSlideDrag();
+  }
+
+  protected onLightboxMediaClick(event: MouseEvent): void {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    if (this.lightboxDidPan) {
+      this.lightboxDidPan = false;
+      return;
+    }
+
+    this.closeImageLightbox();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -381,6 +402,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.lightboxPanX = 0;
     this.lightboxPanY = 0;
     this.isLightboxPanning = false;
+    this.lightboxDidPan = false;
   }
 
   private syncLightboxScrollLock(isOpen: boolean): void {
