@@ -47,6 +47,9 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected isImageLightboxOpen = false;
   protected lightboxImageIndex = 0;
   protected lightboxZoom = 1;
+  protected lightboxPanX = 0;
+  protected lightboxPanY = 0;
+  protected isLightboxPanning = false;
 
   private gallerySplide: Splide | null = null;
   private galleryThumbsSplide: Splide | null = null;
@@ -56,6 +59,10 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   private readonly maxLightboxZoom = 4;
   private readonly lightboxZoomStep = 0.25;
   private readonly lightboxOpenClass = 'lightbox-open';
+  private lightboxPanStartX = 0;
+  private lightboxPanStartY = 0;
+  private lightboxPanOriginX = 0;
+  private lightboxPanOriginY = 0;
 
   ngOnInit(): void {
     this.contentService.getPageToggles().subscribe((toggles) => {
@@ -152,6 +159,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     this.lightboxImageIndex = Math.max(0, Math.min(index, this.product.images.length - 1));
     this.lightboxZoom = 1;
+    this.resetLightboxPan();
     this.isImageLightboxOpen = true;
     this.syncLightboxScrollLock(true);
     this.cdr.detectChanges();
@@ -161,6 +169,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected closeImageLightbox(): void {
     this.isImageLightboxOpen = false;
     this.lightboxZoom = 1;
+    this.resetLightboxPan();
     this.syncLightboxScrollLock(false);
     this.destroyLightboxSplide();
   }
@@ -171,6 +180,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     this.lightboxSplide?.go('<');
     this.lightboxZoom = 1;
+    this.resetLightboxPan();
   }
 
   protected showNextLightboxImage(): void {
@@ -179,18 +189,26 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     this.lightboxSplide?.go('>');
     this.lightboxZoom = 1;
+    this.resetLightboxPan();
   }
 
   protected zoomInLightbox(): void {
     this.lightboxZoom = this.clampLightboxZoom(this.lightboxZoom + this.lightboxZoomStep);
+    this.updateLightboxSlideDrag();
   }
 
   protected zoomOutLightbox(): void {
     this.lightboxZoom = this.clampLightboxZoom(this.lightboxZoom - this.lightboxZoomStep);
+    if (this.lightboxZoom === 1) {
+      this.resetLightboxPan();
+    }
+    this.updateLightboxSlideDrag();
   }
 
   protected resetLightboxZoom(): void {
     this.lightboxZoom = 1;
+    this.resetLightboxPan();
+    this.updateLightboxSlideDrag();
   }
 
   protected onLightboxWheel(event: WheelEvent): void {
@@ -208,6 +226,45 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
   protected onLightboxDoubleClick(event: MouseEvent): void {
     event.preventDefault();
     this.lightboxZoom = this.lightboxZoom === 1 ? 2 : 1;
+    if (this.lightboxZoom === 1) {
+      this.resetLightboxPan();
+    }
+    this.updateLightboxSlideDrag();
+  }
+
+  protected onLightboxPointerDown(event: PointerEvent): void {
+    if (!this.isImageLightboxOpen || this.lightboxZoom <= 1) {
+      return;
+    }
+
+    event.preventDefault();
+    this.isLightboxPanning = true;
+    this.lightboxPanStartX = event.clientX;
+    this.lightboxPanStartY = event.clientY;
+    this.lightboxPanOriginX = this.lightboxPanX;
+    this.lightboxPanOriginY = this.lightboxPanY;
+    this.updateLightboxSlideDrag();
+
+    (event.currentTarget as HTMLElement | null)?.setPointerCapture(event.pointerId);
+  }
+
+  protected onLightboxPointerMove(event: PointerEvent): void {
+    if (!this.isLightboxPanning || this.lightboxZoom <= 1) {
+      return;
+    }
+
+    event.preventDefault();
+    this.lightboxPanX = this.lightboxPanOriginX + (event.clientX - this.lightboxPanStartX);
+    this.lightboxPanY = this.lightboxPanOriginY + (event.clientY - this.lightboxPanStartY);
+  }
+
+  protected onLightboxPointerUp(): void {
+    if (!this.isLightboxPanning) {
+      return;
+    }
+
+    this.isLightboxPanning = false;
+    this.updateLightboxSlideDrag();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -250,6 +307,12 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       this.resetLightboxZoom();
       event.preventDefault();
     }
+  }
+
+  @HostListener('document:pointerup')
+  @HostListener('document:pointercancel')
+  protected onDocumentPointerRelease(): void {
+    this.onLightboxPointerUp();
   }
 
   protected getMeta(product: Product): string[] {
@@ -312,6 +375,12 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private clampLightboxZoom(next: number): number {
     return Math.max(this.minLightboxZoom, Math.min(next, this.maxLightboxZoom));
+  }
+
+  private resetLightboxPan(): void {
+    this.lightboxPanX = 0;
+    this.lightboxPanY = 0;
+    this.isLightboxPanning = false;
   }
 
   private syncLightboxScrollLock(isOpen: boolean): void {
@@ -427,12 +496,16 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     this.lightboxSplide.on('mounted', () => {
       this.lightboxImageIndex = this.lightboxSplide?.index ?? startAt;
       this.lightboxZoom = 1;
+      this.resetLightboxPan();
+      this.updateLightboxSlideDrag();
       this.cdr.detectChanges();
     });
 
     this.lightboxSplide.on('move', (newIndex) => {
       this.lightboxImageIndex = newIndex;
       this.lightboxZoom = 1;
+      this.resetLightboxPan();
+      this.updateLightboxSlideDrag();
       this.cdr.detectChanges();
     });
 
@@ -463,6 +536,15 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       this.lightboxSplide.destroy(true);
       this.lightboxSplide = null;
     }
+  }
+
+  private updateLightboxSlideDrag(): void {
+    if (!this.lightboxSplide || !this.product) {
+      return;
+    }
+
+    const canDragSlides = this.product.images.length > 1 && this.lightboxZoom <= 1 && !this.isLightboxPanning;
+    this.lightboxSplide.options = { drag: canDragSlides };
   }
 
   private destroySliders(): void {

@@ -122,12 +122,22 @@
           <div class="splide__track">
             <ul class="splide__list">
               <li class="splide__slide" *ngFor="let image of product?.images ?? []">
-                <div class="image-lightbox-media">
+                <div
+                  class="image-lightbox-media"
+                  [class.zoomed]="lightboxZoom > 1"
+                  [class.panning]="isLightboxPanning"
+                  (pointerdown)="onLightboxPointerDown($event)"
+                  (pointermove)="onLightboxPointerMove($event)"
+                  (pointerup)="onLightboxPointerUp()"
+                  (pointercancel)="onLightboxPointerUp()"
+                >
                   <img
                     [src]="image"
                     alt=""
                     draggable="false"
-                    [style.transform]="'scale(' + lightboxZoom + ')'"
+                    [style.transform]="'translate(' + lightboxPanX + 'px, ' + lightboxPanY + 'px) scale(' + lightboxZoom + ')'"
+                    [class.zoomed]="lightboxZoom > 1"
+                    [class.panning]="isLightboxPanning"
                     (click)="$event.stopPropagation()"
                     (dblclick)="onLightboxDoubleClick($event)"
                   />
