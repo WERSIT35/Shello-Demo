@@ -115,6 +115,12 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     return tags.slice(0, 2).join(' / ');
   }
 
+  protected getDisplayTitle(title: string): string {
+    return title
+      .replace(/^[\s\u200B-\u200D\uFEFF\u200E\u200F\u202A-\u202E\u2066-\u2069]+/, '')
+      .trim();
+  }
+
   private loadContent(): void {
     this.isLoading = true;
     this.errorMessage = '';
