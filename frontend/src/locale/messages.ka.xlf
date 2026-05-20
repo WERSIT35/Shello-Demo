@@ -11,12 +11,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">12,13</context>
+          <context context-type="linenumber">13,14</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3640950620312920248" datatype="html">
-        <source>Manage hero messaging and suggested cases without touching code.</source>
-        <target>მართეთ ჰიროს ტექსტები და რეკომენდებული ქეისები კოდის შეცვლის გარეშე.</target>
+      <trans-unit id="5716023793003095197" datatype="html">
+        <source>Manage hero messaging, hero cards, and suggested cases without touching code.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -29,6 +28,10 @@
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
           <context context-type="linenumber">8,9</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">230,231</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="7000649363168371045" datatype="html">
         <source>Save changes</source>
@@ -37,13 +40,45 @@
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
           <context context-type="linenumber">9,10</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">231,232</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="6676104704503837687" datatype="html">
-        <source>Loading content...</source>
-        <target>შინაარსი იტვირთება...</target>
+      <trans-unit id="1136942239623379519" datatype="html">
+        <source>Hero content</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">13,14</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4793414891055580354" datatype="html">
+        <source>Title, subtitle, CTA buttons, highlights, and hero image.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7593555694782789615" datatype="html">
+        <source>Open</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">230,231</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3054064021834682613" datatype="html">
+        <source>Collapsed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">231,232</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7653178475449069959" datatype="html">
@@ -51,7 +86,7 @@
         <target>ჰირო</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">19,20</context>
+          <context context-type="linenumber">34,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5701618810648052610" datatype="html">
@@ -59,15 +94,23 @@
         <target>სათაური</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">21,22</context>
+          <context context-type="linenumber">55,56</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">26,27</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">81,82</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">241,242</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">266,267</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1137319519199859335" datatype="html">
@@ -75,7 +118,7 @@
         <target>ქვესათაური</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">25,26</context>
+          <context context-type="linenumber">59,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2074640631969803252" datatype="html">
@@ -83,7 +126,7 @@
         <target>მთავარი მოქმედების ღილაკი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">29,30</context>
+          <context context-type="linenumber">63,64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6162693758764653365" datatype="html">
@@ -91,11 +134,11 @@
         <target>ტექსტი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">64</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2981219928115418649" datatype="html">
@@ -103,11 +146,11 @@
         <target>ბმული</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">65</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6008189485647209287" datatype="html">
@@ -115,7 +158,7 @@
         <target>დამატებითი მოქმედების ღილაკი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">34,35</context>
+          <context context-type="linenumber">68,69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="939641272684756219" datatype="html">
@@ -123,7 +166,7 @@
         <target>გამოკვეთილი პუნქტები (თითო ხაზზე)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">73,74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1902100407096396858" datatype="html">
@@ -131,7 +174,7 @@
         <target>კატეგორიები</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">43,44</context>
+          <context context-type="linenumber">77,78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1349547954574351547" datatype="html">
@@ -139,7 +182,7 @@
         <target>კატეგორიის დამატება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3249513483374643425" datatype="html">
@@ -147,15 +190,7 @@
         <target>დამატება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">46,47</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">72,73</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
-          <context context-type="linenumber">22,23</context>
+          <context context-type="linenumber">80,81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4814285799071780083" datatype="html">
@@ -163,11 +198,11 @@
         <target>წაშლა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">89</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">23,24</context>
+          <context context-type="linenumber">59,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="663694506604851437" datatype="html">
@@ -175,7 +210,7 @@
         <target>ჰიროს სურათი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">63,64</context>
+          <context context-type="linenumber">100,101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2501989539336327542" datatype="html">
@@ -183,7 +218,66 @@
         <target>სურათის ატვირთვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">69,70</context>
+          <context context-type="linenumber">106,107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1029020316408231174" datatype="html">
+        <source>Hero featured cards</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">117,118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1124291461555774517" datatype="html">
+        <source>Pick up to <x id="INTERPOLATION" equiv-text="{{ heroLimit }}"/> cards shown inside the hero.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7193156780614434278" datatype="html">
+        <source> Selected <x id="INTERPOLATION" equiv-text="{{ selectedHeroCount }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ heroLimit }}"/> </source>
+        <target> არჩეულია <x id="INTERPOLATION" equiv-text="{{ selectedSuggestedCount }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ suggestedLimit }}"/> </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">121,122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">176,177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7743479397215344247" datatype="html">
+        <source>Search products</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">128,129</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">183,184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="345665390637547267" datatype="html">
+        <source>Selected only</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">134,135</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">189,190</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1349865754982104954" datatype="html">
+        <source> No products match your filters. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6380537124164284154" datatype="html">
@@ -191,31 +285,49 @@
         <target>რეკომენდებული ქეისები</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">77,78</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">32,33</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">172,173</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8586500270429530288" datatype="html">
-        <source>Pick up to <x id="INTERPOLATION" equiv-text="{{ suggestedLimit }}"/> products to show on the homepage.</source>
-        <target>მთავარ გვერდზე საჩვენებლად აირჩიეთ მაქსიმუმ <x id="INTERPOLATION" equiv-text="{{ suggestedLimit }}"/> პროდუქტი.</target>
+      <trans-unit id="691373014865511464" datatype="html">
+        <source>Pick up to <x id="INTERPOLATION" equiv-text="{{ suggestedLimit }}"/> products to show below the hero.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">78,79</context>
+          <context context-type="linenumber">173,174</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7193156780614434278" datatype="html">
-        <source> Selected <x id="INTERPOLATION" equiv-text="{{ selectedSuggestedCount }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ suggestedLimit }}"/> </source>
-        <target> არჩეულია <x id="INTERPOLATION" equiv-text="{{ selectedSuggestedCount }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ suggestedLimit }}"/> </target>
+      <trans-unit id="6260669938353799642" datatype="html">
+        <source>Page visibility</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
-          <context context-type="linenumber">81,83</context>
+          <context context-type="linenumber">227,228</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3059325774648007685" datatype="html">
+        <source>Toggle pages on or off without redeploying.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">228,229</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5816086783101440656" datatype="html">
+        <source> Active <x id="INTERPOLATION" equiv-text="{{ enabledPageToggleCount }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ totalPageToggleCount }}"/> toggles </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">236,237</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1661612559021322001" datatype="html">
+        <source>Enable all</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">248,249</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2909037596873741867" datatype="html">
+        <source>Disable all</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/content/content.component.html</context>
+          <context context-type="linenumber">249,250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7804138993070091479" datatype="html">
@@ -223,7 +335,35 @@
         <target>ადმინის მიმოხილვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">2,3</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8778111936392320764" datatype="html">
+        <source>Live snapshot of orders, products, users, and revenue.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8687126351491404681" datatype="html">
+        <source>Manage orders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7014683669106813404" datatype="html">
+        <source>Manage products</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="215657940149138307" datatype="html">
+        <source>Manage users</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3785333638975607160" datatype="html">
@@ -231,23 +371,36 @@
         <target>სტატისტიკა იტვირთება...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">3,4</context>
+          <context context-type="linenumber">14,15</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7160008792398348780" datatype="html">
-        <source>Active products</source>
-        <target>აქტიური პროდუქტები</target>
+      <trans-unit id="1401051587592350568" datatype="html">
+        <source>Total revenue</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">7,8</context>
+          <context context-type="linenumber">19,20</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2057659651614081739" datatype="html">
-        <source>Orders today</source>
-        <target>დღევანდელი შეკვეთები</target>
+      <trans-unit id="1284423391464173874" datatype="html">
+        <source>Today: <x id="INTERPOLATION" equiv-text="{{ revenueToday | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos; }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2539955958688068398" datatype="html">
+        <source>Total orders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">17,18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2527889891061365176" datatype="html">
@@ -255,7 +408,134 @@
         <target>გაგზავნის მოლოდინში</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
-          <context context-type="linenumber">15,16</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3617236292970184875" datatype="html">
+        <source>Pending + paid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7160008792398348780" datatype="html">
+        <source>Active products</source>
+        <target>აქტიური პროდუქტები</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1167731486155838648" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ outOfStockProducts }}"/> out of stock</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">36,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5915146492396015427" datatype="html">
+        <source>Users online</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7161015662821609295" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ offlineUsers }}"/> offline</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1872858477415600352" datatype="html">
+        <source>Admin users</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2117837129552829110" datatype="html">
+        <source>Current team access</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6681738558442750823" datatype="html">
+        <source>Order status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8282940047848889809" datatype="html">
+        <source>Paid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4135157573284610192" datatype="html">
+        <source>Shipped</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3537129702016731979" datatype="html">
+        <source>Delivered</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4043049091728011235" datatype="html">
+        <source>Cancelled</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7188059772170442707" datatype="html">
+        <source>Product health</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9106762144356839638" datatype="html">
+        <source>Low stock (&lt;=5)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1673748171753017859" datatype="html">
+        <source>Out of stock</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3022442299825570186" datatype="html">
+        <source>Recent orders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">72,73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2734780694152757859" datatype="html">
+        <source>View all</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3435375762107724156" datatype="html">
+        <source>No recent orders yet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/dashboard/dashboard.component.html</context>
+          <context context-type="linenumber">89,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6575195871133210332" datatype="html">
@@ -267,15 +547,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">13,14</context>
+          <context context-type="linenumber">14,15</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">45,46</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">76,77</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">87,88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3220573082161681199" datatype="html">
@@ -289,21 +573,30 @@
           <context context-type="sourcefile">src/app/features/user/orders/orders.component.html</context>
           <context context-type="linenumber">6,7</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="220550782947016929" datatype="html">
-        <source>Order</source>
-        <target>შეკვეთა</target>
+      <trans-unit id="2954756221793137916" datatype="html">
+        <source>Order Details</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
           <context context-type="linenumber">7,8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2392488717875840729" datatype="html">
-        <source>User</source>
-        <target>მომხმარებელი</target>
+      <trans-unit id="1642972066115158058" datatype="html">
+        <source>Customer</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
           <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6162691442834560200" datatype="html">
+        <source>Items</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">9,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3448462145758383019" datatype="html">
@@ -311,11 +604,11 @@
         <target>ჯამი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
-          <context context-type="linenumber">9,10</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">81,82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5611592591303869712" datatype="html">
@@ -323,27 +616,63 @@
         <target>სტატუსი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
-          <context context-type="linenumber">10,11</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">84,85</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="9216117865911519658" datatype="html">
-        <source>Action</source>
-        <target>ქმედება</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
           <context context-type="linenumber">11,12</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">85,86</context>
+          <context context-type="linenumber">90,91</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">217,218</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">244,245</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">269,270</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">48,49</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3193976279273491157" datatype="html">
+        <source>Actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4577787514848503032" datatype="html">
+        <source>Payment: <x id="INTERPOLATION" equiv-text="{{ paymentSummary(order) }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8180127405547620887" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ orderItemCount(order) }}"/> item(s)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/orders/orders.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1274145675070345453" datatype="html">
+        <source>Qty: <x id="INTERPOLATION" equiv-text="{{ item.quantity }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/orders/orders.component.html</context>
+          <context context-type="linenumber">28,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2780501798013636302" datatype="html">
@@ -351,11 +680,22 @@
         <target>სტატუსის განახლება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
-          <context context-type="linenumber">26,27</context>
+          <context context-type="linenumber">57,58</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
-          <context context-type="linenumber">27,28</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9072997950119441584" datatype="html">
+        <source>Delete order</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">72,73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
+          <context context-type="linenumber">73,74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1965725464748756427" datatype="html">
@@ -363,7 +703,7 @@
         <target>შეკვეთები ვერ მოიძებნა.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/orders/orders.component.html</context>
-          <context context-type="linenumber">37,38</context>
+          <context context-type="linenumber">86,87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6707361102856436710" datatype="html">
@@ -371,11 +711,11 @@
         <target>პროდუქტები</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">2,3</context>
+          <context context-type="linenumber">2,4</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">12,13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3822257693851427486" datatype="html">
@@ -383,7 +723,7 @@
         <target>პროდუქტის დამატება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">4,5</context>
+          <context context-type="linenumber">5,6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="807930220751775675" datatype="html">
@@ -391,11 +731,11 @@
         <target>ახალი პროდუქტი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">5,6</context>
+          <context context-type="linenumber">6,7</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">11,12</context>
+          <context context-type="linenumber">13,14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7819314041543176992" datatype="html">
@@ -403,7 +743,11 @@
         <target>დახურვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">12,13</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">142,143</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
@@ -413,37 +757,125 @@
           <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
           <context context-type="linenumber">73,74</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">160,161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5984574397847510001" datatype="html">
+        <source>Basic info</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6464349086839819166" datatype="html">
+        <source>Product code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2402043531040153610" datatype="html">
+        <source>PRD-001</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="348043312800358133" datatype="html">
+        <source>Title (KA)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8263855614223025508" datatype="html">
+        <source>Title (EN)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1806667489382256324" datatype="html">
+        <source>Category</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4076562138801422945" datatype="html">
+        <source>Case type</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2559885490456050359" datatype="html">
+        <source>Brand</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9011959596901584887" datatype="html">
+        <source>Color</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="7473737558040729536" datatype="html">
         <source>Model (e.g. iPhone 15 Pro)</source>
         <target>მოდელი (მაგ.: iPhone 15 Pro)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">64,65</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="6396290404672780398" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ selectedFiles.length }}"/> images selected </source>
-        <target> მონიშნულია <x id="INTERPOLATION" equiv-text="{{ selectedFiles.length }}"/> სურათი </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">41,42</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4059226457985395696" datatype="html">
-        <source>Upload images</source>
-        <target>სურათების ატვირთვა</target>
+      <trans-unit id="7978695517344426851" datatype="html">
+        <source>Model (KA)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">43,44</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">165</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4732686990201420020" datatype="html">
-        <source>Up to 8 images, 5MB each.</source>
-        <target>მაქსიმუმ 8 სურათი, თითო 5MB.</target>
+      <trans-unit id="7063316456378868188" datatype="html">
+        <source>Model (EN)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">45,46</context>
+          <context context-type="linenumber">72,73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="455094937820083189" datatype="html">
+        <source>Pricing and description</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">79,80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8894377483833272091" datatype="html">
@@ -451,11 +883,23 @@
         <target>ფასი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">82,83</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">82,83</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">242,243</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">267,268</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">56,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4613338085351943838" datatype="html">
@@ -463,19 +907,19 @@
         <target>მარაგი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">86,87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">83,84</context>
+          <context context-type="linenumber">169</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="3327094637278066401" datatype="html">
-        <source>Description (optional)</source>
-        <target>აღწერა (არასავალდებულო)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">58,59</context>
+          <context context-type="linenumber">243,244</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">268,269</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8204176479746810612" datatype="html">
@@ -483,15 +927,92 @@
         <target>აქტიური</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">64,65</context>
+          <context context-type="linenumber">92,93</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">114,115</context>
+          <context context-type="linenumber">219,220</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">119,120</context>
+          <context context-type="linenumber">284,285</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">66,67</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3327094637278066401" datatype="html">
+        <source>Description (optional)</source>
+        <target>აღწერა (არასავალდებულო)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="868363765679859414" datatype="html">
+        <source>Description (KA)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">105,106</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4128274152880315775" datatype="html">
+        <source>Description (EN)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">109,110</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">173</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="414887388288176527" datatype="html">
+        <source>Images</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">116,117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="960523786570470680" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ selectedFiles.length }}"/> images selected</source>
+        <target> მონიშნულია <x id="INTERPOLATION" equiv-text="{{ selectedFiles.length }}"/> სურათი </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">120,121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4059226457985395696" datatype="html">
+        <source>Upload images</source>
+        <target>სურათების ატვირთვა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">121,122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4732686990201420020" datatype="html">
+        <source>Up to 8 images, 5MB each.</source>
+        <target>მაქსიმუმ 8 სურათი, თითო 5MB.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">123,124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2159130950882492111" datatype="html">
@@ -499,15 +1020,11 @@
         <target>გაუქმება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">68,69</context>
+          <context context-type="linenumber">128,129</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">157</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">158</context>
+          <context context-type="linenumber">228,229</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
@@ -527,7 +1044,7 @@
         <target>იქმნება...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">70,71</context>
+          <context context-type="linenumber">130,131</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
@@ -539,23 +1056,79 @@
         <target>შექმნა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">71,72</context>
+          <context context-type="linenumber">131,132</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
           <context context-type="linenumber">34,35</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5706531354343599313" datatype="html">
-        <source>Loading products...</source>
-        <target>პროდუქტები იტვირთება...</target>
+      <trans-unit id="5954430895394361048" datatype="html">
+        <source>Edit product</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">76,77</context>
+          <context context-type="linenumber">141,142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5999845982913373279" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ selectedEditFiles.length }}"/> new image(s) selected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">178,179</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1333013367269637447" datatype="html">
+        <source>Add new images</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">179,180</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2139000079044209797" datatype="html">
+        <source>New images are appended at the end. Max 8 total images.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">181,182</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8502065112576581103" datatype="html">
+        <source>Move up</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">190</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
-          <context context-type="linenumber">6,7</context>
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">190</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2207764482815871800" datatype="html">
+        <source>Move down</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4810178850535668850" datatype="html">
+        <source>Remove image</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5013843661399207112" datatype="html">
+        <source>No images found.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">213,214</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3012906865384504293" datatype="html">
@@ -563,7 +1136,47 @@
         <target>სურათი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">80,81</context>
+          <context context-type="linenumber">239,240</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">264,265</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8186013988289067040" datatype="html">
+        <source>Code</source>
+        <target>კოდი</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">240,241</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">265,266</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9216117865911519658" datatype="html">
+        <source>Action</source>
+        <target>ქმედება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">245,246</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
+          <context context-type="linenumber">270,271</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">48,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1859131936150262113" datatype="html">
@@ -571,7 +1184,7 @@
         <target>არაქტიური</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">115,116</context>
+          <context context-type="linenumber">285,286</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7585826646011739428" datatype="html">
@@ -579,11 +1192,11 @@
         <target>რედაქტირება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">289</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">289</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
@@ -594,36 +1207,16 @@
           <context context-type="linenumber">116</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3768927257183755959" datatype="html">
-        <source>Save</source>
-        <target>შენახვა</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">143</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">144</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">85</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">86</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="5322473252816589112" datatype="html">
         <source>Deactivate</source>
         <target>გამორთვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">171,172</context>
+          <context context-type="linenumber">301,302</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">172,173</context>
+          <context context-type="linenumber">302,303</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
@@ -639,19 +1232,19 @@
         <target>ჩართვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">186,187</context>
+          <context context-type="linenumber">316,317</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">187,188</context>
+          <context context-type="linenumber">317,318</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">145,146</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
           <context context-type="linenumber">146,147</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">147,148</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7022070615528435141" datatype="html">
@@ -659,19 +1252,19 @@
         <target>წაშლა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">327</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">203</context>
+          <context context-type="linenumber">327</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">176</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
           <context context-type="linenumber">177</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">178</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5897444855657144400" datatype="html">
@@ -679,7 +1272,7 @@
         <target>პროდუქტები ვერ მოიძებნა.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/products/products.component.html</context>
-          <context context-type="linenumber">217,218</context>
+          <context context-type="linenumber">338,339</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3125212388891040303" datatype="html">
@@ -705,18 +1298,6 @@
           <context context-type="sourcefile">src/app/features/admin/security/security.component.html</context>
           <context context-type="linenumber">8,9</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">27,28</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">66,67</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">71,72</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="5769292297914455214" datatype="html">
         <source>Disabled</source>
@@ -724,10 +1305,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/security/security.component.html</context>
           <context context-type="linenumber">9,10</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">67,68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3557904323890223277" datatype="html">
@@ -843,7 +1420,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">14,15</context>
+          <context context-type="linenumber">15,16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8286337167859377104" datatype="html">
@@ -919,7 +1496,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
-          <context context-type="linenumber">9,10</context>
+          <context context-type="linenumber">38,39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="958341687310323149" datatype="html">
@@ -936,6 +1513,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
           <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">42,43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="123010868147850959" datatype="html">
@@ -985,18 +1566,6 @@
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
           <context context-type="linenumber">45,46</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
-          <context context-type="linenumber">13,14</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="4086606389696938932" datatype="html">
-        <source>Account</source>
-        <target>ანგარიში</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">46,47</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="4145496584631696119" datatype="html">
         <source>Role</source>
@@ -1007,7 +1576,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
-          <context context-type="linenumber">17,18</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1161983702291648590" datatype="html">
@@ -1026,16 +1595,35 @@
           <context context-type="linenumber">54,55</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="313850810538580916" datatype="html">
+        <source>Offline</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3768927257183755959" datatype="html">
+        <source>Save</source>
+        <target>შენახვა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1636934520301910285" datatype="html">
         <source>Reset password</source>
         <target>პაროლის განახლება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">161,162</context>
+          <context context-type="linenumber">160,161</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">162,163</context>
+          <context context-type="linenumber">161,162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="770997973507726467" datatype="html">
@@ -1043,7 +1631,7 @@
         <target>მომხმარებლები ვერ მოიძებნა.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/admin/users/users.component.html</context>
-          <context context-type="linenumber">192,193</context>
+          <context context-type="linenumber">189,190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4200317694838753109" datatype="html">
@@ -1162,18 +1750,6 @@
           <context context-type="linenumber">60,61</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8186013988289067040" datatype="html">
-        <source>Code</source>
-        <target>კოდი</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
-          <context context-type="linenumber">42,43</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
-          <context context-type="linenumber">62,63</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="2861522483448519274" datatype="html">
         <source>123456</source>
         <target>123456</target>
@@ -1207,7 +1783,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="6705873287827042040" datatype="html">
-        <source>Please wait...</source>
+        <source>Signing you in...</source>
         <target>გთხოვთ დაელოდოთ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
@@ -1298,80 +1874,216 @@
           <context context-type="linenumber">84,85</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="9121624674600109000" datatype="html">
-        <source>Shello Studio</source>
-        <target>Shello Studio</target>
+      <trans-unit id="5483865337757474654" datatype="html">
+        <source>Shello Studio · New drop</source>
+        <target>Shello Studio · ახალი დროპი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
           <context context-type="linenumber">5,6</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="5661786296762409801" datatype="html">
+        <source>Cases that look as bold as you do.</source>
+        <target>ქეისები, რომლებიც შენი სტილისთვისაა შექმნილი.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">53,54</context>
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">6,7</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7222809361345632771" datatype="html">
-        <source>Scroll to preview the latest drops.</source>
-        <target>გადაახვიეთ, რომ უახლესი კოლექციები ნახოთ.</target>
+      <trans-unit id="2353733141767182573" datatype="html">
+        <source> Drop-tested, hand-finished phone cases made in our Tbilisi studio for people who care how their phone looks and feels. </source>
+        <target>დროპ-ტესტირებული, ხელით დასრულებული ქეისები ჩვენი თბილისის სტუდიიდან — მათთვის, ვისთვისაც ტელეფონის შეხება და გარეგნობა მნიშვნელოვანია.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8470908843961700399" datatype="html">
+        <source>Browse cases</source>
+        <target>ქეისების დათვალიერება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8525213662266893834" datatype="html">
+        <source>Contact us</source>
+        <target>დაგვიკავშირდი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
           <context context-type="linenumber">12,13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2534221080966863295" datatype="html">
-        <source>Scroll through the latest finishes and tap to view details.</source>
-        <target>ჩასქროლეთ უახლეს დიზაინებში და დააჭირეთ დეტალების სანახავად.</target>
+      <trans-unit id="2711318110832109977" datatype="html">
+        <source>layer shell</source>
+        <target>ფენიანი დაცვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7761449148152648753" datatype="html">
-        <source>Scroll left</source>
-        <target>მარცხნივ გადაახვიეთ</target>
+      <trans-unit id="4170280150333072092" datatype="html">
+        <source>drop-tested</source>
+        <target>დროპ-ტესტირებული</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5925176344378729872" datatype="html">
-        <source>Scroll right</source>
-        <target>მარჯვნივ გადაახვიეთ</target>
+      <trans-unit id="5631608609079500253" datatype="html">
+        <source>studio crafted</source>
+        <target>სტუდიური ხელნაკეთი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">49,50</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1407086352203948664" datatype="html">
-        <source>Loading cases...</source>
-        <target>ქეისები იტვირთება...</target>
+      <trans-unit id="7734478261496361192" datatype="html">
+        <source>Featured drop</source>
+        <target>რჩეული დროპი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">56,57</context>
+          <context context-type="linenumber">28,29</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2776617638046368313" datatype="html">
-        <source>View details</source>
-        <target>დეტალების ნახვა</target>
+      <trans-unit id="2834766431741406619" datatype="html">
+        <source>Why Shello</source>
+        <target>რატომ Shello</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
-          <context context-type="linenumber">71,72</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">61,62</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
-          <context context-type="linenumber">21,22</context>
+          <context context-type="linenumber">54,55</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="9178007202407212277" datatype="html">
-        <source>No suggested cases yet.</source>
-        <target>რეკომენდებული ქეისები ჯერ არ არის.</target>
+      <trans-unit id="6279140555063274739" datatype="html">
+        <source>Built to take a hit</source>
+        <target>ნამდვილი დაცვისთვის</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5997869733457063941" datatype="html">
+        <source>3-layer construction, reinforced corners, raised camera and screen lips. Real protection, every day.</source>
+        <target>3-ფენიანი კონსტრუქცია, გამაგრებული კუთხეები, კამერისა და ეკრანის ამაღლებული კიდეები — ყოველდღიური, ნამდვილი დაცვა.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3201813670373375097" datatype="html">
+        <source>Tailored to your phone</source>
+        <target>შენი ტელეფონისთვის მორგებული</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7651303563472950164" datatype="html">
+        <source>Cut and finished for each specific model — no loose fit, no generic shells, no compromises.</source>
+        <target>თითოეული მოდელისთვის ცალკე გამოჭრილი და დასრულებული — შაბლონები და გასაშვები ფასი არ არის.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4839672642956129566" datatype="html">
+        <source>Hand-finished in Tbilisi</source>
+        <target>ხელით დასრულებული თბილისში</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2419903172361682083" datatype="html">
+        <source>Designed and assembled in our local studio. Every drop is small, intentional, and made to last.</source>
+        <target>დაპროექტებული და აწყობილი ჩვენს თბილისურ სტუდიაში. ყოველი დროპი ლიმიტირებული, გააზრებული და გამძლეა.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7755720837007910401" datatype="html">
+        <source>Featured drops</source>
+        <target>რჩეული დროპები</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8163394201896344231" datatype="html">
+        <source>This season&apos;s lineup</source>
+        <target>სეზონის კოლექცია</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
           <context context-type="linenumber">76,77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1842539093327484647" datatype="html">
+        <source>See all cases →</source>
+        <target>ყველა ქეისის ნახვა →</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">78,79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8916763800099701529" datatype="html">
+        <source>No image</source>
+        <target>სურათი არ არის</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">107</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2968416011416338667" datatype="html">
+        <source>View →</source>
+        <target>ნახე →</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">115,116</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">138,139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3771099591268136316" datatype="html">
+        <source> No drops to show yet. </source>
+        <target>ჯერ ქეისები არ არის.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">125,127</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5137440013862081722" datatype="html">
+        <source>Order direct</source>
+        <target>პირდაპირი შეკვეთა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">131,132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="103968256647210125" datatype="html">
+        <source>Order from Shello</source>
+        <target>Shello-დან შეკვეთა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">132,133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4959351962983225441" datatype="html">
+        <source> Online checkout isn&apos;t open yet. Message us on Instagram, Facebook, or TikTok to place an order, ask about a specific model, or get a custom case. </source>
+        <target>ონლაინ შეკვეთა ჯერ არ მუშაობს. დაგვიკავშირდი Instagram-ზე, Facebook-ზე ან TikTok-ზე შესაკვეთად, კონკრეტული მოდელის შესახებ კითხვისთვის ან საკუთარი დიზაინისთვის.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/landing/landing.component.html</context>
+          <context context-type="linenumber">134,135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3892726426312426643" datatype="html">
@@ -1379,7 +2091,14 @@
         <target>თქვენი კალათა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">3,4</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="413346167952108153" datatype="html">
+        <source>items</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
+          <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5609220492185313571" datatype="html">
@@ -1387,7 +2106,21 @@
         <target>თქვენი კალათა ცარიელია.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">4,5</context>
+          <context context-type="linenumber">10,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5976972428645972794" datatype="html">
+        <source>Decrease quantity</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3783103111649205344" datatype="html">
+        <source>Increase quantity</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
+          <context context-type="linenumber">48,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4739818603756173797" datatype="html">
@@ -1395,7 +2128,7 @@
         <target>შეჯამება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">28,29</context>
+          <context context-type="linenumber">65,66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="870418232806327600" datatype="html">
@@ -1403,7 +2136,7 @@
         <target>ქვეჯამი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">67,68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5972351850683239127" datatype="html">
@@ -1411,7 +2144,7 @@
         <target>მიწოდება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">34,35</context>
+          <context context-type="linenumber">71,72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4776389683576645610" datatype="html">
@@ -1419,11 +2152,22 @@
         <target>შეკვეთის გაფორმება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
-          <context context-type="linenumber">47,48</context>
+          <context context-type="linenumber">84,85</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/checkout/checkout.component.html</context>
           <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6703953321803564304" datatype="html">
+        <source>Continue shopping</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/cart/cart.component.html</context>
+          <context context-type="linenumber">85,86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">88,89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8301535046747035390" datatype="html">
@@ -1435,7 +2179,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
-          <context context-type="linenumber">5,6</context>
+          <context context-type="linenumber">34,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1577354948070321987" datatype="html">
@@ -1543,35 +2287,79 @@
         </context-group>
       </trans-unit>
       <trans-unit id="6213146795922669820" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ (items$ | async)?.length || 0 }}"/> items · Total <x id="INTERPOLATION_1" equiv-text="{{ total$ | async | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos;:&apos;ka-GE&apos; }}"/> </source>
+        <source> <x id="INTERPOLATION" equiv-text="{{ (items$ | async)?.length || 0 }}"/> items · Total <x id="INTERPOLATION_1" equiv-text="{{ total$ | async | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos; }}"/> </source>
         <target> <x id="INTERPOLATION" equiv-text="{{ (items$ | async)?.length || 0 }}"/> პროდუქტი · ჯამი <x id="INTERPOLATION_1" equiv-text="{{ total$ | async | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos;:&apos;ka-GE&apos; }}"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/checkout/checkout.component.html</context>
           <context context-type="linenumber">39,42</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5027955621669561767" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ (items$ | async)?.length || 0 }}"/> items · Total <x id="INTERPOLATION_1" equiv-text="{{ total$ | async | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos; }}"/> </source>
-        <target> <x id="INTERPOLATION" equiv-text="{{ (items$ | async)?.length || 0 }}"/> პროდუქტი · ჯამი <x id="INTERPOLATION_1" equiv-text="{{ total$ | async | currency:&apos;GEL&apos;:&apos;symbol-narrow&apos;:&apos;1.2-2&apos; }}"/> </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/checkout/checkout.component.html</context>
-          <context context-type="linenumber">39,42</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="2478100517138515388" datatype="html">
-        <source>Loading product...</source>
-        <target>პროდუქტი იტვირთება...</target>
+      <trans-unit id="6970095445233536269" datatype="html">
+        <source>Breadcrumbs</source>
+        <target>ნავიგაცია</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">2,3</context>
+          <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3024585265793410260" datatype="html">
-        <source>Limited drop</source>
-        <target>შეზღუდული კოლექცია</target>
+      <trans-unit id="2821179408673282599" datatype="html">
+        <source>Home</source>
+        <target>მთავარი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">20,21</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">177,178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1147358182484006761" datatype="html">
+        <source>Shop</source>
+        <target>მაღაზია</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">178,179</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8230566333338154728" datatype="html">
+        <source>Loading product…</source>
+        <target>პროდუქტი იტვირთება…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1447744673629030486" datatype="html">
+        <source>Open image in fullscreen</source>
+        <target>სურათის გადიდება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3222015692410349830" datatype="html">
+        <source>In stock</source>
+        <target>მარაგშია</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6664678750303771482" datatype="html">
+        <source>Sold out</source>
+        <target>მარაგი არ არის</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5871412787804796799" datatype="html">
@@ -1579,71 +2367,175 @@
         <target>კალათაში დამატება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">28,29</context>
+          <context context-type="linenumber">70,71</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="386415155683660245" datatype="html">
-        <source>Back to shop</source>
-        <target>მაღაზიაში დაბრუნება</target>
+      <trans-unit id="5261523207339574804" datatype="html">
+        <source>← Back to shop</source>
+        <target>← მაღაზიაში დაბრუნება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">71,72</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3341017690725138999" datatype="html">
-        <source>More drops that match this vibe.</source>
-        <target>სხვა კოლექციები, რომლებიც ამ სტილს შეესაბამება.</target>
+      <trans-unit id="530828300034402659" datatype="html">
+        <source>Want this case?</source>
+        <target>გაინტერესებს ეს ქეისი?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="linenumber">75,76</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4464899538354040826" datatype="html">
-        <source>Loading suggestions...</source>
-        <target>რეკომენდაციები იტვირთება...</target>
+      <trans-unit id="2026509821719418982" datatype="html">
+        <source> Online checkout isn&apos;t open yet — message Shello on social media to place an order or request a custom build. </source>
+        <target>ონლაინ შეკვეთა ჯერ არ მუშაობს — შესაკვეთად ან საკუთარი დიზაინისთვის დაგვიკავშირდი სოციალურ ქსელებში.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">42,43</context>
+          <context context-type="linenumber">77,78</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="577038887888857351" datatype="html">
-        <source> Add </source>
-        <target> დამატება </target>
+      <trans-unit id="1728977931500354035" datatype="html">
+        <source>You might also like</source>
+        <target>ასევე შეიძლება მოგეწონოს</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">108,109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3849339430932675472" datatype="html">
+        <source>More from the lineup</source>
+        <target>მეტი კოლექციიდან</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">109,110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6652647224413480664" datatype="html">
+        <source>Browse all →</source>
+        <target>ყველას ნახვა →</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">111,112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="802366566830693706" datatype="html">
+        <source>Loading suggestions…</source>
+        <target>რეკომენდაციები იტვირთება…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">114,115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8530913863469266131" datatype="html">
         <source>No suggestions yet.</source>
-        <target>რეკომენდაციები ჯერ არ არის.</target>
+        <target>ჯერ რეკომენდაცია არ არის.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
-          <context context-type="linenumber">68,69</context>
+          <context context-type="linenumber">147,148</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6937890783622458452" datatype="html">
-        <source>Shop drops</source>
-        <target>მაღაზიის კოლექციები</target>
+      <trans-unit id="944767796496567082" datatype="html">
+        <source>Zoom out</source>
+        <target>პატარა</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
-          <context context-type="linenumber">3,4</context>
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">157,158</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="654957920139323086" datatype="html">
-        <source>Browse the full lineup. Each case is tested, tuned, and limited.</source>
-        <target>დაათვალიერეთ სრული კოლექცია. ყველა ქეისი ტესტირებულია, მორგებულია და შეზღუდულ რაოდენობაშია.</target>
+      <trans-unit id="7808756054397155068" datatype="html">
+        <source>Reset</source>
+        <target>საწყისი</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">158,159</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6500061599200357251" datatype="html">
+        <source>Zoom in</source>
+        <target>გადიდება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-detail/product-detail.component.html</context>
+          <context context-type="linenumber">159,160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2875369759529790887" datatype="html">
+        <source>Shello Cases</source>
+        <target>Shello Cases</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
           <context context-type="linenumber">4,5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2333625344732418018" datatype="html">
-        <source>No products available.</source>
-        <target>პროდუქტები არ არის ხელმისაწვდომი.</target>
+      <trans-unit id="6870085806673465624" datatype="html">
+        <source>The full lineup</source>
+        <target>სრული კოლექცია</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
-          <context context-type="linenumber">26,27</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3812632571884956342" datatype="html">
+        <source>Browse every drop in the studio. Each case is tested, tuned, and limited.</source>
+        <target>დაათვალიერე სტუდიის ყველა დროპი. თითოეული ქეისი შემოწმებული, მორგებული და ლიმიტირებულია.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3808168000571937315" datatype="html">
+        <source>cases available</source>
+        <target>ქეისი ხელმისაწვდომი</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6574170438215435366" datatype="html">
+        <source> Online ordering isn&apos;t open yet — message Shello on social media to place an order. </source>
+        <target>ონლაინ შეკვეთა ჯერ არ მუშაობს — შესაკვეთად დაგვიკავშირდი სოციალურ ქსელებში.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2930207646035431824" datatype="html">
+        <source>Filter by category</source>
+        <target>კატეგორიის გაფილტვრა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1616102757855967475" datatype="html">
+        <source>All</source>
+        <target>ყველა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8437759669484959133" datatype="html">
+        <source>View details →</source>
+        <target>დეტალურად →</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4481891408571585417" datatype="html">
+        <source> Add to cart </source>
+        <target>კალათაში დამატება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6588106856001797923" datatype="html">
+        <source>No cases match this filter.</source>
+        <target>ფილტრს არც ერთი ქეისი არ შეესაბამება.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/shop/product-list/product-list.component.html</context>
+          <context context-type="linenumber">81,82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6938021234027128030" datatype="html">
@@ -1667,19 +2559,110 @@
         <target>შეკვეთები ჯერ არ არის.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/user/orders/orders.component.html</context>
-          <context context-type="linenumber">17,18</context>
+          <context context-type="linenumber">37,38</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4915431133669985304" datatype="html">
-        <source>Profile</source>
-        <target>პროფილი</target>
+      <trans-unit id="1098530975900459720" datatype="html">
+        <source>Account profile</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
-          <context context-type="linenumber">2,3</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1246633418722050739" datatype="html">
+        <source>View orders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5561750095216655313" datatype="html">
+        <source>Total spent</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5356600339948309735" datatype="html">
+        <source>Account details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8878700331247603166" datatype="html">
+        <source>Security</source>
+        <target>უსაფრთხოება</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">48,49</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">32,33</context>
+          <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8966698274727122602" datatype="html">
+        <source>Authentication</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4326550428906900362" datatype="html">
+        <source>Password + Refresh token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5903110565317428249" datatype="html">
+        <source>Session</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">54,55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4243239845620765515" datatype="html">
+        <source>Managed automatically</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7501659511961314738" datatype="html">
+        <source>2FA</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5874374076089268596" datatype="html">
+        <source>Contact admin to enable</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4117020323749523105" datatype="html">
+        <source>Recent activity</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1003263456556573180" datatype="html">
+        <source> No order activity yet. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">82,83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6664770701807290899" datatype="html">
+        <source>Track my orders</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/user/profile/profile.component.html</context>
+          <context context-type="linenumber">89,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4017101977143944264" datatype="html">
@@ -1690,56 +2673,72 @@
           <context context-type="linenumber">3,4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6570363013146073520" datatype="html">
-        <source>Dashboard</source>
-        <target>დეშბორდი</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">10,11</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8878700331247603166" datatype="html">
-        <source>Security</source>
-        <target>უსაფრთხოება</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">15,16</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="4599563871795086552" datatype="html">
         <source>Back to Store</source>
         <target>მაღაზიაში დაბრუნება</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
-          <context context-type="linenumber">17,18</context>
+          <context context-type="linenumber">4,5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1147358182484006761" datatype="html">
-        <source>Shop</source>
-        <target>მაღაზია</target>
+      <trans-unit id="6570363013146073520" datatype="html">
+        <source>Dashboard</source>
+        <target>დეშბორდი</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">5,6</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">57,58</context>
+          <context context-type="sourcefile">src/app/layouts/admin-layout/admin-layout.component.html</context>
+          <context context-type="linenumber">11,12</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3535239899967463922" datatype="html">
-        <source>Cart <x id="START_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;ng-container *ngIf=&quot;cartCount$ | async as count&quot;&gt;"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;cart-badge&quot; *ngIf=&quot;count &gt; 0&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;/ng-container&gt;"/></source>
-        <target>კალათა <x id="START_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;ng-container *ngIf=&quot;cartCount$ | async as count&quot;&gt;"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;cart-badge&quot; *ngIf=&quot;count &gt; 0&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;/ng-container&gt;"/></target>
+      <trans-unit id="2005818722469409502" datatype="html">
+        <source>Open menu</source>
+        <target>მენიუს გახსნა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">7,11</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2102825898069375693" datatype="html">
+        <source>Menu</source>
+        <target>მენიუ</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1556270137829928334" datatype="html">
+        <source>Close menu</source>
+        <target>მენიუს დახურვა</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4876446441859890676" datatype="html">
+        <source> Cart <x id="START_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;ng-container *ngIf=&quot;(cartCount$ | async) as cartCount&quot;&gt;"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;cart-badge&quot; *ngIf=&quot;cartCount &gt; 0&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ cartCount &gt; 99 ? &apos;99+&apos; : cartCount }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;/ng-container&gt;"/></source>
+        <target>კალათა <x id="START_TAG_NG_CONTAINER" ctype="x-ng_container"/><x id="START_TAG_SPAN" ctype="x-span"/><x id="INTERPOLATION"/><x id="CLOSE_TAG_SPAN" ctype="x-span"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">40,45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2933701383386809047" datatype="html">
         <source>Open user menu</source>
-        <target>მომხმარებლის მენიუს გახსნა</target>
+        <target>მომხმარებლის მენიუ</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">19,20</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4915431133669985304" datatype="html">
+        <source>Profile</source>
+        <target>პროფილი</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">86,87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5041354590769758251" datatype="html">
@@ -1747,19 +2746,27 @@
         <target>ადმინი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">34,35</context>
+          <context context-type="linenumber">77,78</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">59,60</context>
+          <context context-type="linenumber">88,89</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">180,181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2949848596707725099" datatype="html">
         <source>Sign out</source>
-        <target>გამოსვლა</target>
+        <target>გასვლა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">35,36</context>
+          <context context-type="linenumber">78,79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">89,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2454050363478003966" datatype="html">
@@ -1767,23 +2774,51 @@
         <target>შესვლა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">41,42</context>
+          <context context-type="linenumber">94,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2045779543869682721" datatype="html">
         <source>Get Started</source>
-        <target>დავიწყოთ</target>
+        <target>რეგისტრაცია</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">42,43</context>
+          <context context-type="linenumber">95,96</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1353712998024466594" datatype="html">
-        <source>Designed for confident protection and bold style.</source>
-        <target>შექმნილია თავდაჯერებული დაცვისთვის და გამორჩეული სტილისთვის.</target>
+      <trans-unit id="6783667173167343542" datatype="html">
+        <source>Language switcher</source>
+        <target>ენის გადართვა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">54,55</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">230</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1460719158260982842" datatype="html">
+        <source>Find us</source>
+        <target>მოგვძებნე</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="76296121648757549" datatype="html">
+        <source>Cases designed for confident protection and bold style.</source>
+        <target>ქეისები, რომლებიც დაცვასაც აერთიანებენ და თამამ სტილსაც.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">171,172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="787163983066183218" datatype="html">
+        <source>Browse</source>
+        <target>მენიუ</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
+          <context context-type="linenumber">175,176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4398863504443682316" datatype="html">
@@ -1791,31 +2826,23 @@
         <target>კალათა</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">58,59</context>
+          <context context-type="linenumber">179,180</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6783667173167343542" datatype="html">
-        <source>Language switcher</source>
-        <target>ენის გადამრთველი</target>
+      <trans-unit id="8051279570200445528" datatype="html">
+        <source>Follow Shello</source>
+        <target>მოგვყევი</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">14,15</context>
+          <context context-type="linenumber">185,186</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1714997197344097152" datatype="html">
-        <source>Switch to Georgian</source>
-        <target>ქართულ ენაზე გადართვა</target>
+      <trans-unit id="1042990151240133502" datatype="html">
+        <source>Website Created By Shello Studio</source>
+        <target>საიტი შექმნა Shello Studio-მ</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">19,20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6007238223618571006" datatype="html">
-        <source>Switch to English</source>
-        <target>ინგლისურ ენაზე გადართვა</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layouts/public-layout/public-layout.component.html</context>
-          <context context-type="linenumber">27,28</context>
+          <context context-type="linenumber">229,230</context>
         </context-group>
       </trans-unit>
     </body>

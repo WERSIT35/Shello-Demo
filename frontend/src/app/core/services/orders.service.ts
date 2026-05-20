@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, of, throwError } from 'rxjs';
 
 import { API_BASE_URL } from '../config/api.config';
+import { IS_STATIC_MODE } from '../config/static-mode.config';
 
 export type OrderStatus = 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -67,12 +68,20 @@ export class OrdersService {
   constructor(private readonly http: HttpClient) {}
 
   getMyOrders() {
+    if (IS_STATIC_MODE) {
+      return of([] as Order[]);
+    }
+
     return this.http.get<OrdersResponse>(`${API_BASE_URL}/orders`).pipe(
       map((response) => response.data.map((order) => this.mapOrder(order)))
     );
   }
 
   createOrder(payload: CreateOrderPayload) {
+    if (IS_STATIC_MODE) {
+      return throwError(() => new Error('Ordering is temporarily unavailable.'));
+    }
+
     return this.http.post<CreateOrderResponse>(`${API_BASE_URL}/orders`, payload).pipe(
       map((order) => ({
         id: order.orderId,

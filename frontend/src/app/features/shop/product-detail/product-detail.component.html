@@ -1,6 +1,14 @@
 <section class="product-detail-page">
+  <nav class="crumbs" aria-label="Breadcrumbs" i18n-aria-label>
+    <a routerLink="/" i18n>Home</a>
+    <span aria-hidden="true">/</span>
+    <a routerLink="/shop" i18n>Shop</a>
+    <span aria-hidden="true">/</span>
+    <span class="crumb-current" *ngIf="product">{{ product.title.trim() }}</span>
+  </nav>
+
   <div class="detail-state">
-    <p class="state-text" *ngIf="isLoading" i18n>Loading product...</p>
+    <p class="state-text" *ngIf="isLoading" i18n>Loading product…</p>
     <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
   </div>
 
@@ -11,7 +19,7 @@
           <div class="splide__track">
             <ul class="splide__list">
               <li class="splide__slide" *ngFor="let image of product.images; let i = index">
-                <button class="gallery-image-trigger" type="button" (click)="openImageLightbox(i)" i18n-aria-label aria-label="Open image in fullscreen">
+                <button class="gallery-image-trigger" type="button" (click)="openImageLightbox(i)" aria-label="Open image in fullscreen" i18n-aria-label>
                   <img [src]="image" alt="" draggable="false" />
                 </button>
               </li>
@@ -32,21 +40,64 @@
     </article>
 
     <article class="info detail-info">
-      <p class="pill" i18n>Limited drop</p>
+      <p class="info-brand" *ngIf="getBrand(product) as brand">{{ brand }}</p>
       <h1>{{ product.title }}</h1>
-      <p class="subtitle" *ngIf="product.description">{{ product.description }}</p>
 
-      <div class="meta" *ngIf="getMeta(product).length">
-        <span *ngFor="let tag of getMeta(product)">{{ tag }}</span>
+      <div class="info-tag-row">
+        <span class="info-tag" *ngIf="getCategory(product) as category">{{ category }}</span>
+        <span class="info-stock" [class.is-out]="!isInStock(product)">
+          <span class="info-dot"></span>
+          <ng-container *ngIf="isInStock(product); else outStock" i18n>In stock</ng-container>
+          <ng-template #outStock><span i18n>Sold out</span></ng-template>
+        </span>
       </div>
 
-      <div class="price-row">
+      <div class="price-box">
+        <span class="price-label" i18n>Price</span>
         <span class="price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
       </div>
 
+      <p class="subtitle" *ngIf="product.description">{{ product.description }}</p>
+
+      <dl class="specs" *ngIf="getSpecs(product).length">
+        <div class="spec-row" *ngFor="let spec of getSpecs(product)">
+          <dt>{{ spec.label }}</dt>
+          <dd>{{ spec.value }}</dd>
+        </div>
+      </dl>
+
       <div class="detail-actions">
-        <button class="btn primary" type="button" (click)="addToCart()" i18n *ngIf="cartEnabled">Add to cart</button>
-        <a class="btn ghost" routerLink="/shop" i18n>Back to shop</a>
+        <button class="btn primary" type="button" (click)="addToCart()" *ngIf="cartEnabled" i18n>Add to cart</button>
+        <a class="btn ghost" routerLink="/shop" i18n>← Back to shop</a>
+      </div>
+
+      <div class="contact-card" *ngIf="!cartEnabled">
+        <p class="contact-card-title" i18n>Want this case?</p>
+        <p class="contact-card-copy" i18n>
+          Online checkout isn't open yet — message Shello on social media to place an order or request a custom build.
+        </p>
+        <div class="contact-card-socials">
+          <a class="social-link" href="https://www.instagram.com/shellotech/" target="_blank" rel="noopener noreferrer" aria-label="Shello on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.3" cy="6.7" r="1.1"></circle>
+            </svg>
+            <span>Instagram</span>
+          </a>
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61576414404352" target="_blank" rel="noopener noreferrer" aria-label="Shello on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M13.2 21v-7.1h2.4l.4-2.8h-2.8V9.3c0-.8.2-1.4 1.4-1.4h1.5V5.4c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.7v2.1H8.2v2.8h2.3V21h2.7z"></path>
+            </svg>
+            <span>Facebook</span>
+          </a>
+          <a class="social-link" href="https://www.tiktok.com/@shello365?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Shello on TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 4c.5 2.7 2 4.4 4.6 4.7v3.1c-1.8 0-3.3-.5-4.6-1.5v5.2c0 3.1-2.3 5.5-5.5 5.5S4 18.7 4 15.5 6.3 10 9.5 10c.4 0 .8 0 1.2.1v3.3c-.4-.2-.8-.3-1.2-.3-1.3 0-2.3 1-2.3 2.4s1 2.4 2.3 2.4 2.3-1 2.3-2.4V4h3.2z"></path>
+            </svg>
+            <span>TikTok</span>
+          </a>
+        </div>
       </div>
     </article>
   </div>
@@ -54,12 +105,13 @@
   <section class="suggested-section detail-suggestions" *ngIf="!isLoading && product">
     <header class="suggested-header">
       <div>
-        <h2 i18n>Suggested cases</h2>
-        <p i18n>More drops that match this vibe.</p>
+        <span class="eyebrow" i18n>You might also like</span>
+        <h2 i18n>More from the lineup</h2>
       </div>
+      <a class="section-link" routerLink="/shop" i18n>Browse all →</a>
     </header>
 
-    <p class="state-text" *ngIf="isSuggestionsLoading" i18n>Loading suggestions...</p>
+    <p class="state-text" *ngIf="isSuggestionsLoading" i18n>Loading suggestions…</p>
     <p class="state-text error" *ngIf="!isSuggestionsLoading && suggestionsErrorMessage">
       {{ suggestionsErrorMessage }}
     </p>
@@ -79,20 +131,12 @@
               <a class="card-image" [routerLink]="['/products', suggestion.id]">
                 <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
               </a>
-              <div class="card-top">
-                <span>{{ suggestion.title.trim() }}</span>
-                <span class="card-price">
-                  {{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}
-                </span>
-              </div>
-              <div class="card-meta" *ngIf="getSuggestedMeta(suggestion).length">
-                <span class="meta-pill" *ngFor="let tag of getSuggestedMeta(suggestion)">{{ tag }}</span>
-              </div>
-              <div class="card-actions">
-                <a class="card-link" [routerLink]="['/products', suggestion.id]" i18n>View details</a>
-                <button class="btn ghost" type="button" (click)="addSuggestedToCart(suggestion); $event.stopPropagation()" i18n *ngIf="cartEnabled">
-                  Add
-                </button>
+              <div class="card-body">
+                <p class="card-name">{{ suggestion.title.trim() }}</p>
+                <div class="card-foot">
+                  <span class="card-price">{{ suggestion.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+                  <span class="card-link" i18n>View →</span>
+                </div>
               </div>
             </article>
           </li>

@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:ka": "ng serve --configuration=ka --port 4200",
+    "start:en": "ng serve --configuration=en --port 4201",
     "build": "ng build",
     "vercel-build": "ng build --configuration production && node scripts/prepare-vercel-output.mjs",
     "watch": "ng build --watch --configuration development",

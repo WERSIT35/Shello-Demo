@@ -37,6 +37,21 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
   protected pageToggles: { cart: boolean } | null = null;
 
   protected panelProducts: Product[] = [];
+  protected featuredProduct: Product | null = null;
+  protected miniProducts: Product[] = [];
+
+  protected getBrandModel(product: Product): string {
+    const meta = product.metadata as Record<string, unknown> | null;
+    if (!meta) {
+      return '';
+    }
+    const brand = this.getLocalizedMetaValue(meta, 'brand');
+    const model = this.getLocalizedMetaValue(meta, 'model');
+    const parts: string[] = [];
+    if (typeof brand === 'string') parts.push(brand);
+    if (typeof model === 'string') parts.push(model);
+    return parts.join(' · ');
+  }
   private buildDefaultHero(): HeroContent {
     const locale = (typeof $localize !== 'undefined' && $localize.locale) || 'ka';
     const lang = locale.startsWith('en') ? 'en' : 'ka';
@@ -148,6 +163,10 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.heroProducts = content.heroProducts;
         this.suggestedProducts = content.suggestedProducts;
         this.panelProducts = content.heroProducts.slice(0, 4);
+        this.featuredProduct = content.heroProducts[0] ?? content.suggestedProducts[0] ?? null;
+        this.miniProducts = (content.heroProducts.length > 1
+          ? content.heroProducts.slice(1, 3)
+          : content.suggestedProducts.slice(0, 2));
         this.pageToggles = { cart: content.pageToggles.cart };
         this.cdr.detectChanges();
         queueMicrotask(() => this.mountSuggestedSplide());

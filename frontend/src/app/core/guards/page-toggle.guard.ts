@@ -4,6 +4,7 @@ import { map, of, switchMap } from 'rxjs';
 
 import { ContentService, type PageToggles } from '../services/content.service';
 import { AuthService } from '../services/auth.service';
+import { IS_STATIC_MODE } from '../config/static-mode.config';
 
 const adminSafePages = new Set(['adminContent']);
 
@@ -19,6 +20,10 @@ export const pageToggleGuard: CanActivateFn = (route) => {
 
   if (!pageKey) {
     return true;
+  }
+
+  if (IS_STATIC_MODE && !['home', 'shop', 'product'].includes(pageKey)) {
+    return router.parseUrl('/');
   }
 
   if (adminSafePages.has(pageKey)) {

@@ -4,6 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, finalize, map, of, shareReplay, tap, throwError } from 'rxjs';
 
 import { API_BASE_URL } from '../config/api.config';
+import { IS_STATIC_MODE } from '../config/static-mode.config';
+
+function staticModeError(action: string): Error {
+  return new Error(`${action} is unavailable in static mode.`);
+}
 
 export type UserRole = 'user' | 'admin';
 
@@ -122,6 +127,9 @@ export class AuthService {
   }
 
   login(payload: LoginPayload) {
+    if (IS_STATIC_MODE) {
+      return throwError(() => staticModeError('Sign in'));
+    }
     return this.http
       .post<LoginResponse>(`${API_BASE_URL}/auth/login`, payload, { withCredentials: true })
       .pipe(
@@ -134,12 +142,18 @@ export class AuthService {
   }
 
   register(payload: RegisterPayload) {
+    if (IS_STATIC_MODE) {
+      return throwError(() => staticModeError('Registration'));
+    }
     return this.http
       .post<RegisterResponse>(`${API_BASE_URL}/auth/register`, payload, { withCredentials: true })
       .pipe(map((response) => this.mapUser(response.user)));
   }
 
   loginWithGooglePopup(): Observable<AuthUser> {
+    if (IS_STATIC_MODE) {
+      return throwError(() => staticModeError('Google login'));
+    }
     if (!this.isBrowser) {
       return throwError(() => new Error('Google login is only available in the browser.'));
     }
@@ -338,6 +352,13 @@ export class AuthService {
   }
 
   ensureSession() {
+    if (IS_STATIC_MODE) {
+      if (!this.sessionReadySubject.value) {
+        this.sessionReadySubject.next(true);
+      }
+      return of(true);
+    }
+
     if (!this.isBrowser) {
       this.sessionReadySubject.next(true);
       return of(true);
@@ -356,6 +377,11 @@ export class AuthService {
   }
 
   logout() {
+    if (IS_STATIC_MODE) {
+      this.clearSession();
+      return of(null);
+    }
+
     if (!this.isBrowser) {
       this.clearSession();
       return of(null);

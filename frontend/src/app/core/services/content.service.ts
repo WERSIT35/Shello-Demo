@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, switchMap, throwError } from 'rxjs';
 
 import { API_BASE_URL, resolveAssetUrl } from '../config/api.config';
+import { IS_STATIC_MODE } from '../config/static-mode.config';
+import {
+  getStaticHero,
+  getStaticHeroProducts,
+  getStaticSuggestedProducts
+} from '../../data/static-catalog';
 import type { Product } from './products.service';
 
 declare const $localize: { locale?: string };
@@ -124,14 +130,47 @@ const defaultPageToggles: PageToggles = {
   adminSecurity: true
 };
 
+const staticModePageToggles: PageToggles = {
+  home: true,
+  shop: true,
+  product: true,
+  cart: false,
+  checkout: false,
+  login: false,
+  register: false,
+  orders: false,
+  profile: false,
+  admin: false,
+  adminProducts: false,
+  adminContent: false,
+  adminOrders: false,
+  adminUsers: false,
+  adminSecurity: false
+};
+
 @Injectable({ providedIn: 'root' })
 export class ContentService {
-  private readonly pageTogglesSubject = new BehaviorSubject<PageToggles>(defaultPageToggles);
-  private togglesLoaded = false;
+  private readonly pageTogglesSubject = new BehaviorSubject<PageToggles>(
+    IS_STATIC_MODE ? staticModePageToggles : defaultPageToggles
+  );
+  private togglesLoaded = IS_STATIC_MODE;
 
   constructor(private readonly http: HttpClient) {}
 
   getPublicContent() {
+    if (IS_STATIC_MODE) {
+      const params = this.getLocaleParams();
+      const content: PublicContent = {
+        hero: this.mapHero(getStaticHero(params.lang as 'ka' | 'en') as ApiHero),
+        heroProducts: getStaticHeroProducts(),
+        suggestedProducts: getStaticSuggestedProducts(),
+        pageToggles: staticModePageToggles
+      };
+      this.pageTogglesSubject.next(staticModePageToggles);
+      this.togglesLoaded = true;
+      return of(content);
+    }
+
     const params = this.getLocaleParams();
     return this.http.get<PublicContentResponse>(`${API_BASE_URL}/content`, { params }).pipe(
       map((response) => ({
@@ -155,6 +194,10 @@ export class ContentService {
   }
 
   getAdminContent() {
+    if (IS_STATIC_MODE) {
+      return throwError(() => new Error('Admin content is disabled in static mode.'));
+    }
+
     const params = this.getLocaleParams();
     return this.http.get<AdminContentResponse>(`${API_BASE_URL}/content/admin`, { params }).pipe(
       map((response) => ({
@@ -174,6 +217,10 @@ export class ContentService {
   }
 
   updateContent(payload: UpdateContentPayload) {
+    if (IS_STATIC_MODE) {
+      return throwError(() => new Error('Content updates are disabled in static mode.'));
+    }
+
     return this.http.patch<AdminContentResponse>(`${API_BASE_URL}/content`, payload).pipe(
       map((response) => ({
         hero: this.mapHero(response.hero),

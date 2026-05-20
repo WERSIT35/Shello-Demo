@@ -356,6 +356,57 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
     return tags;
   }
 
+  protected getBrand(product: Product): string | null {
+    const meta = product.metadata as Record<string, unknown> | null;
+    if (!meta) return null;
+    const value = this.getLocalizedMetaValue(meta, 'brand');
+    return typeof value === 'string' ? value : null;
+  }
+
+  protected getCategory(product: Product): string | null {
+    const meta = product.metadata as Record<string, unknown> | null;
+    if (!meta) return null;
+    const value = this.getLocalizedMetaValue(meta, 'category');
+    return typeof value === 'string' ? value : null;
+  }
+
+  protected getSpecs(product: Product): { label: string; value: string }[] {
+    const meta = product.metadata as Record<string, unknown> | null;
+    if (!meta) return [];
+
+    const lang = this.lang;
+    const tBrand = lang === 'ka' ? 'ბრენდი' : 'Brand';
+    const tModel = lang === 'ka' ? 'მოდელი' : 'Model';
+    const tCategory = lang === 'ka' ? 'კატეგორია' : 'Category';
+    const tCaseType = lang === 'ka' ? 'ქეისის სტილი' : 'Case style';
+    const tColor = lang === 'ka' ? 'ფერი' : 'Color';
+    const tStock = lang === 'ka' ? 'მარაგი' : 'Availability';
+    const tInStock = lang === 'ka' ? 'მარაგშია' : 'In stock';
+    const tOutStock = lang === 'ka' ? 'მარაგი არ არის' : 'Sold out';
+
+    const out: { label: string; value: string }[] = [];
+    const push = (label: string, raw: unknown) => {
+      if (typeof raw === 'string' && raw.trim()) {
+        out.push({ label, value: raw.trim() });
+      }
+    };
+
+    push(tBrand, this.getLocalizedMetaValue(meta, 'brand'));
+    push(tModel, this.getLocalizedMetaValue(meta, 'model'));
+    push(tCategory, this.getLocalizedMetaValue(meta, 'category'));
+    push(tCaseType, this.getLocalizedMetaValue(meta, 'caseType'));
+    push(tColor, this.getLocalizedMetaValue(meta, 'color'));
+
+    const inStock = (product.stock ?? 0) > 0;
+    out.push({ label: tStock, value: inStock ? tInStock : tOutStock });
+
+    return out;
+  }
+
+  protected isInStock(product: Product): boolean {
+    return (product.stock ?? 0) > 0;
+  }
+
   protected getSuggestedMeta(product: Product): string[] {
     const meta = product.metadata as Record<string, unknown> | null;
     if (!meta) {

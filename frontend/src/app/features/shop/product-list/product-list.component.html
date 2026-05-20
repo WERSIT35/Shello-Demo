@@ -1,17 +1,49 @@
-﻿<section class="grid">
-  <div class="grid-header">
-    <h2 i18n>Shop drops</h2>
-    <p i18n>Browse the full lineup. Each case is tested, tuned, and limited.</p>
-  </div>
+<section class="shop">
+  <header class="shop-head">
+    <div class="shop-heading">
+      <span class="eyebrow" i18n>Shello Cases</span>
+      <h2 i18n>The full lineup</h2>
+      <p i18n>Browse every drop in the studio. Each case is tested, tuned, and limited.</p>
+    </div>
+
+    <div class="shop-meta">
+      <span class="shop-count">
+        <strong>{{ products.length }}</strong>
+        <span i18n>cases available</span>
+      </span>
+      <p class="ordering-unavailable" *ngIf="!cartEnabled" i18n>
+        Online ordering isn't open yet — message Shello on social media to place an order.
+      </p>
+    </div>
+  </header>
+
+  <nav class="filter-bar" *ngIf="!isLoading && categories.length > 1" aria-label="Filter by category" i18n-aria-label>
+    <button
+      type="button"
+      class="filter-chip"
+      [class.is-active]="activeCategory === ALL_CATEGORY"
+      (click)="setCategory(ALL_CATEGORY)"
+      i18n
+    >All</button>
+    <button
+      type="button"
+      class="filter-chip"
+      *ngFor="let category of categories"
+      [class.is-active]="activeCategory === category"
+      (click)="setCategory(category)"
+    >{{ category }}</button>
+  </nav>
+
   <div class="grid-cards skeleton-grid" *ngIf="isLoading">
     <article class="card skeleton-card" *ngFor="let i of [1,2,3,4,5,6]">
       <div class="card-image skeleton"></div>
       <div class="skeleton skeleton-line title"></div>
       <div class="skeleton skeleton-line meta"></div>
-      <div class="skeleton skeleton-line action"></div>
     </article>
   </div>
+
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+
   <div class="grid-cards" *ngIf="!isLoading">
     <article
       class="card"
@@ -25,24 +57,26 @@
       <a class="card-image" [routerLink]="['/products', product.id]">
         <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
         <ng-template #imageFallback>
-          <div class="image-fallback">
-            <span i18n>No image</span>
-          </div>
+          <div class="image-fallback"><span i18n>No image</span></div>
         </ng-template>
+        <span class="card-category" *ngIf="getCategory(product) as category">{{ category }}</span>
       </a>
-      <div class="card-top">
-        <span class="card-title">{{ product.title.trim() }}</span>
-        <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-      </div>
-      <div class="card-meta" *ngIf="getMeta(product).length">
-        <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
-      </div>
-      <div class="card-actions">
-        <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
-        <button class="btn ghost" type="button" (click)="addToCart(product); $event.stopPropagation()" i18n *ngIf="cartEnabled">Add</button>
+
+      <div class="card-body">
+        <p class="card-brand" *ngIf="getBrandModel(product) as brandModel">{{ brandModel }}</p>
+        <p class="card-name">{{ product.title.trim() }}</p>
+
+        <div class="card-foot">
+          <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+          <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details →</a>
+        </div>
+
+        <button class="btn ghost card-add" type="button" (click)="addToCart(product); $event.stopPropagation()" *ngIf="cartEnabled" i18n>
+          Add to cart
+        </button>
       </div>
     </article>
   </div>
-  <p class="state-text" *ngIf="!isLoading && !errorMessage && products.length === 0" i18n>No products available.</p>
-</section>
 
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && products.length === 0" i18n>No cases match this filter.</p>
+</section>

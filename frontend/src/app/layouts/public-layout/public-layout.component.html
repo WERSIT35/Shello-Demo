@@ -46,7 +46,11 @@
       </nav>
       </section>
 
-      <section class="mobile-section" (click)="$event.stopPropagation()">
+      <section
+        class="mobile-section"
+        *ngIf="(user$ | async) || pageToggles?.login !== false || pageToggles?.register !== false"
+        (click)="$event.stopPropagation()"
+      >
       <div class="header-actions" *ngIf="user$ | async as user; else guestActions">
         <div class="user-menu desktop-user-menu" #userMenu [class.open]="isUserMenuOpen">
           <button
@@ -111,6 +115,75 @@
       </section>
 
       <section class="mobile-section social-mobile" (click)="$event.stopPropagation()">
+        <p class="mobile-section-label" i18n>Find us</p>
+        <div class="social-row">
+          <a
+            class="social-link"
+            href="https://www.instagram.com/shellotech/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Shello on Instagram"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.3" cy="6.7" r="1.1"></circle>
+            </svg>
+            <span>Instagram</span>
+          </a>
+          <a
+            class="social-link"
+            href="https://www.facebook.com/profile.php?id=61576414404352"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Shello on Facebook"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M13.2 21v-7.1h2.4l.4-2.8h-2.8V9.3c0-.8.2-1.4 1.4-1.4h1.5V5.4c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.7v2.1H8.2v2.8h2.3V21h2.7z"></path>
+            </svg>
+            <span>Facebook</span>
+          </a>
+          <a
+            class="social-link"
+            href="https://www.tiktok.com/@shello365?is_from_webapp=1&sender_device=pc"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Shello on TikTok"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 4c.5 2.7 2 4.4 4.6 4.7v3.1c-1.8 0-3.3-.5-4.6-1.5v5.2c0 3.1-2.3 5.5-5.5 5.5S4 18.7 4 15.5 6.3 10 9.5 10c.4 0 .8 0 1.2.1v3.3c-.4-.2-.8-.3-1.2-.3-1.3 0-2.3 1-2.3 2.4s1 2.4 2.3 2.4 2.3-1 2.3-2.4V4h3.2z"></path>
+            </svg>
+            <span>TikTok</span>
+          </a>
+        </div>
+      </section>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <p class="footer-title">Shello</p>
+      <p class="footer-copy" i18n>Cases designed for confident protection and bold style.</p>
+    </div>
+
+    <div class="footer-col footer-col-links">
+      <p class="footer-col-title" i18n>Browse</p>
+      <div class="footer-links">
+        <a routerLink="/" i18n>Home</a>
+        <a routerLink="/shop" i18n *ngIf="pageToggles?.shop !== false">Shop</a>
+        <a routerLink="/cart" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
+        <a *ngIf="(user$ | async)?.role === 'admin'" routerLink="/admin" i18n>Admin</a>
+      </div>
+    </div>
+
+    <div class="footer-col footer-col-social">
+      <p class="footer-col-title" i18n>Follow Shello</p>
+      <div class="footer-social">
         <a
           class="social-link"
           href="https://www.instagram.com/shellotech/"
@@ -137,60 +210,30 @@
           </svg>
           <span>Facebook</span>
         </a>
-      </section>
+        <a
+          class="social-link"
+          href="https://www.tiktok.com/@shello365?is_from_webapp=1&sender_device=pc"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Shello on TikTok"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 4c.5 2.7 2 4.4 4.6 4.7v3.1c-1.8 0-3.3-.5-4.6-1.5v5.2c0 3.1-2.3 5.5-5.5 5.5S4 18.7 4 15.5 6.3 10 9.5 10c.4 0 .8 0 1.2.1v3.3c-.4-.2-.8-.3-1.2-.3-1.3 0-2.3 1-2.3 2.4s1 2.4 2.3 2.4 2.3-1 2.3-2.4V4h3.2z"></path>
+          </svg>
+          <span>TikTok</span>
+        </a>
       </div>
     </div>
-  </header>
 
-  <main class="site-main">
-    <router-outlet></router-outlet>
-  </main>
-
-  <footer class="site-footer">
-    <div>
-      <p class="footer-title" i18n>Shello Studio</p>
-      <p class="footer-copy" i18n>Designed for confident protection and bold style.</p>
-      <p class="footer-copy" i18n>Website Created By Shello Studio</p>
-    </div>
-    <div class="footer-links">
-      <a routerLink="/" i18n>Shop</a>
-      <a routerLink="/cart" i18n *ngIf="pageToggles?.cart !== false">Cart</a>
-      <a *ngIf="(user$ | async)?.role === 'admin'" routerLink="/admin" i18n>Admin</a>
-    </div>
-    <div class="footer-social">
-      <a
-        class="social-link"
-        href="https://www.instagram.com/shellotech/"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Shello on Instagram"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
-          <circle cx="12" cy="12" r="4"></circle>
-          <circle cx="17.3" cy="6.7" r="1.1"></circle>
-        </svg>
-        <span>Instagram</span>
-      </a>
-      <a
-        class="social-link"
-        href="https://www.facebook.com/profile.php?id=61576414404352"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Shello on Facebook"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M13.2 21v-7.1h2.4l.4-2.8h-2.8V9.3c0-.8.2-1.4 1.4-1.4h1.5V5.4c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.7v2.1H8.2v2.8h2.3V21h2.7z"></path>
-        </svg>
-        <span>Facebook</span>
-      </a>
-    </div>
-    <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
-      <div class="drag-track" (pointerdown)="startDrag($event)">
-        <span class="drag-label left">KA</span>
-        <span class="drag-label right">EN</span>
-        <div class="drag-thumb" [style.left]="dragPosition" [class.active]="dragging">
-          <span>{{ dragLocale === 'ka' ? 'KA' : 'EN' }}</span>
+    <div class="footer-bottom">
+      <p class="footer-credit" i18n>Website Created By Shello Studio</p>
+      <div class="lang-switch drag-switch" role="group" aria-label="Language switcher" i18n-aria-label>
+        <div class="drag-track" (pointerdown)="startDrag($event)">
+          <span class="drag-label left">KA</span>
+          <span class="drag-label right">EN</span>
+          <div class="drag-thumb" [style.left]="dragPosition" [class.active]="dragging">
+            <span>{{ dragLocale === 'ka' ? 'KA' : 'EN' }}</span>
+          </div>
         </div>
       </div>
     </div>

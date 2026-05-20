@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, of, throwError } from 'rxjs';
 
 import { API_BASE_URL, resolveAssetUrl } from '../config/api.config';
+import { IS_STATIC_MODE } from '../config/static-mode.config';
+import { getStaticProduct, getStaticProducts } from '../../data/static-catalog';
 
 export type ProductMetadata = Record<string, unknown> | null;
 declare const $localize: { locale?: string };
@@ -40,12 +42,21 @@ export class ProductsService {
   constructor(private readonly http: HttpClient) {}
 
   getProducts() {
+    if (IS_STATIC_MODE) {
+      return of(getStaticProducts());
+    }
+
     return this.http.get<ProductListResponse>(`${API_BASE_URL}/products`).pipe(
       map((response) => response.data.map((product) => this.mapProduct(product)))
     );
   }
 
   getProduct(id: string) {
+    if (IS_STATIC_MODE) {
+      const match = getStaticProduct(id);
+      return match ? of(match) : throwError(() => new Error('Product not found.'));
+    }
+
     return this.http.get<ApiProduct>(`${API_BASE_URL}/products/${id}`).pipe(
       map((product) => this.mapProduct(product))
     );

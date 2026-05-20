@@ -44,6 +44,13 @@
   display: contents;
 }
 
+@media (min-width: 901px) {
+  .mobile-section-label,
+  .social-mobile {
+    display: none;
+  }
+}
+
 .mobile-sheet-title {
   margin: 0;
 }
@@ -291,46 +298,6 @@
   width: 100%;
 }
 
-.site-footer {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 2rem 6vw 3rem;
-  border-top: 1px solid var(--border);
-  background: rgba(12, 13, 18, 0.8);
-  backdrop-filter: var(--glass-blur);
-}
-
-.site-footer .lang-switch {
-  width: auto;
-  justify-self: end;
-  align-self: center;
-}
-
-.footer-title {
-  font-weight: 600;
-  margin: 0 0 0.4rem;
-}
-
-.footer-copy {
-  margin: 0;
-  color: var(--text-muted);
-  max-width: 320px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 1.5rem;
-  justify-self: center;
-}
-
-.footer-social {
-  display: flex;
-  gap: 0.55rem;
-  justify-self: end;
-  flex-wrap: wrap;
-}
 
 @media (max-width: 900px) {
   .site-header {
@@ -379,15 +346,33 @@
     width: min(88vw, 360px);
     height: 100%;
     overflow-y: auto;
-    background:
-      radial-gradient(520px circle at 22% -12%, rgba(255, 90, 107, 0.2), transparent 68%),
-      rgba(11, 12, 18, 0.98);
+    background: rgba(11, 12, 18, 0.98);
     border-left: 1px solid color-mix(in srgb, var(--border) 68%, var(--accent) 32%);
     box-shadow: -16px 0 36px rgba(0, 0, 0, 0.38);
     padding: calc(14px + env(safe-area-inset-top)) 12px calc(18px + env(safe-area-inset-bottom));
     transform: translateX(calc(102% + var(--sheet-drag-x)));
     transition: transform 0.24s var(--ease);
     touch-action: pan-y;
+  }
+
+  .mobile-section-label {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .mobile-section .social-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-section-label,
+  .social-mobile {
+    display: grid;
   }
 
   .header-content.open .mobile-sheet {
@@ -511,17 +496,6 @@
   .header-content .lang-switch {
     width: 100%;
     justify-content: center;
-  }
-
-  .site-footer {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    justify-items: start;
-  }
-
-  .footer-links {
-    justify-self: start;
-    flex-wrap: wrap;
   }
 
   .drag-switch {

@@ -1,56 +1,95 @@
-﻿<section class="hero">
-  <div class="hero-ambient"></div>
-  <div class="hero-image" [style.backgroundImage]="heroImageStyle" aria-hidden="true"></div>
+<section class="hero">
+  <div class="hero-bg" [style.backgroundImage]="heroImageStyle" aria-hidden="true"></div>
+
   <div class="hero-copy">
-    <span class="pill" i18n>Shello Studio</span>
-    <h1>{{ hero.title }}</h1>
-    <p class="hero-subtitle">{{ hero.subtitle }}</p>
+    <span class="eyebrow" i18n>Shello Studio · New drop</span>
+    <h1 i18n>Cases that look as bold as you do.</h1>
+    <p class="hero-sub" i18n>
+      Drop-tested, hand-finished phone cases made in our Tbilisi studio for people who care how their phone looks and feels.
+    </p>
     <div class="cta-row">
-      <a class="btn primary" [attr.href]="hero.primaryCtaLink">{{ hero.primaryCtaText }}</a>
-      <a class="btn ghost" [attr.href]="hero.secondaryCtaLink">{{ hero.secondaryCtaText }}</a>
+      <a class="btn primary" routerLink="/shop" i18n>Browse cases</a>
+      <a class="btn ghost" href="#contact" i18n>Contact us</a>
     </div>
-    <p class="scroll-hint" i18n>Scroll to preview the latest drops.</p>
-    <div class="chip-row">
-      <span class="chip" *ngFor="let tag of hero.highlights">{{ tag }}</span>
-    </div>
+    <ul class="trust-row" aria-hidden="false">
+      <li><span class="trust-num">3</span><span i18n>layer shell</span></li>
+      <li><span class="trust-num">·</span><span i18n>drop-tested</span></li>
+      <li><span class="trust-num">·</span><span i18n>studio crafted</span></li>
+    </ul>
   </div>
-  <div class="hero-panel">
-    <div
-      class="panel-card"
-      role="link"
-      tabindex="0"
-      *ngFor="let product of panelProducts"
-      (click)="goToProduct(product.id)"
-      (keydown.enter)="goToProduct(product.id)"
-      (keydown.space)="goToProduct(product.id); $event.preventDefault()"
-    >
-      <div class="panel-dot"></div>
-      <div>
-        <p class="panel-title">{{ getDisplayTitle(product.title) }}</p>
-        <p class="panel-sub">{{ getPanelSub(product) }}</p>
+
+  <aside class="hero-stage" *ngIf="featuredProduct">
+    <div class="hero-card" (click)="goToProduct(featuredProduct.id)" role="link" tabindex="0"
+         (keydown.enter)="goToProduct(featuredProduct.id)">
+      <div class="hero-card-image">
+        <img *ngIf="getPrimaryImage(featuredProduct) as image" [src]="image" alt="" />
       </div>
-      <span class="panel-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+      <div class="hero-card-meta">
+        <span class="hero-card-tag" i18n>Featured drop</span>
+        <p class="hero-card-title">{{ getDisplayTitle(featuredProduct.title) }}</p>
+        <p class="hero-card-sub">{{ getPanelSub(featuredProduct) }}</p>
+      </div>
+      <span class="hero-card-price">{{ featuredProduct.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
     </div>
-  </div>
+    <div class="hero-mini-row" *ngIf="miniProducts.length">
+      <button
+        type="button"
+        class="hero-mini"
+        *ngFor="let product of miniProducts"
+        (click)="goToProduct(product.id)"
+      >
+        <span class="hero-mini-image">
+          <img *ngIf="getPrimaryImage(product) as image" [src]="image" alt="" />
+        </span>
+        <span class="hero-mini-info">
+          <span class="hero-mini-name">{{ getDisplayTitle(product.title) }}</span>
+          <span class="hero-mini-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+        </span>
+      </button>
+    </div>
+  </aside>
 </section>
 
-<section class="suggested">
-  <div class="suggested-header">
+<section class="pillars" aria-labelledby="pillars-title">
+  <h2 id="pillars-title" class="visually-hidden" i18n>Why Shello</h2>
+  <article class="pillar">
+    <div class="pillar-num">01</div>
+    <h3 i18n>Built to take a hit</h3>
+    <p i18n>3-layer construction, reinforced corners, raised camera and screen lips. Real protection, every day.</p>
+  </article>
+  <article class="pillar">
+    <div class="pillar-num">02</div>
+    <h3 i18n>Tailored to your phone</h3>
+    <p i18n>Cut and finished for each specific model — no loose fit, no generic shells, no compromises.</p>
+  </article>
+  <article class="pillar">
+    <div class="pillar-num">03</div>
+    <h3 i18n>Hand-finished in Tbilisi</h3>
+    <p i18n>Designed and assembled in our local studio. Every drop is small, intentional, and made to last.</p>
+  </article>
+</section>
+
+<section class="featured" aria-labelledby="featured-title">
+  <header class="section-header">
     <div>
-      <h2 i18n>Suggested cases</h2>
-      <p i18n>Scroll through the latest finishes and tap to view details.</p>
+      <span class="eyebrow" i18n>Featured drops</span>
+      <h2 id="featured-title" i18n>This season's lineup</h2>
     </div>
-  </div>
-  <div class="slider loading-slider" *ngIf="isLoading">
+    <a class="section-link" routerLink="/shop" i18n>See all cases →</a>
+  </header>
+
+  <div class="loading-grid" *ngIf="isLoading">
     <article class="card skeleton-card" *ngFor="let i of [1,2,3,4]">
       <div class="card-image skeleton"></div>
       <div class="skeleton skeleton-line title"></div>
       <div class="skeleton skeleton-line meta"></div>
-      <div class="skeleton skeleton-line action"></div>
     </article>
   </div>
+
   <p class="state-text error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
-  <div class="splide landing-splide" #caseSplide *ngIf="!isLoading && !errorMessage && suggestedProducts.length > 0">
+
+  <div class="splide landing-splide" #caseSplide
+       *ngIf="!isLoading && !errorMessage && suggestedProducts.length > 0">
     <div class="splide__track">
       <ul class="splide__list">
         <li class="splide__slide" *ngFor="let product of suggestedProducts">
@@ -65,27 +104,56 @@
             <a class="card-image" [routerLink]="['/products', product.id]">
               <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
               <ng-template #imageFallback>
-                <div class="image-fallback">
-                  <span i18n>No image</span>
-                </div>
+                <div class="image-fallback"><span i18n>No image</span></div>
               </ng-template>
             </a>
-            <div class="card-top">
-              <span>{{ getDisplayTitle(product.title) }}</span>
-              <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
-            </div>
-            <div class="card-meta" *ngIf="getMeta(product).length">
-              <span class="meta-pill" *ngFor="let tag of getMeta(product)">{{ tag }}</span>
-            </div>
-            <div class="card-actions">
-              <a class="card-link" [routerLink]="['/products', product.id]" i18n>View details</a>
-              <button class="btn ghost" type="button" (click)="addToCart(product); $event.stopPropagation()" i18n *ngIf="pageToggles?.cart !== false">Add</button>
+            <div class="card-body">
+              <p class="card-brand" *ngIf="getBrandModel(product) as brandModel">{{ brandModel }}</p>
+              <p class="card-name">{{ getDisplayTitle(product.title) }}</p>
+              <div class="card-foot">
+                <span class="card-price">{{ product.price | currency:'GEL':'symbol-narrow':'1.2-2' }}</span>
+                <span class="card-link" i18n>View →</span>
+              </div>
             </div>
           </article>
         </li>
       </ul>
     </div>
   </div>
-  <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0" i18n>No suggested cases yet.</p>
+
+  <p class="state-text" *ngIf="!isLoading && !errorMessage && suggestedProducts.length === 0" i18n>
+    No drops to show yet.
+  </p>
 </section>
 
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="contact-copy">
+    <span class="eyebrow" i18n>Order direct</span>
+    <h2 id="contact-title" i18n>Order from Shello</h2>
+    <p i18n>
+      Online checkout isn't open yet. Message us on Instagram, Facebook, or TikTok to place an order, ask about a specific model, or get a custom case.
+    </p>
+  </div>
+  <div class="contact-actions">
+    <a class="social-link social-link--lg" href="https://www.instagram.com/shellotech/" target="_blank" rel="noopener noreferrer" aria-label="Shello on Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.3" cy="6.7" r="1.1"></circle>
+      </svg>
+      <span>Instagram</span>
+    </a>
+    <a class="social-link social-link--lg" href="https://www.facebook.com/profile.php?id=61576414404352" target="_blank" rel="noopener noreferrer" aria-label="Shello on Facebook">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13.2 21v-7.1h2.4l.4-2.8h-2.8V9.3c0-.8.2-1.4 1.4-1.4h1.5V5.4c-.3 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.7v2.1H8.2v2.8h2.3V21h2.7z"></path>
+      </svg>
+      <span>Facebook</span>
+    </a>
+    <a class="social-link social-link--lg" href="https://www.tiktok.com/@shello365?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Shello on TikTok">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 4c.5 2.7 2 4.4 4.6 4.7v3.1c-1.8 0-3.3-.5-4.6-1.5v5.2c0 3.1-2.3 5.5-5.5 5.5S4 18.7 4 15.5 6.3 10 9.5 10c.4 0 .8 0 1.2.1v3.3c-.4-.2-.8-.3-1.2-.3-1.3 0-2.3 1-2.3 2.4s1 2.4 2.3 2.4 2.3-1 2.3-2.4V4h3.2z"></path>
+      </svg>
+      <span>TikTok</span>
+    </a>
+  </div>
+</section>
