@@ -122,13 +122,9 @@
           <li class="splide__slide" *ngFor="let suggestion of suggestedProducts">
             <article
               class="card"
-              role="link"
-              tabindex="0"
               (click)="goToProduct(suggestion.id)"
-              (keydown.enter)="goToProduct(suggestion.id)"
-              (keydown.space)="goToProduct(suggestion.id); $event.preventDefault()"
             >
-              <a class="card-image" [routerLink]="['/products', suggestion.id]">
+              <a class="card-image" [routerLink]="['/products', suggestion.id]" [attr.aria-label]="suggestion.title" tabindex="-1">
                 <img *ngIf="suggestion.images.length" [appPhoto]="suggestion.images[0]" sizes="(max-width: 640px) 100vw, 400px" alt="" />
               </a>
               <div class="card-body">

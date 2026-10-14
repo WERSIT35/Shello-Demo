@@ -198,6 +198,8 @@
 
 .card-link {
   white-space: nowrap;
+  display: inline-block;
+  padding-block: 4px; // 24 px+ touch target
 }
 
 .card-price {

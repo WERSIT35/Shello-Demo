@@ -502,12 +502,13 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       speed: 420
     });
 
+    // Splide needs the main slider mounted before the thumbnails it syncs with; the
+    // reverse order threw "Cannot read properties of undefined (reading 'getAt')".
     if (this.galleryThumbsSplide) {
       this.gallerySplide.sync(this.galleryThumbsSplide);
-      this.galleryThumbsSplide.mount();
     }
-
     this.gallerySplide.mount();
+    this.galleryThumbsSplide?.mount();
   }
 
   private mountSuggestionsSplide(): void {

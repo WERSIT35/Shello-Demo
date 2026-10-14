@@ -47,14 +47,10 @@
   <div class="grid-cards" *ngIf="!isLoading">
     <article
       class="card"
-      role="link"
-      tabindex="0"
       *ngFor="let product of products"
       (click)="goToProduct(product.id)"
-      (keydown.enter)="goToProduct(product.id)"
-      (keydown.space)="goToProduct(product.id); $event.preventDefault()"
     >
-      <a class="card-image" [routerLink]="['/products', product.id]">
+      <a class="card-image" [routerLink]="['/products', product.id]" [attr.aria-label]="product.title" tabindex="-1">
         <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [appPhoto]="image" sizes="(max-width: 640px) 50vw, 260px" alt="" />
         <ng-template #imageFallback>
           <div class="image-fallback"><span i18n>No image</span></div>
