@@ -1,8 +1,20 @@
 @import '@splidejs/splide/css';
 
+// Self-hosted fonts: no render-blocking Google Fonts request, and the logo renders in its
+// marker face even where Google Fonts is blocked.
+@font-face {
+	font-family: "Permanent Marker";
+	src: url("/assets/fonts/permanent-marker-latin-400.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
 @font-face {
 	font-family: "BPG DejaVu Sans";
-	src: url("/assets/fonts/bpg_dejavu_sans.otf") format("opentype");
+	src:
+		url("/assets/fonts/bpg_dejavu_sans.woff2") format("woff2"),
+		url("/assets/fonts/bpg_dejavu_sans.otf") format("opentype");
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;

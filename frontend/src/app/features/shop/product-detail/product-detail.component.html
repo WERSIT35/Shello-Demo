@@ -20,7 +20,7 @@
             <ul class="splide__list">
               <li class="splide__slide" *ngFor="let image of product.images; let i = index">
                 <button class="gallery-image-trigger" type="button" (click)="openImageLightbox(i)" aria-label="Open image in fullscreen" i18n-aria-label>
-                  <img [src]="image" alt="" draggable="false" />
+                  <img [appPhoto]="image" [eager]="i === 0" sizes="(max-width: 900px) 100vw, 680px" alt="" draggable="false" />
                 </button>
               </li>
             </ul>
@@ -31,7 +31,7 @@
           <div class="splide__track">
             <ul class="splide__list">
               <li class="splide__slide" *ngFor="let image of product.images">
-                <img [src]="image" alt="" />
+                <img [appPhoto]="image" sizes="96px" alt="" />
               </li>
             </ul>
           </div>
@@ -122,14 +122,10 @@
           <li class="splide__slide" *ngFor="let suggestion of suggestedProducts">
             <article
               class="card"
-              role="link"
-              tabindex="0"
               (click)="goToProduct(suggestion.id)"
-              (keydown.enter)="goToProduct(suggestion.id)"
-              (keydown.space)="goToProduct(suggestion.id); $event.preventDefault()"
             >
-              <a class="card-image" [routerLink]="['/products', suggestion.id]">
-                <img *ngIf="suggestion.images.length" [src]="suggestion.images[0]" alt="" />
+              <a class="card-image" [routerLink]="['/products', suggestion.id]" [attr.aria-label]="suggestion.title" tabindex="-1">
+                <img *ngIf="suggestion.images.length" [appPhoto]="suggestion.images[0]" sizes="(max-width: 640px) 100vw, 400px" alt="" />
               </a>
               <div class="card-body">
                 <p class="card-name">{{ suggestion.title.trim() }}</p>
@@ -177,7 +173,8 @@
                   (pointercancel)="onLightboxPointerUp()"
                 >
                   <img
-                    [src]="image"
+                    [appPhoto]="image"
+                    sizes="100vw"
                     alt=""
                     draggable="false"
                     [style.transform]="'translate(' + lightboxPanX + 'px, ' + lightboxPanY + 'px) scale(' + lightboxZoom + ')'"

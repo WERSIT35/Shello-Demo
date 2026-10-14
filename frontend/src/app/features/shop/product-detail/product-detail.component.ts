@@ -1,3 +1,4 @@
+import { PhotoDirective } from '../../../core/images/photo.directive';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ declare const $localize: { locale?: string };
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [PhotoDirective, CurrencyPipe, NgFor, NgIf, RouterLink],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
@@ -501,12 +502,13 @@ export class ProductDetailComponent implements OnInit, AfterViewInit, OnDestroy 
       speed: 420
     });
 
+    // Splide needs the main slider mounted before the thumbnails it syncs with; the
+    // reverse order threw "Cannot read properties of undefined (reading 'getAt')".
     if (this.galleryThumbsSplide) {
       this.gallerySplide.sync(this.galleryThumbsSplide);
-      this.galleryThumbsSplide.mount();
     }
-
     this.gallerySplide.mount();
+    this.galleryThumbsSplide?.mount();
   }
 
   private mountSuggestionsSplide(): void {

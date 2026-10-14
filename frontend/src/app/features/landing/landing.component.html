@@ -22,7 +22,7 @@
     <div class="hero-card" (click)="goToProduct(featuredProduct.id)" role="link" tabindex="0"
          (keydown.enter)="goToProduct(featuredProduct.id)">
       <div class="hero-card-image">
-        <img *ngIf="getPrimaryImage(featuredProduct) as image" [src]="image" alt="" />
+        <img *ngIf="getPrimaryImage(featuredProduct) as image" [appPhoto]="image" [eager]="true" sizes="(max-width: 900px) 90vw, 400px" alt="" />
       </div>
       <div class="hero-card-meta">
         <span class="hero-card-tag" i18n>Featured drop</span>
@@ -39,7 +39,7 @@
         (click)="goToProduct(product.id)"
       >
         <span class="hero-mini-image">
-          <img *ngIf="getPrimaryImage(product) as image" [src]="image" alt="" />
+          <img *ngIf="getPrimaryImage(product) as image" [appPhoto]="image" sizes="64px" alt="" />
         </span>
         <span class="hero-mini-info">
           <span class="hero-mini-name">{{ getDisplayTitle(product.title) }}</span>
@@ -95,14 +95,10 @@
         <li class="splide__slide" *ngFor="let product of suggestedProducts">
           <article
             class="card"
-            role="link"
-            tabindex="0"
             (click)="goToProduct(product.id)"
-            (keydown.enter)="goToProduct(product.id)"
-            (keydown.space)="goToProduct(product.id); $event.preventDefault()"
           >
-            <a class="card-image" [routerLink]="['/products', product.id]">
-              <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
+            <a class="card-image" [routerLink]="['/products', product.id]" [attr.aria-label]="product.title" tabindex="-1">
+              <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [appPhoto]="image" sizes="(max-width: 640px) 100vw, 400px" alt="" />
               <ng-template #imageFallback>
                 <div class="image-fallback"><span i18n>No image</span></div>
               </ng-template>

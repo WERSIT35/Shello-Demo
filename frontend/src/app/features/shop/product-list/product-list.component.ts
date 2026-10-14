@@ -1,3 +1,4 @@
+import { PhotoDirective } from '../../../core/images/photo.directive';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -13,7 +14,7 @@ const ALL_CATEGORY = '__all__';
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [PhotoDirective, CurrencyPipe, NgFor, NgIf, RouterLink],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })

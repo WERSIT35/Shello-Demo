@@ -185,9 +185,21 @@
 
 .card-foot {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
   margin-top: 0.3rem;
+}
+
+.card-price {
+  white-space: nowrap; // keep "89,00 ₾" on one line
+}
+
+.card-link {
+  white-space: nowrap;
+  display: inline-block;
+  padding-block: 4px; // 24 px+ touch target
 }
 
 .card-price {
@@ -215,6 +227,13 @@
 @media (max-width: 900px) {
   .shop-head { grid-template-columns: 1fr; gap: 1rem; align-items: start; }
   .shop-meta { justify-items: start; }
+}
+
+@media (max-width: 640px) {
+  .card-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 640px) {

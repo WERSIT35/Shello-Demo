@@ -311,8 +311,21 @@
     justify-content: space-between;
   }
 
+  // The button's .btn padding was wider than the 36 px circle, which squeezed the
+  // hamburger icon to 0 px: phones saw an empty circle.
   .menu-toggle {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    .icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .header-content {

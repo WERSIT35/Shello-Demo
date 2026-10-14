@@ -1,3 +1,5 @@
+import { PhotoDirective } from '../../core/images/photo.directive';
+import { OPTIMIZED_IMAGES } from '../../core/images/optimized-images';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -13,7 +15,7 @@ declare const $localize: { locale?: string };
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [PhotoDirective, CurrencyPipe, NgFor, NgIf, RouterLink],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
@@ -201,6 +203,12 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     const trimmed = imageUrl.trim();
     if (!trimmed) {
       return null;
+    }
+
+    // The default hero is a 6 MB phone photo shown at 22% opacity: use its WebP copy.
+    const optimized = OPTIMIZED_IMAGES[decodeURI(trimmed.replace(/^https?:\/\/[^/]+/, ''))];
+    if (optimized) {
+      return `/assets/opt/${optimized.slug}-${optimized.widths[optimized.widths.length - 1]}.webp`;
     }
 
     if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) {
