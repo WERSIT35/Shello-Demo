@@ -55,7 +55,7 @@
       (keydown.space)="goToProduct(product.id); $event.preventDefault()"
     >
       <a class="card-image" [routerLink]="['/products', product.id]">
-        <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [src]="image" alt="" />
+        <img *ngIf="getPrimaryImage(product) as image; else imageFallback" [appPhoto]="image" sizes="(max-width: 640px) 50vw, 260px" alt="" />
         <ng-template #imageFallback>
           <div class="image-fallback"><span i18n>No image</span></div>
         </ng-template>

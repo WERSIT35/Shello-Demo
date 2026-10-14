@@ -1,3 +1,4 @@
+import { PhotoDirective } from '../../../core/images/photo.directive';
 import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -8,7 +9,7 @@ import { CartService, type CartItem } from '../../../core/services/cart.service'
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [PhotoDirective, AsyncPipe, CurrencyPipe, NgFor, NgIf, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

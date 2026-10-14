@@ -12,7 +12,7 @@
     <div class="cart-item" *ngFor="let item of items$ | async">
       <div class="item-info">
         <div class="item-thumb" [class.is-fallback]="!item.image">
-          <img *ngIf="item.image" [src]="item.image" alt="" (error)="onImageError($event)" />
+          <img *ngIf="item.image" [appPhoto]="item.image" sizes="96px" alt="" (error)="onImageError($event)" />
           <div class="thumb-fallback" i18n>No image</div>
         </div>
         <div class="item-copy">

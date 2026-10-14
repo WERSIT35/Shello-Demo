@@ -1,3 +1,4 @@
+import { PhotoDirective } from '../../../core/images/photo.directive';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ declare const $localize: { locale?: string };
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CurrencyPipe, NgFor, NgIf, RouterLink],
+  imports: [PhotoDirective, CurrencyPipe, NgFor, NgIf, RouterLink],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
