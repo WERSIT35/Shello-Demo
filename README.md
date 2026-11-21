@@ -127,3 +127,7 @@ See the architecture and security docs in the repository root:
 
 - Refresh tokens are stored in httpOnly cookies.
 - Google sign-in uses a popup flow with a localStorage fallback to handle COOP restrictions.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
